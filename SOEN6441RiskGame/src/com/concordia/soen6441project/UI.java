@@ -35,13 +35,19 @@ public class UI {
 	/**
 	 * Launch the application.
 	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
+	public static void main(String[] args) 
+	{
+		EventQueue.invokeLater(new Runnable() 
+		{
+			public void run() 
+			{
+				try 
+				{
 					UI window = new UI();
 					window.frame.setVisible(true);
-				} catch (Exception e) {
+				} 
+				catch (Exception e) 
+				{
 					e.printStackTrace();
 				}
 			}
@@ -51,14 +57,16 @@ public class UI {
 	/**
 	 * Create the application.
 	 */
-	public UI() {
+	public UI() 
+	{
 		initialize();
 	}
 
 	/**
 	 * Initialize the contents of the frame.
 	 */
-	private void initialize() {
+	private void initialize() 
+	{
 		frame = new JFrame();
 		frame.setBounds(100, 100, 1132, 745);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -106,70 +114,76 @@ public class UI {
 		
 		
 		JButton btnNewButton = new JButton("Upload Game File");
-		btnNewButton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				
-				panel.add(fileChooser);
-				
+		btnNewButton.addActionListener(new ActionListener() 
+		{
+			public void actionPerformed(ActionEvent arg0) 
+			{	
+				panel.add(fileChooser);		
 				int returnVal = fileChooser.showOpenDialog(frame);
-		        if (returnVal == JFileChooser.APPROVE_OPTION) {
-		            File file = fileChooser.getSelectedFile();
-		            String fileName=file.getAbsolutePath();
-		            try {
-		            	
-		            	FileReader reader=new FileReader(fileName);
-		            	BufferedReader br=new BufferedReader(reader);
-		            	textArea.read(br,null);
-		            	br.close();
-		            	textArea.requestFocus();
-		            	scrollPane.setVisible(true);
-		            	
-		              // return the file path 
-		            } catch (Exception ex) {
-		              System.out.println("problem accessing file"+file.getAbsolutePath());
-		            }
-		        } 
-		        else {
-		            System.out.println("File access cancelled by user.");
-		        }       
-		    }   
-				
-			
+				if (returnVal == JFileChooser.APPROVE_OPTION) 
+				{
+					File file = fileChooser.getSelectedFile();
+				    String fileName=file.getAbsolutePath();
+				    try 
+				    {
+				    	FileReader reader=new FileReader(fileName);
+				        BufferedReader br=new BufferedReader(reader);
+				        textArea.read(br,null);
+				        br.close();
+				        textArea.requestFocus();
+				        scrollPane.setVisible(true);
+				            	
+				        // return the file path 
+				     } 
+				     catch (Exception ex) 
+				     {
+				        System.out.println("problem accessing file"+file.getAbsolutePath());
+				     }
+				} 
+				else 
+				{
+					System.out.println("File access cancelled by user.");
+				}       
+			}   
 		});
 		btnNewButton.setFont(new Font("Tahoma", Font.BOLD, 17));
 		btnNewButton.setBounds(23, 88, 228, 39);
 		panel.add(btnNewButton);
-		
 		JButton btnNewGameFile = new JButton("New Game File");
-		btnNewGameFile.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				try {
-				FileReader reader=new FileReader("C:\\Users\\Abhishek Rajput\\eclipse-workspace\\countries.txt");
-            	BufferedReader br=new BufferedReader(reader);
-            	textArea.read(br,null);
-            	br.close();
-            	textArea.requestFocus();
-				
-			    lblFileConfigurations.setVisible(true);
-			    scrollPane.setVisible(true);
+		btnNewGameFile.addActionListener(new ActionListener() 
+		{
+			public void actionPerformed(ActionEvent arg0) 
+			{
+				try 
+				{
+					FileReader reader=new FileReader("C:\\Users\\Abhishek Rajput\\eclipse-workspace\\countries.txt");
+	            	BufferedReader br=new BufferedReader(reader);
+	            	textArea.read(br,null);
+	            	br.close();
+	            	textArea.requestFocus();
+					
+				    lblFileConfigurations.setVisible(true);
+				    scrollPane.setVisible(true);
 				}
-				catch (Exception ex) {
-		              System.out.println("problem accessing file");
-		            }
+				catch (Exception ex) 
+				{
+					System.out.println("problem accessing file");
+		        }
 			}
 		});
 		btnNewGameFile.setFont(new Font("Tahoma", Font.BOLD, 17));
 		btnNewGameFile.setBounds(23, 158, 228, 39);
 		panel.add(btnNewGameFile);		
-		
 		JButton btnStartGame = new JButton("Start Game");
-		btnStartGame.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				
+		btnStartGame.addActionListener(new ActionListener() 
+		{
+			public void actionPerformed(ActionEvent e) 
+			{
 				String gameData=textArea.getText();
 				GameModel gm=new GameModel();
 				Boolean x=gm.initializeGame(gameData);
-				if(!x) {
+				if(!x) 
+				{
 					JOptionPane.showMessageDialog(btnStartGame,"Error with Connected Graph","Error",JOptionPane.ERROR_MESSAGE);
 				}
 				int year=1900+date.getYear();
@@ -177,29 +191,19 @@ public class UI {
 				File fileName= new File("C:\\Map\\"+year+"-"+month+"-"+date.getDate()+" "+date.getHours()+date.getMinutes()+date.getSeconds()+".txt");
 				System.out.println(fileName.getAbsolutePath());
 				
-				try {
-		           
-		            BufferedWriter outFile = new BufferedWriter(new FileWriter(fileName));
+				try 
+				{
+					BufferedWriter outFile = new BufferedWriter(new FileWriter(fileName));
 		            textArea.write(outFile);
-
 		            outFile.close();
-		        } catch (IOException ex) {
+		        } 
+				catch (IOException ex) 
+				{
 		        }
 			}
 		});
 		btnStartGame.setFont(new Font("Tahoma", Font.BOLD, 17));
 		btnStartGame.setBounds(888, 599, 178, 39);
 		panel.add(btnStartGame);
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
 	}
 }
