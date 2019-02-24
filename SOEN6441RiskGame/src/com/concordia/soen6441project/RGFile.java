@@ -10,7 +10,7 @@ import java.util.Scanner;
 
 import javax.swing.JFileChooser;
 
-public class RPFile {
+public class RGFile {
 	private File file;
 	private JFileChooser fileChooser=new JFileChooser();
 	
@@ -82,9 +82,10 @@ public class RPFile {
 		int index1=0;
 		int index2;
 		int i,j;
-		String[][] vertex = new String[100][7];
 		String edge;
+		String vertex="";
 		RGGraph graph=new RGGraph();
+		RGGraph countryItems=new RGGraph();
 		i=0;
 		while (buffer.hasNextLine())
 		{
@@ -97,32 +98,42 @@ public class RPFile {
 				 { 
 					if (j<4)
 					{
-						vertex[i][j]=actualLine.substring(index1, index1+index2);
 						if(j==0)
-							graph.addVertex(vertex[i][j]);
-						actualLine=","+actualLine;
-						actualLine=actualLine.replace(","+vertex[i][j]+",", "");
+						{
+							vertex=actualLine.substring(index1, index1+index2);
+							graph.addVertex(vertex);
+							countryItems.addVertex(vertex);
+							actualLine=","+actualLine;
+							actualLine=actualLine.replace(","+vertex+",", "");
+						}
+						else
+						{
+							edge=actualLine.substring(index1, index1+index2);
+							countryItems.addEdge(vertex, edge);
+							actualLine=","+actualLine;
+							actualLine=actualLine.replace(","+edge+",", "");
+						}
 						j++;
 					}
 					else
 					{
 						edge=actualLine.substring(index1, index1+index2);
-						graph.addEdge(vertex[i][0], edge);
+						graph.addEdge(vertex, edge);
 						actualLine=","+actualLine;
 						actualLine=actualLine.replace(","+edge+",", "");
 					}
 				 }
 				 else
 				 {
-					 graph.addEdge(vertex[i][0], actualLine);
+					 graph.addEdge(vertex, actualLine);
 					 break;
 				 }
 			}
 			if(!actualLine.equals(""))
 			{
 				i++;
-				ArrayList<String> edgeList = graph.getEdges(vertex[i-1][0]);
-				System.out.print(vertex[i-1][0]+ "->");
+				ArrayList<String> edgeList = graph.getEdges(vertex);
+				System.out.print(vertex+ "->");
 				for(int k=0;k<edgeList.size();k++)
 				{
 					System.out.print(edgeList.get(k)+" -> ");

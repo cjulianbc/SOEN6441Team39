@@ -94,7 +94,7 @@ public class RGGUI {
 		JButton btnNewButton = new JButton("Save Map");
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				RPFile file=new RPFile();
+				RGFile file=new RGFile();
 				try {
 					file.saveFile(textArea.getText(),textArea_1.getText());
 				} catch (IOException e1) {
@@ -119,7 +119,7 @@ public class RGGUI {
 		JMenuItem mntmOpen = new JMenuItem("Open");
 		mntmOpen.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				RPFile file=new RPFile();
+				RGFile file=new RGFile();
 				file.openFile();
 				try {
 					StringBuilder content=file.getContent("[Continents]");
@@ -146,7 +146,7 @@ public class RGGUI {
 		JMenuItem mntmPlay = new JMenuItem("Play");
 		mntmPlay.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				RPFile file=new RPFile();
+				RGFile file=new RGFile();
 				file.openFile();
 				try {
 					StringBuilder content=file.getContent("[Territories]");
