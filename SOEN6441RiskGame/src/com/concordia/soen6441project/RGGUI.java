@@ -29,6 +29,8 @@ public class RGGUI {
 
 	private JFrame frame;
 	private JFileChooser setfile;
+	RGFile file=new RGFile();
+	RGGame game=new RGGame();
 
 	/**
 	 * Launch the application.
@@ -94,7 +96,6 @@ public class RGGUI {
 		JButton btnNewButton = new JButton("Save Map");
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				RGFile file=new RGFile();
 				try {
 					file.saveFile(textArea.getText(),textArea_1.getText());
 				} catch (IOException e1) {
@@ -119,7 +120,6 @@ public class RGGUI {
 		JMenuItem mntmOpen = new JMenuItem("Open");
 		mntmOpen.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				RGFile file=new RGFile();
 				file.openFile();
 				try {
 					StringBuilder content=file.getContent("[Continents]");
@@ -146,11 +146,12 @@ public class RGGUI {
 		JMenuItem mntmPlay = new JMenuItem("Play");
 		mntmPlay.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				RGFile file=new RGFile();
 				file.openFile();
 				try {
 					StringBuilder content=file.getContent("[Territories]");
-					file.createGraph(content);
+					game.createGraph(content);
+					RGPlayersFrame playersFrame=new RGPlayersFrame(file, game);
+					playersFrame.setVisible(true);
 				} catch (FileNotFoundException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
@@ -162,4 +163,5 @@ public class RGGUI {
 		JMenu mnExit = new JMenu("Exit");
 		menuBar.add(mnExit);
 	}
+	
 }
