@@ -12,10 +12,14 @@ import javax.swing.border.EtchedBorder;
 import javax.swing.border.LineBorder;
 import java.awt.Color;
 import javax.swing.JLayeredPane;
+import javax.swing.JButton;
+import javax.swing.JTextField;
+import javax.swing.JTextArea;
+import javax.swing.JComboBox;
 
 public class Test extends JFrame {
 
-	private JPanel contentPane;
+	private JPanel right;
 
 	/**
 	 * Launch the application.
@@ -39,23 +43,43 @@ public class Test extends JFrame {
 	public Test() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 1059, 632);
-		contentPane = new JPanel();
-		contentPane.setForeground(Color.BLACK);
-		contentPane.setBorder(null);
-		setContentPane(contentPane);
-		contentPane.setLayout(null);
+		right = new JPanel();
+		right.setForeground(Color.BLACK);
+		right.setBorder(null);
+		setContentPane(right);
+		right.setLayout(null);
 		
-		JLayeredPane layeredPane = new JLayeredPane();
-		layeredPane.setBounds(166, 118, 1, 1);
-		contentPane.add(layeredPane);
+		JLabel lblReinforcementPhase = new JLabel("SETUP PHASE");
+		lblReinforcementPhase.setBounds(148, 41, 117, 33);
+		right.add(lblReinforcementPhase);
 		
-		JPanel panel = new JPanel();
-		panel.setBounds(0, 0, 192, 199);
-		layeredPane.add(panel);
+		JLabel lblJulian = new JLabel("Current: Julian");
+		lblJulian.setBounds(65, 107, 113, 23);
+		right.add(lblJulian);
 		
-		JPanel panel_1 = new JPanel();
-		panel_1.setBounds(0, 0, 10, 10);
-		layeredPane.add(panel_1);
+		JTextArea textArea = new JTextArea();
+		textArea.setBounds(188, 97, 34, 33);
+		right.add(textArea);
+		
+		JLabel lblArmiesToPlace = new JLabel("Armies to place:");
+		lblArmiesToPlace.setBounds(65, 149, 117, 23);
+		right.add(lblArmiesToPlace);
+		
+		JTextArea textArea_1 = new JTextArea();
+		textArea_1.setBounds(188, 139, 34, 33);
+		right.add(textArea_1);
+		
+		JLabel lblCountry = new JLabel("Country:");
+		lblCountry.setBounds(65, 191, 106, 23);
+		right.add(lblCountry);
+		
+		JComboBox comboBox = new JComboBox();
+		comboBox.setBounds(65, 214, 157, 23);
+		right.add(comboBox);
+		
+		JButton btnPlace = new JButton("Place");
+		btnPlace.setBounds(232, 214, 73, 23);
+		right.add(btnPlace);
 	}
 
 }

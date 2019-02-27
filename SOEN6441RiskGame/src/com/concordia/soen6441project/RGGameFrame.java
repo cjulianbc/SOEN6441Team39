@@ -4,10 +4,14 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.GridLayout;
+
+import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JLayeredPane;
 import javax.swing.JPanel;
+import javax.swing.JTextArea;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
 
@@ -31,12 +35,13 @@ public class RGGameFrame extends JFrame{
 	    frame.setExtendedState(frame.getExtendedState() | JFrame.MAXIMIZED_BOTH);
 
 	    frame.add(left, BorderLayout.LINE_START);
-        left.setPreferredSize(new Dimension(1000,0));
+        left.setPreferredSize(new Dimension(900,0));
         left.setBorder(new LineBorder(Color.white, 10));
         left.add(mapGraph);
         
-        frame.add(right, BorderLayout.CENTER);
+        frame.add(right);
         right.setBorder(new LineBorder(Color.white, 10));
+        right.setLayout(null);
 		
 		right.add(layeredPane);
 		layeredPane.add(setUpFrame);
@@ -58,12 +63,36 @@ public class RGGameFrame extends JFrame{
 		layeredPane.revalidate();
 		
 		
-		JLabel lblTitle = new JLabel("REINFORCEMENT PHASE");
-		lblTitle.setLocation(1050, 50);
-		right.add(lblTitle);
+		JLabel lblReinforcementPhase = new JLabel("SETUP PHASE");
+		lblReinforcementPhase.setBounds(148, 41, 117, 33);
+		right.add(lblReinforcementPhase);
 		
-		JLabel lblJulian = new JLabel("Julian");
-		lblTitle.setLocation(1050, 50);
+		JLabel lblJulian = new JLabel("Current: Julian");
+		lblJulian.setBounds(65, 107, 113, 23);
 		right.add(lblJulian);
+		
+		JTextArea textArea = new JTextArea();
+		textArea.setBounds(188, 97, 34, 33);
+		right.add(textArea);
+		
+		JLabel lblArmiesToPlace = new JLabel("Armies to place:");
+		lblArmiesToPlace.setBounds(65, 149, 117, 23);
+		right.add(lblArmiesToPlace);
+		
+		JTextArea textArea_1 = new JTextArea();
+		textArea_1.setBounds(188, 139, 34, 33);
+		right.add(textArea_1);
+		
+		JLabel lblCountry = new JLabel("Country:");
+		lblCountry.setBounds(65, 191, 106, 23);
+		right.add(lblCountry);
+		
+		JComboBox comboBox = new JComboBox();
+		comboBox.setBounds(65, 214, 157, 23);
+		right.add(comboBox);
+		
+		JButton btnPlace = new JButton("Place");
+		btnPlace.setBounds(232, 214, 73, 23);
+		right.add(btnPlace);
 	}
 }
