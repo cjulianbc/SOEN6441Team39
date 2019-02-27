@@ -7,6 +7,20 @@ import java.util.Scanner;
 public class RGGame {
 	RGGraph graph=new RGGraph();
 	RGGraph countryItems=new RGGraph();
+	RGGraph gameItems=new RGGraph();
+	
+	RGGame()
+	{
+		gameItems.addVertex("Setup");
+		gameItems.addEdge("Setup", "1");
+		gameItems.addVertex("Reinforcement");
+		gameItems.addEdge("Reinforcement", "0");
+		gameItems.addVertex("Attack");
+		gameItems.addEdge("Attack", "0");
+		gameItems.addVertex("Fortification");
+		gameItems.addEdge("Fortification", "0");
+		
+	}
 	
 	void createGraph(StringBuilder content)
 	{
@@ -124,5 +138,59 @@ public class RGGame {
 			System.out.println("");
 		}	
 	}
+	
+	String getXCoord(String vertex)
+	{
+		ArrayList<String> edgeList = countryItems.getEdges(vertex);
+		return edgeList.get(0);
+	}
+	
+	String getYCoord(String vertex)
+	{
+		ArrayList<String> edgeList = countryItems.getEdges(vertex);
+		return edgeList.get(1);
+	}
+	
+	String getOwner(String vertex)
+	{
+		ArrayList<String> edgeList = countryItems.getEdges(vertex);
+		return edgeList.get(3);
+	}
+	
+	String getArmies(String vertex)
+	{
+		ArrayList<String> edgeList = countryItems.getEdges(vertex);
+		return edgeList.get(4);
+	}
+	
+	ArrayList<String> getVertex()
+	{
+		ArrayList<String> vertex = countryItems.getVertex();
+		return vertex;
+	}
+	
+	ArrayList<String> getEdges(String vertex)
+	{
+		ArrayList<String> edges = graph.getEdges(vertex);
+		return edges;
+	}
+	
+	String getPhase()
+	{
+		ArrayList<String> vertex = gameItems.getVertex();
+		String phase;
+		String currentPhase="";
+		for(int k=0;k<vertex.size();k++)
+		{
+			ArrayList<String> edges = gameItems.getEdges(vertex.get(k));
+			phase=edges.get(0);
+			if(phase=="1")
+			{
+				currentPhase=vertex.get(k);
+			}
+		}
+		return currentPhase;		
+	}
+	
 
 }

@@ -1,8 +1,5 @@
 package com.concordia.soen6441project;
 
-import java.awt.BorderLayout;
-import java.awt.EventQueue;
-
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
@@ -15,9 +12,9 @@ import java.awt.event.ActionEvent;
 public class RGPlayersFrame extends JFrame {
 
 	private JPanel contentPane;
-	RGPlayer players=new RGPlayer();
 	RGGame game;
 	RGFile file;
+	RGPlayer players=new RGPlayer();
 
 	/**
 	 * Launch the application.
@@ -26,7 +23,7 @@ public class RGPlayersFrame extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					RGPlayersFrame frame = new RGPlayersFrame(this.file, this.game);
+					RGPlayersFrame frame = new RGPlayersFrame();
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -39,25 +36,23 @@ public class RGPlayersFrame extends JFrame {
 	 * Create the frame.
 	 */
 	public RGPlayersFrame(RGFile file, RGGame game) {
-		this.file=file;
-		this.game=game;
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 450, 300);
+		setBounds(100, 100, 404, 245);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		
 		JTextArea textArea = new JTextArea();
-		textArea.setBounds(90, 89, 265, 54);
+		textArea.setBounds(71, 90, 263, 29);
 		contentPane.add(textArea);
 		
-		JLabel lblNewLabel = new JLabel("Write the names of the players separated by commas:");
-		lblNewLabel.setBounds(90, 69, 297, 22);
+		JLabel lblNewLabel = new JLabel("Write the names of the players:");
+		lblNewLabel.setBounds(71, 69, 297, 22);
 		contentPane.add(lblNewLabel);
 		
-		JLabel lblExampleAmitNesar = new JLabel("Example: Amit, Nesar, Aamrean, Abhishek, Julian...");
-		lblExampleAmitNesar.setBounds(90, 147, 297, 14);
+		JLabel lblExampleAmitNesar = new JLabel("Example: Nesar,Julian,Amit ");
+		lblExampleAmitNesar.setBounds(71, 117, 297, 14);
 		contentPane.add(lblExampleAmitNesar);
 		
 		JLabel lblPlayers = new JLabel("PLAYERS");
@@ -67,10 +62,11 @@ public class RGPlayersFrame extends JFrame {
 		JButton btnGo = new JButton("Play");
 		btnGo.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				game.assignCountries(players.setPlayers(textArea.getText()));
+				game.assignCountries(players.setPlayers(textArea.getText()));				
+				RGGameFrame gameFrame=new RGGameFrame(file, game, players);
 			}
 		});
-		btnGo.setBounds(166, 188, 89, 23);
+		btnGo.setBounds(148, 142, 89, 23);
 		contentPane.add(btnGo);
 	}
 }

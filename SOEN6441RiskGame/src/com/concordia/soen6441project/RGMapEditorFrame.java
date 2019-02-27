@@ -1,36 +1,27 @@
 package com.concordia.soen6441project;
 
 import java.awt.EventQueue;
-
-import javax.swing.JFrame;
-import javax.swing.JLayeredPane;
-import javax.swing.JTabbedPane;
-import java.awt.CardLayout;
-import javax.swing.JPanel;
-import java.awt.BorderLayout;
-import javax.swing.BoxLayout;
-import javax.swing.JFileChooser;
-import javax.swing.JScrollPane;
-import javax.swing.JMenuBar;
-import javax.swing.JMenu;
-import javax.swing.JMenuItem;
+import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.awt.event.ActionEvent;
-import javax.swing.JSplitPane;
-import javax.swing.JTextArea;
-import javax.swing.JEditorPane;
-import javax.swing.JScrollBar;
-import javax.swing.JLabel;
+
 import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
+import javax.swing.border.EmptyBorder;
 
-public class RGGUI {
+public class RGMapEditorFrame extends JFrame {
 
-	private JFrame frame;
-	private JFileChooser setfile;
+	private JPanel contentPane;
 	RGFile file=new RGFile();
-	RGGame game=new RGGame();
+	RGGame game=new RGGame(); 
 
 	/**
 	 * Launch the application.
@@ -39,8 +30,8 @@ public class RGGUI {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					RGGUI window = new RGGUI();
-					window.frame.setVisible(true);
+					RGMapEditorFrame frame = new RGMapEditorFrame();
+					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -49,51 +40,48 @@ public class RGGUI {
 	}
 
 	/**
-	 * Create the application.
+	 * Create the frame.
 	 */
-	public RGGUI() {
-		initialize();
-	}
-
-	/**
-	 * Initialize the contents of the frame.
-	 */
-	private void initialize() {
-		frame = new JFrame();
-		frame.getContentPane().setLayout(null);
-		frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
+	public RGMapEditorFrame() {
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setBounds(100, 100, 619, 554);
+		contentPane = new JPanel();
+		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
+		setContentPane(contentPane);
+		contentPane.setLayout(null);
 		
 		JLabel lblContinents = new JLabel("CONTINENTS: (Name of the continent = Control value)");
 		lblContinents.setBounds(34, 49, 353, 23);
-		frame.getContentPane().add(lblContinents);
+		contentPane.add(lblContinents);
 		
 		JLabel lblMapEditor = new JLabel("MAP EDITOR");
 		lblMapEditor.setBounds(10, 11, 86, 29);
-		frame.getContentPane().add(lblMapEditor);
+		contentPane.add(lblMapEditor);
 		
 		JLabel lblCountries = new JLabel("COUNTRIES: (Name of the country, Map coord X, Map coord Y, Continent, Adjacent countries)");
 		lblCountries.setBounds(34, 255, 618, 23);
-		frame.getContentPane().add(lblCountries);
+		contentPane.add(lblCountries);
 		
 		JLabel lblExampleCountry = new JLabel("Example: (Alaska,70,126,North America,Northwest Territory,Alberta,Kamchatka)");
 		lblExampleCountry.setBounds(34, 400, 569, 14);
-		frame.getContentPane().add(lblExampleCountry);
+		contentPane.add(lblExampleCountry);
 		
 		JScrollPane scrollPane = new JScrollPane();
 		scrollPane.setBounds(34, 67, 323, 127);
-		frame.getContentPane().add(scrollPane);
+		contentPane.add(scrollPane);
 		
 		JTextArea textArea = new JTextArea();
 		scrollPane.setViewportView(textArea);
 		
 		JScrollPane scrollPane_1 = new JScrollPane();
 		scrollPane_1.setBounds(34, 274, 534, 127);
-		frame.getContentPane().add(scrollPane_1);
+		contentPane.add(scrollPane_1);
 		
 		JTextArea textArea_1 = new JTextArea();
 		scrollPane_1.setViewportView(textArea_1);
 		
 		JButton btnNewButton = new JButton("Save Map");
+		btnNewButton.setBounds(34, 450, 89, 23);
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				try {
@@ -104,15 +92,14 @@ public class RGGUI {
 				}
 			}
 		});
-		btnNewButton.setBounds(34, 450, 89, 23);
-		frame.getContentPane().add(btnNewButton);
+		contentPane.add(btnNewButton);
 		
 		JLabel lblExampleContinent = new JLabel("Example: (North America=5) ");
 		lblExampleContinent.setBounds(34, 194, 212, 14);
-		frame.getContentPane().add(lblExampleContinent);
+		contentPane.add(lblExampleContinent);
 		
 		JMenuBar menuBar = new JMenuBar();
-		frame.setJMenuBar(menuBar);
+		setJMenuBar(menuBar);
 		
 		JMenu mnMap = new JMenu("Map Editor");
 		menuBar.add(mnMap);
@@ -151,7 +138,7 @@ public class RGGUI {
 					StringBuilder content=file.getContent("[Territories]");
 					game.createGraph(content);
 					RGPlayersFrame playersFrame=new RGPlayersFrame(file, game);
-					playersFrame.setVisible(true);
+					playersFrame.setVisible(true);	
 				} catch (FileNotFoundException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
