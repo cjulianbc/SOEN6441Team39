@@ -3,10 +3,14 @@ package com.concordia.soen6441project;
 import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.BufferedWriter;
+import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileWriter;
 import java.io.IOException;
 
 import javax.swing.JButton;
+import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JMenu;
@@ -21,7 +25,8 @@ public class RGMapEditorFrame extends JFrame {
 
 	private JPanel contentPane;
 	RGFile file=new RGFile();
-	RGGame game=new RGGame(); 
+	RGGame game=new RGGame();
+	private JFileChooser fileChooser=new JFileChooser();
 
 	/**
 	 * Launch the application.
@@ -84,8 +89,28 @@ public class RGMapEditorFrame extends JFrame {
 		btnNewButton.setBounds(34, 450, 89, 23);
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				//textArea_1.write(out);
 				try {
-					file.saveFile(textArea.getText(),textArea_1.getText());
+				if(file.validateMap(textArea.getText(), textArea_1.getText())) {
+				
+					if(fileChooser.showSaveDialog(null)==JFileChooser.APPROVE_OPTION)
+					{	
+						File filename=fileChooser.getSelectedFile();
+						//FileWriter fileWriter = new FileWriter(file);
+					   // PrintWriter printWriter = new PrintWriter(fileWriter);
+						BufferedWriter outFile = new BufferedWriter(new FileWriter(filename));
+						outFile.write("[Continents]");
+						//outFile.write("\n");
+						outFile.newLine();
+						textArea.write(outFile);
+						outFile.newLine();
+						outFile.write("[Territories]");
+						outFile.newLine();
+						textArea_1.write(outFile);
+						outFile.close();
+					}
+				}
+					//file.saveFile(textArea.getText(),textArea_1.getText());
 				} catch (IOException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
@@ -97,6 +122,15 @@ public class RGMapEditorFrame extends JFrame {
 		JLabel lblExampleContinent = new JLabel("Example: (North America=5) ");
 		lblExampleContinent.setBounds(34, 194, 212, 14);
 		contentPane.add(lblExampleContinent);
+		
+		JButton btnValidate = new JButton("Validate");
+		btnValidate.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				file.validateMap(textArea.getText(),textArea_1.getText());
+			}
+		});
+		btnValidate.setBounds(132, 449, 97, 25);
+		contentPane.add(btnValidate);
 		
 		JMenuBar menuBar = new JMenuBar();
 		setJMenuBar(menuBar);
@@ -150,5 +184,4 @@ public class RGMapEditorFrame extends JFrame {
 		JMenu mnExit = new JMenu("Exit");
 		menuBar.add(mnExit);
 	}
-	
 }
