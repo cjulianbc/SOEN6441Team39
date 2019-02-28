@@ -192,5 +192,31 @@ public class RGGame {
 		return currentPhase;		
 	}
 	
+	ArrayList<String> getCurrentPlayerCountries(String player)
+	{
+		ArrayList<String> currentPlayerCountries=new ArrayList<String>();
+		ArrayList<String> vertex = countryItems.getVertex();
+		for(int k=0;k<vertex.size();k++)
+		{
+			ArrayList<String> edges = countryItems.getEdges(vertex.get(k));
+			if(edges.get(3)==player)
+			{
+				currentPlayerCountries.add(vertex.get(k));
+			}
+		}
+		return currentPlayerCountries;
+	}
+	
+	void setNumberOfArmies(int numberOfArmiesToAdd, String vertex)
+	{
+		ArrayList<String> edges = countryItems.getEdges(vertex);
+		String finalNumberOfArmiesToAdd=String.valueOf(Integer.valueOf(edges.get(4))+numberOfArmiesToAdd);
+		edges.set(4, finalNumberOfArmiesToAdd);
+		countryItems.setEdge(vertex, edges);
+		edges = countryItems.getEdges(vertex);
+		System.out.println(edges);
+	}
+	
 
+	
 }

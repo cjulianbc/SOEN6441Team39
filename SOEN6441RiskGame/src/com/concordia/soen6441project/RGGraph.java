@@ -18,6 +18,10 @@ public class RGGraph {
 		(adjVertices.get(vertex1)).add(vertex2);
 	}
 	
+	public void setEdge(String vertex, ArrayList<String> edges){
+		adjVertices.replace(vertex,edges);
+	}
+	
 	public ArrayList<String> getEdges(String vertex){
 		return new ArrayList<String>(adjVertices.get(vertex));
 	}

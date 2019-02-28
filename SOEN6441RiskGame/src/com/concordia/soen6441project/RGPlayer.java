@@ -86,4 +86,83 @@ public class RGPlayer{
 		ArrayList<String> edgeList = playerItems.getEdges(vertex);
 		return edgeList.get(1);
 	}
+	
+	void allocateArmies()
+	{
+		int numberOfArmiesSetup;
+		ArrayList<String> vertex = playerItems.getVertex();
+		numberOfArmiesSetup=vertex.size();
+		numberOfArmiesSetup=49-(numberOfArmiesSetup*5);
+		for(int k=0;k<vertex.size();k++)
+		{
+			playerItems.addEdge(vertex.get(k), String.valueOf(numberOfArmiesSetup));
+		}
+	}
+	
+	String getPlayerTurn()
+	{
+		ArrayList<String> vertex = playerItems.getVertex();
+		ArrayList<String> edgeList;
+		String currentPlayerTurn="";
+		for(int k=0;k<vertex.size();k++)
+		{
+			edgeList = playerItems.getEdges(vertex.get(k));
+			if(edgeList.get(0)=="1")
+			{
+				currentPlayerTurn=vertex.get(k);
+			}
+		}
+		return currentPlayerTurn;
+	}
+	
+	String getCurrentArmies(String vertex)
+	{
+		ArrayList<String> edgeList = playerItems.getEdges(vertex);
+		return edgeList.get(2);
+	}
+	
+	void setNumberOfArmiesSetup(int numberOfArmiesToAdd, String vertex)
+	{
+		ArrayList<String> edges = playerItems.getEdges(vertex);
+		String finalNumberOfArmiesToAdd=String.valueOf(Integer.valueOf(edges.get(2))+numberOfArmiesToAdd);
+		edges.set(2, finalNumberOfArmiesToAdd);
+		playerItems.setEdge(vertex, edges);
+		edges = playerItems.getEdges(vertex);
+		System.out.println(edges);
+	}
+	void setNextTurn()
+	{
+		ArrayList<String> vertex = playerItems.getVertex();
+		for(int k=0;k<vertex.size();k++)
+		{
+			ArrayList<String> edges = playerItems.getEdges(vertex.get(k));
+			if(edges.get(0)=="1")
+			{
+				edges.set(0, "0");
+				playerItems.setEdge(vertex.get(k), edges);
+				k++;
+				if(k==vertex.size())
+				{
+					k=0;
+				}
+				edges = playerItems.getEdges(vertex.get(k));
+				edges.set(0, "1");
+				playerItems.setEdge(vertex.get(k), edges);
+				k=vertex.size();
+			}
+		}
+	}
+	
+	int getSumArmiesSetup() 
+	{
+		int sumArmiesSetup=0;
+		ArrayList<String> vertex = playerItems.getVertex();
+		for(int k=0;k<vertex.size();k++)
+		{
+			ArrayList<String> edges = playerItems.getEdges(vertex.get(k));
+			sumArmiesSetup=sumArmiesSetup+Integer.valueOf(edges.get(2));
+		}
+		return sumArmiesSetup;
+	}
+		
 }
