@@ -16,6 +16,15 @@ import javax.swing.JButton;
 import javax.swing.JTextField;
 import javax.swing.JTextArea;
 import javax.swing.JComboBox;
+import java.awt.event.MouseMotionAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.FocusAdapter;
+import java.awt.event.FocusEvent;
+import java.awt.event.ItemListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 
 public class Test extends JFrame {
 
@@ -58,6 +67,13 @@ public class Test extends JFrame {
 		right.add(lblJulian);
 		
 		JTextArea textArea = new JTextArea();
+		textArea.addMouseMotionListener(new MouseMotionAdapter() {
+			@Override
+			public void mouseMoved(MouseEvent e) {
+				lblJulian.setText("Current: Julian");
+				//right.add(lblJulian);
+			}
+		});
 		textArea.setBounds(188, 97, 34, 33);
 		right.add(textArea);
 		
@@ -74,6 +90,13 @@ public class Test extends JFrame {
 		right.add(lblCountry);
 		
 		JComboBox comboBox = new JComboBox();
+		comboBox.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				lblJulian.setText("Current: Amit");
+			}
+		});
+		comboBox.addItem("Amit");
+
 		comboBox.setBounds(65, 214, 157, 23);
 		right.add(comboBox);
 		

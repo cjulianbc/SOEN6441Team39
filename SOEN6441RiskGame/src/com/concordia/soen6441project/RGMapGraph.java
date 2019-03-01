@@ -1,6 +1,7 @@
 package com.concordia.soen6441project;
 
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.util.ArrayList;
@@ -43,8 +44,15 @@ public class RGMapGraph extends JComponent {
 			color=player.getPlayerColor(owner);			
 			
 			JTextArea txtArea = new JTextArea();
+			txtArea.setFont(new Font("Arial", 0, 13));
 			txtArea.setText(armies);
-			txtArea.setBounds(Integer.valueOf(xCoord), Integer.valueOf(yCoord), 18, 18);	
+			txtArea.setBounds(Integer.valueOf(xCoord), Integer.valueOf(yCoord), 15, 15);	
+			
+			JTextArea txtArea_1 = new JTextArea();
+			txtArea_1.setFont(new Font("Arial", 0, 10));
+			txtArea_1.setText(vertex.get(k));
+			txtArea_1.setOpaque(false);
+			txtArea_1.setBounds(Integer.valueOf(xCoord), Integer.valueOf(yCoord)+15, 90, 13);
 			
 			switch (color) {
 			case "green":
@@ -69,6 +77,7 @@ public class RGMapGraph extends JComponent {
 			    break;
 			}
 			add(txtArea);
+			add(txtArea_1);
 			
 			ArrayList<String> edges = game.getEdges(vertex.get(k));
 			for(int j=0;j<edges.size();j++)
