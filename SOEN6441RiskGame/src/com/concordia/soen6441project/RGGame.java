@@ -217,6 +217,21 @@ public class RGGame {
 		System.out.println(edges);
 	}
 	
+	int getCurrentPlayerNumberOfCountries(String player)
+	{
+		int currentPlayerNumberOfCountries=0;
+		ArrayList<String> vertex = countryItems.getVertex();
+		for(int k=0;k<vertex.size();k++)
+		{
+			ArrayList<String> edges = countryItems.getEdges(vertex.get(k));
+			if(edges.get(3)==player)
+			{
+				currentPlayerNumberOfCountries++;
+			}
+		}
+		return currentPlayerNumberOfCountries;
+	}
+	
 
 	
 }

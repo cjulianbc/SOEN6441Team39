@@ -23,10 +23,6 @@ public class RGGameFrame extends JFrame{
 	JPanel left = new JPanel(new GridLayout(1, 1));
     JFrame frame = new JFrame();
 	JLayeredPane layeredPane = new JLayeredPane();
-	JPanel setupFrame = new JPanel();
-	JPanel reinforcementFrame = new JPanel();
-	JPanel attackFrame = new JPanel();
-	JPanel fortificationFrame = new JPanel();
 	RGGame game;
 	RGFile file;
 	RGPlayer player;
@@ -51,33 +47,24 @@ public class RGGameFrame extends JFrame{
         right.setBorder(new LineBorder(Color.white, 10));
         right.setLayout(null);
 		
-		right.add(layeredPane);
-		layeredPane.add(setupFrame);
-		layeredPane.add(reinforcementFrame);
-		layeredPane.add(attackFrame);
-		layeredPane.add(fortificationFrame);
-		
 		String phase=game.getPhase();
-		if(phase=="Setup")
-			setUpPhase();
+		setUpPhase();
         frame.setVisible(true);
 	}
 	
 	void setUpPhase()
 	{
 		right.removeAll();
-		right.add(setupFrame);
 		right.repaint();
 		right.revalidate();
-		
-		
 		
 		JLabel lblSetupPhase = new JLabel("SETUP PHASE");
 		lblSetupPhase.setBounds(148, 41, 117, 33);
 		right.add(lblSetupPhase);
 		
-		player.allocateArmies();
+		player.allocateArmies(game);
 		currentPlayerName=player.getPlayerTurn();
+		
 		JLabel lblJulian = new JLabel("Current: "+currentPlayerName);
 		lblJulian.setBounds(65, 107, 113, 23);
 		right.add(lblJulian);
@@ -140,49 +127,58 @@ public class RGGameFrame extends JFrame{
 				player.setNumberOfArmiesSetup(-1, currentPlayerName);
 				left.validate();
 				left.repaint();
-					
-				player.setNextTurn();	
 				
-				currentPlayerName=player.getPlayerTurn();
-				lblJulian.setText("Current: "+currentPlayerName);
-					
-				String color=player.getPlayerColor(currentPlayerName);
-				switch (color) {
-				case "green":
-					textArea.setBackground(Color.green);
-				    break;
-				case "magenta":
-				    textArea.setBackground(Color.magenta);
-					break;
-				case "cyan":
-					textArea.setBackground(Color.cyan); 
-					break;
-				case "pink":
-					textArea.setBackground(Color.pink);
-					break;
-				case "orange":
-					textArea.setBackground(Color.orange); 
-					break;
-				case "blue":
-					textArea.setBackground(Color.blue); 
-					break;
-				default:
-					break;
-				}
-					
-				String currentArmies=player.getCurrentArmies(currentPlayerName);
-				textArea_1.setText(currentArmies);
-					
-				ArrayList<String> currentPlayerCountries=game.getCurrentPlayerCountries(currentPlayerName);
-				comboBox.removeAllItems();
-				for(int k=0;k<currentPlayerCountries.size();k++)
-				{
-					comboBox.addItem(currentPlayerCountries.get(k));
-				}
+				player.setNextTurn();	
 				
 				int sumArmiesSetup=player.getSumArmiesSetup();
 				if(sumArmiesSetup==0)
 					reinforcementPhase();
+				else
+				{
+					currentPlayerName=player.getPlayerTurn();
+					String currentArmies=player.getCurrentArmies(currentPlayerName);
+					while (currentArmies.equals("0")==true)
+					{
+						player.setNextTurn();	
+						currentPlayerName=player.getPlayerTurn();
+						currentArmies=player.getCurrentArmies(currentPlayerName);
+					}
+				
+					lblJulian.setText("Current: "+currentPlayerName);
+						
+					String color=player.getPlayerColor(currentPlayerName);
+					switch (color) {
+					case "green":
+						textArea.setBackground(Color.green);
+					    break;
+					case "magenta":
+					    textArea.setBackground(Color.magenta);
+						break;
+					case "cyan":
+						textArea.setBackground(Color.cyan); 
+						break;
+					case "pink":
+						textArea.setBackground(Color.pink);
+						break;
+					case "orange":
+						textArea.setBackground(Color.orange); 
+						break;
+					case "blue":
+						textArea.setBackground(Color.blue); 
+						break;
+					default:
+						break;
+					}
+					
+					textArea_1.setText(currentArmies);
+						
+					ArrayList<String> currentPlayerCountries=game.getCurrentPlayerCountries(currentPlayerName);
+					comboBox.removeAllItems();
+					for(int k=0;k<currentPlayerCountries.size();k++)
+					{
+						comboBox.addItem(currentPlayerCountries.get(k));
+					}
+				}
 			}
 		});
 		btnPlace.setBounds(232, 214, 73, 23);
@@ -193,7 +189,6 @@ public class RGGameFrame extends JFrame{
 	void reinforcementPhase()
 	{
 		right.removeAll();
-		right.add(reinforcementFrame);
 		right.repaint();
 		right.revalidate();
 		

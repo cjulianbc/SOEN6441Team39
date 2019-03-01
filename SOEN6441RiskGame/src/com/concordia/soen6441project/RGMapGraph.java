@@ -39,7 +39,6 @@ public class RGMapGraph extends JComponent {
 			xCoord=this.game.getXCoord(vertex.get(k));
 			yCoord=this.game.getYCoord(vertex.get(k));
 			armies=this.game.getArmies(vertex.get(k));
-			System.out.println(armies);
 			owner=this.game.getOwner(vertex.get(k));
 			color=player.getPlayerColor(owner);			
 			

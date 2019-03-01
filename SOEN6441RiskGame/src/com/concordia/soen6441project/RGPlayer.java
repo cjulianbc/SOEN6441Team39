@@ -87,15 +87,16 @@ public class RGPlayer{
 		return edgeList.get(1);
 	}
 	
-	void allocateArmies()
+	void allocateArmies(RGGame game)
 	{
-		int numberOfArmiesSetup;
+		int numberOfArmiesSetup, numberOfArmiesAlreadyPlaced;
 		ArrayList<String> vertex = playerItems.getVertex();
 		numberOfArmiesSetup=vertex.size();
-		numberOfArmiesSetup=49-(numberOfArmiesSetup*5);
+		numberOfArmiesSetup=50-(numberOfArmiesSetup*5);
 		for(int k=0;k<vertex.size();k++)
 		{
-			playerItems.addEdge(vertex.get(k), String.valueOf(numberOfArmiesSetup));
+			numberOfArmiesAlreadyPlaced=game.getCurrentPlayerNumberOfCountries(vertex.get(k));
+			playerItems.addEdge(vertex.get(k), String.valueOf(numberOfArmiesSetup-numberOfArmiesAlreadyPlaced));
 		}
 	}
 	
