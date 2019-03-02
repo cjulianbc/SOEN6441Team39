@@ -89,18 +89,16 @@ public class RGMapEditorFrame extends JFrame {
 		btnNewButton.setBounds(34, 450, 89, 23);
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				//textArea_1.write(out);
+				
 				try {
 				if(file.validateMap(textArea.getText(), textArea_1.getText())) {
 				
 					if(fileChooser.showSaveDialog(null)==JFileChooser.APPROVE_OPTION)
 					{	
 						File filename=fileChooser.getSelectedFile();
-						//FileWriter fileWriter = new FileWriter(file);
-					   // PrintWriter printWriter = new PrintWriter(fileWriter);
 						BufferedWriter outFile = new BufferedWriter(new FileWriter(filename));
 						outFile.write("[Continents]");
-						//outFile.write("\n");
+						
 						outFile.newLine();
 						textArea.write(outFile);
 						outFile.newLine();
@@ -110,7 +108,6 @@ public class RGMapEditorFrame extends JFrame {
 						outFile.close();
 					}
 				}
-					//file.saveFile(textArea.getText(),textArea_1.getText());
 				} catch (IOException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();

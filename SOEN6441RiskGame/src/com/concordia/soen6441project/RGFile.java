@@ -23,23 +23,6 @@ public class RGFile {
 			file=fileChooser.getSelectedFile();
 		}
 	}
-	
-	void saveFile(String continents, String countries) throws IOException
-	{
-		if(fileChooser.showSaveDialog(null)==JFileChooser.APPROVE_OPTION)
-		{	
-			file=fileChooser.getSelectedFile();
-			//FileWriter fileWriter = new FileWriter(file);
-		   // PrintWriter printWriter = new PrintWriter(fileWriter);
-			BufferedWriter outFile = new BufferedWriter(new FileWriter(file));
-			outFile.write("[Continents]");
-			//outFile.write(continents);
-			outFile.write("[Territories]\n");
-			outFile.write(countries);
-			outFile.close();
-		}
-		
-	}
 
 	StringBuilder getContent(String label) throws FileNotFoundException
 	{
@@ -79,15 +62,23 @@ public class RGFile {
 	}
 	
 	boolean validateMap(String continents, String countries) {
-		
+		if(continents.equals("")) {
+			System.out.println("Please enter continent details");
+			return false;
+		}
+		if(countries.equals("")) {
+			System.out.println("Please enter country details");
+			return false;
+		}
 		String[] continentsArray=continents.split("\n");
-		String[] contriesArray=countries.split("\n");
+		String[] countriesArray=countries.split("\n");
 		ArrayList<String> continentsList= new ArrayList<String>();
 		ArrayList<String> continentsListValidate= new ArrayList<String>();
 		ArrayList<String> countriesList= new ArrayList<String>();
-		HashMap<String,ArrayList<String>> AdjacencyMap= new HashMap<String,ArrayList<String>>();
+		HashMap<String,ArrayList<String>> adjacencyMap= new HashMap<String,ArrayList<String>>();
 		boolean flag=false;
 		
+		try {
 		for(int i=0;i<continentsArray.length;i++) {
 			if(continentsArray[i].split("=").length!=2) {
 				System.out.println("The file is incorrect. Please check '=' in the continents");
@@ -95,25 +86,52 @@ public class RGFile {
 				return flag;
 			}
 			else {
-				System.out.println(continentsArray[i].split("=")[0]);
+				Integer test=Integer.parseInt(continentsArray[i].split("=")[1]);
 				continentsList.add(continentsArray[i].split("=")[0]);
 			}
 		}
-		
-		for (String country : contriesArray) {
+		}
+		catch (NumberFormatException s) {
+			System.out.println("Bonus Army should be number");
+			return false;
+		}
+		for (String country : countriesArray) {
 			if(country.equals(""))
 				continue;
 			ArrayList<String> adjancies=new ArrayList<String>();
 			String[] countryDetails=country.split(",");
+			if(countryDetails.length<5) {
+				System.out.println("Please enter country details in correct format");
+				return false;
+			}
 			countriesList.add(countryDetails[0]);
-			System.out.println(countryDetails[0]);
 			if(!continentsListValidate.contains(countryDetails[3]))
 				continentsListValidate.add(countryDetails[3]);
-			AdjacencyMap.put(countryDetails[0],adjancies);
+			adjacencyMap.put(countryDetails[0],adjancies);
 			for(int i=4;i<countryDetails.length;i++) {
-				AdjacencyMap.get(countryDetails[0]).add(countryDetails[i]);
+				adjacencyMap.get(countryDetails[0]).add(countryDetails[i]);
 			}
 			
+		}
+		for(int i=0;i<countriesArray.length-1;i++) {
+			String [] countriesDetails=countriesArray[i].split(",");
+			try {
+				Integer test=Integer.parseInt(countriesDetails[1]);
+				Integer test2=Integer.parseInt(countriesDetails[2]);
+						for(int j=i+1;j<countriesArray.length;j++) {
+							String [] countriesDetailsValidate=countriesArray[j].split(",");
+							Integer test3=Integer.parseInt(countriesDetailsValidate[1]);
+							Integer test4=Integer.parseInt(countriesDetailsValidate[2]);
+							if(countriesDetails[1].equals(countriesDetailsValidate[1]) && countriesDetails[2].equals(countriesDetailsValidate[2])) {
+								System.out.println("Two countries cannot have the same co-ordiantes");
+								return false;
+							}
+						}
+			}
+			catch(NumberFormatException s) {
+				System.out.println("Coordinates should be numbers");
+				return false;
+			}
 		}
 		
 		if(continentsList.size()!=continentsListValidate.size()) {
@@ -127,8 +145,8 @@ public class RGFile {
 			}
 		}
 		
-		for (String countrykey : AdjacencyMap.keySet()) {
-			ArrayList<String> adjacencies=AdjacencyMap.get(countrykey);
+		for (String countrykey : adjacencyMap.keySet()) {
+			ArrayList<String> adjacencies=adjacencyMap.get(countrykey);
 			for (String country : adjacencies) {
 				if(!countriesList.contains(country)) {
 					System.out.println("The country in the adjacency list is not created");
@@ -136,11 +154,10 @@ public class RGFile {
 				}
 			}
 		}
-		for (String countrykey : AdjacencyMap.keySet()) {
-			ArrayList<String> adjacencies=AdjacencyMap.get(countrykey);
+		for (String countrykey : adjacencyMap.keySet()) {
+			ArrayList<String> adjacencies=adjacencyMap.get(countrykey);
 			for (String adjacentCountry : adjacencies) {
-				if(!AdjacencyMap.get(adjacentCountry).contains(countrykey)) {
-					System.out.println(adjacentCountry+" "+countrykey);
+				if(!adjacencyMap.get(adjacentCountry).contains(countrykey)) {
 					System.out.println("The Connections should be both ways for countries");
 					return false;
 				}
@@ -148,7 +165,7 @@ public class RGFile {
 		}
 		
 		
-		flag=isConnected(AdjacencyMap, countriesList);
+		flag=isConnected(adjacencyMap, countriesList);
 		
 		
 		
@@ -156,11 +173,11 @@ public class RGFile {
 		
 	}
 	
-	boolean isConnected(HashMap<String,ArrayList<String>> AdjacencyMap,ArrayList<String> countries){
+	boolean isConnected(HashMap<String,ArrayList<String>> adjacencyMap,ArrayList<String> countries){
 		ArrayList<String> visited=new ArrayList<String>();
 		int flag=0;
 		if(!visited.contains(countries.get(0))) {
-			DFS(countries.get(0),visited,AdjacencyMap);
+			DFS(countries.get(0),visited,adjacencyMap);
 		}
 		for (String country : countries) {
 			if(visited.contains(country)) {
@@ -183,11 +200,11 @@ public class RGFile {
 		
 	}
 	
-	void DFS(String country,ArrayList<String> visited,HashMap<String,ArrayList<String>> AdjacencyMap) {
+	void DFS(String country,ArrayList<String> visited,HashMap<String,ArrayList<String>> adjacencyMap) {
 		visited.add(country);
-		for (String adjacent : AdjacencyMap.get(country)) {
+		for (String adjacent : adjacencyMap.get(country)) {
 			if(!visited.contains(adjacent)) {
-				DFS(adjacent,visited,AdjacencyMap);
+				DFS(adjacent,visited,adjacencyMap);
 			}
 		}
 	}
