@@ -1,4 +1,4 @@
-package com.concordia.soen6441project;
+package com.concordia.soen6441riskgame;
 
 import static org.junit.jupiter.api.Assertions.*;
 
