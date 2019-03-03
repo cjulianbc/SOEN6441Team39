@@ -160,13 +160,8 @@ public class RGFile {
 			}
 		}
 		
-		
 		flag=isConnected(adjacencyMap, countriesList);
-		
-		
-		
 		return flag;
-		
 	}
 	
 	boolean isConnected(HashMap<String,ArrayList<String>> adjacencyMap,ArrayList<String> countries){
