@@ -1,4 +1,4 @@
-package com.concordia.soen6441project;
+package com.concordia.soen6441riskgame;
 
 import java.awt.Color;
 import java.awt.Font;
@@ -10,9 +10,9 @@ import javax.swing.JComponent;
 import javax.swing.JTextArea;
 
 public class RGMapGraph extends JComponent {
-	RGFile file;
-	RGGame game;
-	RGPlayer player;
+	private RGFile file;
+	private RGGame game;
+	private RGPlayer player;
 	
 	RGMapGraph(RGFile file, RGGame game, RGPlayer player)
 	{

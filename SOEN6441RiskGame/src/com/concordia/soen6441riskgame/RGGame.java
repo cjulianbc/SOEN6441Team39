@@ -1,13 +1,13 @@
-package com.concordia.soen6441project;
+package com.concordia.soen6441riskgame;
 
 import java.util.ArrayList;
 import java.util.Random;
 import java.util.Scanner;
 
 public class RGGame {
-	RGGraph graph=new RGGraph();
-	RGGraph countryItems=new RGGraph();
-	RGGraph gameItems=new RGGraph();
+	private RGGraph graph=new RGGraph();
+	private RGGraph countryItems=new RGGraph();
+	private RGGraph gameItems=new RGGraph();
 	
 	RGGame()
 	{

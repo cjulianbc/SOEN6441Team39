@@ -1,4 +1,4 @@
-package com.concordia.soen6441project;
+package com.concordia.soen6441riskgame;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -19,15 +19,15 @@ import javax.swing.border.LineBorder;
 
 public class RGGameFrame extends JFrame{
 	
-	JPanel right= new JPanel(new GridLayout(1, 1));
-	JPanel left = new JPanel(new GridLayout(1, 1));
-    JFrame frame = new JFrame();
-	JLayeredPane layeredPane = new JLayeredPane();
-	RGGame game;
-	RGFile file;
-	RGPlayer player;
-	RGMapGraph mapGraph;
-	String currentPlayerName;
+	private JPanel right= new JPanel(new GridLayout(1, 1));
+	private JPanel left = new JPanel(new GridLayout(1, 1));
+	private JFrame frame = new JFrame();
+	private JLayeredPane layeredPane = new JLayeredPane();
+	private RGGame game;
+	private RGFile file;
+	private RGPlayer player;
+	private RGMapGraph mapGraph;
+	private String currentPlayerName;
 
 	RGGameFrame(RGFile file, RGGame game, RGPlayer player)
 	{

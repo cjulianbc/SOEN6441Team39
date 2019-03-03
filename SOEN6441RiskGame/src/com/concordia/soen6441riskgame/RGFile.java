@@ -1,4 +1,4 @@
-package com.concordia.soen6441project;
+package com.concordia.soen6441riskgame;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -110,7 +110,8 @@ public class RGFile {
 			if(!continentsListValidate.contains(countryDetails[3]))
 				continentsListValidate.add(countryDetails[3]);
 			AdjacencyMap.put(countryDetails[0],adjancies);
-			for(int i=4;i<countryDetails.length;i++) {
+			for(int i=4;i<countryDetails.length;i++) 
+			{
 				AdjacencyMap.get(countryDetails[0]).add(countryDetails[i]);
 			}
 			
@@ -120,6 +121,7 @@ public class RGFile {
 			System.out.println("The number of continents is invalid");
 			return false;
 		}
+		
 		for (String continent : continentsList) {
 			if(!continentsListValidate.contains(continent)) {
 				System.out.println("The names of continents is invalid!! Please check");

@@ -1,4 +1,4 @@
-package com.concordia.soen6441project;
+package com.concordia.soen6441riskgame;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -14,19 +14,19 @@ public class RGGraph {
 		adjVertices.put(vertex, edges);
 	}
 	
-	public void addEdge(String vertex1, String vertex2){
+	void addEdge(String vertex1, String vertex2){
 		(adjVertices.get(vertex1)).add(vertex2);
 	}
 	
-	public void setEdge(String vertex, ArrayList<String> edges){
+	void setEdge(String vertex, ArrayList<String> edges){
 		adjVertices.replace(vertex,edges);
 	}
 	
-	public ArrayList<String> getEdges(String vertex){
+	ArrayList<String> getEdges(String vertex){
 		return new ArrayList<String>(adjVertices.get(vertex));
 	}
 	
-	public ArrayList<String> getVertex(){
+	ArrayList<String> getVertex(){
 		return new ArrayList<String>(adjVertices.keySet());
 	}
 

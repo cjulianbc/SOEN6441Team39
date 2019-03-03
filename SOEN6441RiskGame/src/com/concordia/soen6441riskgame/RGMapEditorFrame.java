@@ -1,4 +1,4 @@
-package com.concordia.soen6441project;
+package com.concordia.soen6441riskgame;
 
 import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
@@ -85,9 +85,9 @@ public class RGMapEditorFrame extends JFrame {
 		JTextArea textArea_1 = new JTextArea();
 		scrollPane_1.setViewportView(textArea_1);
 		
-		JButton btnNewButton = new JButton("Save Map");
-		btnNewButton.setBounds(34, 450, 89, 23);
-		btnNewButton.addActionListener(new ActionListener() {
+		JButton btnSaveMap = new JButton("Save Map");
+		btnSaveMap.setBounds(34, 450, 89, 23);
+		btnSaveMap.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				//textArea_1.write(out);
 				try {
@@ -117,7 +117,7 @@ public class RGMapEditorFrame extends JFrame {
 				}
 			}
 		});
-		contentPane.add(btnNewButton);
+		contentPane.add(btnSaveMap);
 		
 		JLabel lblExampleContinent = new JLabel("Example: (North America=5) ");
 		lblExampleContinent.setBounds(34, 194, 212, 14);

@@ -1,12 +1,12 @@
-package com.concordia.soen6441project;
+package com.concordia.soen6441riskgame;
 
 import java.util.ArrayList;
 
 public class RGPlayer{
 	
-	ArrayList<String> setOfPlayers = new ArrayList<String>();
-	RGGraph playerItems=new RGGraph();
-	ArrayList<String> colors = new ArrayList<String>();
+	private ArrayList<String> setOfPlayers = new ArrayList<String>();
+	private RGGraph playerItems=new RGGraph();
+	private ArrayList<String> colors = new ArrayList<String>();
 	
 	RGPlayer()
 	{

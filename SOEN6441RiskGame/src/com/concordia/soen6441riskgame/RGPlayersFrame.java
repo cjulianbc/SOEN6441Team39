@@ -1,4 +1,4 @@
-package com.concordia.soen6441project;
+package com.concordia.soen6441riskgame;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -12,9 +12,9 @@ import java.awt.event.ActionEvent;
 public class RGPlayersFrame extends JFrame {
 
 	private JPanel contentPane;
-	RGGame game;
-	RGFile file;
-	RGPlayer players=new RGPlayer();
+	private RGGame game;
+	private RGFile file;
+	private RGPlayer players=new RGPlayer();
 
 	/**
 	 * Launch the application.
