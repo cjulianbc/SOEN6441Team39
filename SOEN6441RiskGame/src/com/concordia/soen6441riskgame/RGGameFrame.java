@@ -22,7 +22,6 @@ public class RGGameFrame extends JFrame{
 	private JPanel right= new JPanel(new GridLayout(1, 1));
 	private JPanel left = new JPanel(new GridLayout(1, 1));
 	private JFrame frame = new JFrame();
-	private JLayeredPane layeredPane = new JLayeredPane();
 	private RGGame game;
 	private RGFile file;
 	private RGPlayer player;
