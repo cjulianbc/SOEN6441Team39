@@ -4,11 +4,35 @@ import java.util.ArrayList;
 import java.util.Random;
 import java.util.Scanner;
 
+/**
+ * Class to store and control the information of a game. Only one game is possible 
+ * in runtime
+ * 
+ * 
+ * @author Julian Beltran
+ * @version 1.0
+ * @since   1.0
+ *
+ */
 public class RGGame {
 	private RGGraph graph=new RGGraph();
 	private RGGraph countryItems=new RGGraph();
 	private RGGraph continentItems=new RGGraph();
 	
+	/**
+	 * This method is used to create two data structures: 
+	 * 
+	 * 1) Map Data Structure: This is a HashMap data structure that contains all the information related to the countries and their 
+     *    adjacencies with other countries. The key value is the name of a country (String), and the value of the key is an ArrayList (String) that 
+     *    contains all the adjacent countries.
+     * 2) Countries Data Structure: This is a HashMap data structure that contains all the information associated to the current game. 
+     *    The key value is the name of a country (String), and the value of the key is an ArrayList (String) that contains all the information 
+     *    of the county: Coordinate X in the map, coordinate y in the map, continent, owner, and number of armies available.
+     *    
+     *    
+     * @param content Complete content of the tag [Territories] 
+     *   
+	 */
 	void createGraph(StringBuilder content)
 	{
 		Scanner buffer = new Scanner(content.toString());
@@ -85,6 +109,17 @@ public class RGGame {
 		buffer.close();
 	}
 	
+	/**
+	 * This method is used to create one data structures: 
+	 * 
+	 * 1) Continents Data Structure: This is a HashMap data structure that contains all the information associated to the continents of the map. 
+	 *    The key value is the name of a continent (String), and the value of the key is an ArrayList (String) that contains all the information of 
+	 *    the continent: continent bonus army, and all the countries that belong to that continent.
+     *    
+     *    
+     * @param content Complete content of the tag [Continents] 
+     *   
+	 */
 	void createContinents(StringBuilder content)
 	{
 		Scanner buffer = new Scanner(content.toString());
@@ -135,6 +170,14 @@ public class RGGame {
 		
 	}
 	
+	
+	/**
+	 * This method is used to assign each player a set of random countries 
+	 * 
+     *    
+     * @param players List of Players (names) 
+     *   
+	 */
 	void assignCountries(ArrayList<String> players)
 	{
 		ArrayList<String> vertex = graph.getVertex();
@@ -176,42 +219,96 @@ public class RGGame {
 		}	
 	}
 	
+	/**
+	 * This method is used to obtain the X Coordinate of a country 
+	 * 
+     *    
+     * @param vertex Name of the country 
+     * @return X coordinate of a given country
+     *   
+	 */
 	String getXCoord(String vertex)
 	{
 		ArrayList<String> edgeList = countryItems.getEdges(vertex);
 		return edgeList.get(0);
 	}
 	
+	/**
+	 * This method is used to obtain the Y Coordinate of a country 
+	 * 
+     *    
+     * @param vertex Name of the country 
+     * @return Y coordinate of a given country 
+     *   
+	 */
 	String getYCoord(String vertex)
 	{
 		ArrayList<String> edgeList = countryItems.getEdges(vertex);
 		return edgeList.get(1);
 	}
 	
+	/**
+	 * This method is used to obtain the owner of a country 
+	 * 
+     *    
+     * @param vertex Name of the country 
+     * @return Owner of a country 
+     *   
+	 */
 	String getOwner(String vertex)
 	{
 		ArrayList<String> edgeList = countryItems.getEdges(vertex);
 		return edgeList.get(3);
 	}
 	
+	/**
+	 * This method is used to obtain the current number of armies placed in a country  
+	 * 
+     *    
+     * @param vertex Name of the country 
+     * @return Number of armies placed in a country 
+     *   
+	 */
 	String getArmies(String vertex)
 	{
 		ArrayList<String> edgeList = countryItems.getEdges(vertex);
 		return edgeList.get(4);
 	}
 	
+	/**
+	 * This method is used to obtain a set of countries of the complete Risk® map  
+	 * 
+	 * @return Set of countries of the complete Risk® map
+     *   
+	 */
 	ArrayList<String> getVertex()
 	{
 		ArrayList<String> vertex = countryItems.getVertex();
 		return vertex;
 	}
 	
+	/**
+	 * This method is used to obtain a set of adjacent countries of a specific country
+	 * 
+     *    
+     * @param vertex Name of the country 
+     * @return Set of adjacent countries of a specific country
+     *   
+	 */
 	ArrayList<String> getEdges(String vertex)
 	{
 		ArrayList<String> edges = graph.getEdges(vertex);
 		return edges;
 	}
 	
+	/**
+	 * This method is used to obtain the list of countries a player owns
+	 * 
+     *    
+     * @param player Name of the player 
+     * @return List of countries a player owns
+     *   
+	 */
 	ArrayList<String> getCurrentPlayerCountries(String player)
 	{
 		ArrayList<String> currentPlayerCountries=new ArrayList<String>();
@@ -227,6 +324,14 @@ public class RGGame {
 		return currentPlayerCountries;
 	}
 	
+	/**
+	 * This method is used to add armies to a specific country
+	 * 
+     *    
+     * @param numberOfArmiesToAdd Number of armies to add
+     * @param vertex Name of the country 
+     *   
+	 */
 	void setNumberOfArmies(int numberOfArmiesToAdd, String vertex)
 	{
 		ArrayList<String> edges = countryItems.getEdges(vertex);
@@ -237,6 +342,14 @@ public class RGGame {
 		System.out.println(edges);
 	}
 	
+	/**
+	 * This method is used to obtain the number of countries a player owns
+	 * 
+     *    
+     * @param player Name of the player 
+     * @return Number of countries a player owns
+     *   
+	 */
 	int getCurrentPlayerNumberOfCountries(String player)
 	{
 		int currentPlayerNumberOfCountries=0;
@@ -252,6 +365,15 @@ public class RGGame {
 		return currentPlayerNumberOfCountries;
 	}
 	
+	/**
+	 * For Reinforcement Phase: This method is used to obtain the number of armies a player has the right to place on his/her countries.
+	 * This number is calculated according to the number of countries a player owns.
+	 * 
+     *    
+     * @param currentPlayerNumberOfCountries Number of countries a player owns 
+     * @return Number of armies a player has the right to place on his/her countries
+     *   
+	 */
 	int getNumberOfArmiesDueTerritories(int currentPlayerNumberOfCountries)
 	{
 		if(currentPlayerNumberOfCountries>=9)
@@ -261,6 +383,15 @@ public class RGGame {
 		return currentPlayerNumberOfCountries;
 	}
 	
+	/**
+	 * For Reinforcement Phase: This method is used to obtain the number of armies a player has the right to place on his/her countries.
+	 * This number is calculated according to the number of continents a player owns.
+	 * 
+     *    
+     * @param currentPlayerCountries List of countries a player owns 
+     * @return Number of armies a player has the right to place on his/her countries
+     *   
+	 */
 	int getNumberOfArmiesDueContinents(ArrayList<String> currentPlayerCountries)
 	{
 		int numberOfArmiesDueContinents=0;
@@ -282,10 +413,13 @@ public class RGGame {
 		return numberOfArmiesDueContinents;
 	}
 
-	/*
-	 * @param   player takes a player name as string 
-	 * @param   country takes a country name as string
-	 * @return all the adjacent player's countries of that SAME player
+	/**
+	 * This method is used to obtain all the adjacent countries of a given country for a given player
+	 * 
+	 * 
+	 * @param   player Name of the player 
+	 * @param   country Name of the country
+	 * @return All the adjacent countries of a given country for a given player
 	 */
 	ArrayList<String> getCurrentPlayerAdjacentCountries(String player, String country)
 	{
@@ -303,7 +437,6 @@ public class RGGame {
 			}
 			
 		}
-		
 		return currentPlayerAdjacentCountries;
 	}
 	
