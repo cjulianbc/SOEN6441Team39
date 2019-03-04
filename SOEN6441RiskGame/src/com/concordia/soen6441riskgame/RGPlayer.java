@@ -18,6 +18,15 @@ public class RGPlayer{
 		colors.add("blue");	
 	}
 	
+	boolean validateNumberOfPLayers(String players)
+	{
+		String[] playersList = players.split(",");
+		if (playersList.length>=2 && playersList.length<=6)
+			return true;
+		return false;
+	}
+	
+			
 	ArrayList<String> setPlayers(String players)
 	{
 		int index1=0;

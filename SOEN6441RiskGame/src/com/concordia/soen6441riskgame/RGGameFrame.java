@@ -321,7 +321,7 @@ public class RGGameFrame extends JFrame{
 				else
 				{
 					armiesLeft=(Integer.valueOf(textArea_1.getText()))-(Integer.valueOf(textArea_2.getText()));
-					JOptionPane.showMessageDialog(null, "Number of armies not valid", "Alert Message", JOptionPane.WARNING_MESSAGE);
+					JOptionPane.showMessageDialog(null, "Invalid number of armies", "Alert Message", JOptionPane.WARNING_MESSAGE);
 				}
 					
 				if(armiesLeft==0)

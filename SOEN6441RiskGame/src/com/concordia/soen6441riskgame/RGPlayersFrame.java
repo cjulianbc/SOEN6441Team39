@@ -5,6 +5,7 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.JTextArea;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
@@ -62,8 +63,14 @@ public class RGPlayersFrame extends JFrame {
 		JButton btnGo = new JButton("Play");
 		btnGo.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				game.assignCountries(players.setPlayers(textArea.getText()));				
-				RGGameFrame gameFrame=new RGGameFrame(file, game, players);
+				if(players.validateNumberOfPLayers(textArea.getText()))
+				{
+					game.assignCountries(players.setPlayers(textArea.getText()));
+					RGGameFrame gameFrame=new RGGameFrame(file, game, players);
+				}
+				else
+					JOptionPane.showMessageDialog(null, "Invalid number of players. Must be between 2 and 6", "Alert Message", JOptionPane.WARNING_MESSAGE);
+				
 			}
 		});
 		btnGo.setBounds(148, 142, 89, 23);
