@@ -165,5 +165,18 @@ public class RGPlayer{
 		}
 		return sumArmiesSetup;
 	}
+	
+	void initializeTurn()
+	{
+		ArrayList<String> vertex = playerItems.getVertex();
+		for(int k=0;k<vertex.size();k++)
+		{
+			ArrayList<String> edges = playerItems.getEdges(vertex.get(k));
+			if (k==0)
+				edges.set(0, "1");
+			else
+				edges.set(0, "0");
+		}
+	}
 		
 }

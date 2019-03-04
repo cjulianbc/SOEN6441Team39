@@ -76,7 +76,9 @@ public class RGMapGraph extends JComponent {
 			    break;
 			}
 			add(txtArea);
+			txtArea.setEditable(false);
 			add(txtArea_1);
+			txtArea_1.setEditable(false);
 			
 			ArrayList<String> edges = game.getEdges(vertex.get(k));
 			for(int j=0;j<edges.size();j++)

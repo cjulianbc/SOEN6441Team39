@@ -7,20 +7,7 @@ import java.util.Scanner;
 public class RGGame {
 	private RGGraph graph=new RGGraph();
 	private RGGraph countryItems=new RGGraph();
-	private RGGraph gameItems=new RGGraph();
-	
-	RGGame()
-	{
-		gameItems.addVertex("Setup");
-		gameItems.addEdge("Setup", "1");
-		gameItems.addVertex("Reinforcement");
-		gameItems.addEdge("Reinforcement", "0");
-		gameItems.addVertex("Attack");
-		gameItems.addEdge("Attack", "0");
-		gameItems.addVertex("Fortification");
-		gameItems.addEdge("Fortification", "0");
-		
-	}
+	private RGGraph continentItems=new RGGraph();
 	
 	void createGraph(StringBuilder content)
 	{
@@ -96,6 +83,56 @@ public class RGGame {
 			
 		}
 		buffer.close();
+	}
+	
+	void createContinents(StringBuilder content)
+	{
+		Scanner buffer = new Scanner(content.toString());
+		String searchChar="=";
+		int index2;
+		String edge;
+		String vertex="";
+		String bonusArmies="";
+		//Creating HashMap: Key=name of the continent, Value= ArrayList with just one value: The number of bonus armies.
+		while (buffer.hasNextLine())
+		{
+			String actualLine = buffer.nextLine();
+			if(!actualLine.equals(""))
+			{
+				if(!actualLine.substring(0,1).equals("["))
+				{
+					index2=actualLine.indexOf(searchChar);
+					vertex=actualLine.substring(0,index2);
+					continentItems.addVertex(vertex);
+					bonusArmies=actualLine.substring(index2+1,actualLine.length());
+					continentItems.addEdge(vertex, bonusArmies);
+				}
+				else 
+					break;
+			}
+			else
+				break;
+		}
+		
+		//Adding countries to each continent.
+		ArrayList<String> verticesCountry = countryItems.getVertex();
+		for(int k=0;k<verticesCountry.size();k++)
+		{
+			ArrayList<String> edgeList = countryItems.getEdges(verticesCountry.get(k));
+			continentItems.addEdge(edgeList.get(2), verticesCountry.get(k));
+		}
+		ArrayList<String> verti = continentItems.getVertex();
+		for(int j=0;j<verti.size();j++)
+		{
+			System.out.print(verti.get(j)+" -> ");
+			ArrayList<String> edgi = continentItems.getEdges(verti.get(j));
+			for(int k=0;k<edgi.size();k++)
+			{
+				System.out.print(edgi.get(k)+" -> ");
+			}
+			System.out.println("");
+		}
+		
 	}
 	
 	void assignCountries(ArrayList<String> players)
@@ -175,23 +212,6 @@ public class RGGame {
 		return edges;
 	}
 	
-	String getPhase()
-	{
-		ArrayList<String> vertex = gameItems.getVertex();
-		String phase;
-		String currentPhase="";
-		for(int k=0;k<vertex.size();k++)
-		{
-			ArrayList<String> edges = gameItems.getEdges(vertex.get(k));
-			phase=edges.get(0);
-			if(phase=="1")
-			{
-				currentPhase=vertex.get(k);
-			}
-		}
-		return currentPhase;		
-	}
-	
 	ArrayList<String> getCurrentPlayerCountries(String player)
 	{
 		ArrayList<String> currentPlayerCountries=new ArrayList<String>();
@@ -232,6 +252,34 @@ public class RGGame {
 		return currentPlayerNumberOfCountries;
 	}
 	
-
+	int getNumberOfArmiesDueTerritories(int currentPlayerNumberOfCountries)
+	{
+		if(currentPlayerNumberOfCountries>=9)
+			currentPlayerNumberOfCountries=currentPlayerNumberOfCountries/3;
+		else
+			currentPlayerNumberOfCountries=3;
+		return currentPlayerNumberOfCountries;
+	}
+	
+	int getNumberOfArmiesDueContinents(ArrayList<String> currentPlayerCountries)
+	{
+		int numberOfArmiesDueContinents=0;
+		int numberOfArmiesDueContinentsAux;
+		ArrayList<String> vertex = continentItems.getVertex();
+		for(int k=0;k<vertex.size();k++)
+		{
+			ArrayList<String> edges = continentItems.getEdges(vertex.get(k));
+			numberOfArmiesDueContinentsAux=(Integer.valueOf(edges.get(0)));
+			edges.remove(0);
+			if(currentPlayerCountries.containsAll(edges))
+			{
+				System.out.println(vertex.get(k));
+				System.out.println(numberOfArmiesDueContinentsAux);
+				numberOfArmiesDueContinents=numberOfArmiesDueContinents+numberOfArmiesDueContinentsAux;
+			}
+		}
+		
+		return numberOfArmiesDueContinents;
+	}
 	
 }

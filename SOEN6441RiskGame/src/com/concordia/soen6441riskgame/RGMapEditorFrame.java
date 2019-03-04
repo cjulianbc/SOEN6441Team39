@@ -168,6 +168,8 @@ public class RGMapEditorFrame extends JFrame {
 				try {
 					StringBuilder content=file.getContent("[Territories]");
 					game.createGraph(content);
+					content=file.getContent("[Continents]");
+					game.createContinents(content);
 					RGPlayersFrame playersFrame=new RGPlayersFrame(file, game);
 					playersFrame.setVisible(true);	
 				} catch (FileNotFoundException e1) {
