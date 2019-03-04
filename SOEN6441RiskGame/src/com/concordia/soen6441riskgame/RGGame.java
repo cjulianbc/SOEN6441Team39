@@ -282,7 +282,7 @@ public class RGGame {
 		return numberOfArmiesDueContinents;
 	}
 
-	/*
+	/**
 	 * @param   player takes a player name as string 
 	 * @param   country takes a country name as string
 	 * @return all the adjacent player's countries of that SAME player
