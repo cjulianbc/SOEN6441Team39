@@ -48,7 +48,8 @@ import java.util.Map;
 	 * 4) Players Data Structure: Values=[Turn, Color, Armies to place in setup phase]
 	 * 
      *    
-     * @param vertex Name of the key
+     * @param vertex1 Name of the key
+     * @param vertex2 New value to add
      *   
 	 */
 	void addEdge(String vertex1, String vertex2){
@@ -60,6 +61,7 @@ import java.util.Map;
 	 * 
      *    
      * @param vertex Name of the key
+     * @param edges Complete set of values to replace
      *   
 	 */
 	void setEdge(String vertex, ArrayList<String> edges){
@@ -82,7 +84,6 @@ import java.util.Map;
 	 * This method returns the set of keys of a given data structure
 	 * 
      *    
-     * @param vertex Name of the key
      * @return Set of keys of a given data structure
      *   
 	 */

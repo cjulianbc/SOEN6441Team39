@@ -178,13 +178,32 @@ public class RGPlayer{
 	void initializeTurn()
 	{
 		ArrayList<String> vertex = playerItems.getVertex();
+		System.out.println(vertex);
 		for(int k=0;k<vertex.size();k++)
 		{
 			ArrayList<String> edges = playerItems.getEdges(vertex.get(k));
 			if (k==0)
+			{
 				edges.set(0, "1");
+				playerItems.setEdge(vertex.get(k), edges);
+			}
 			else
+			{
 				edges.set(0, "0");
+				playerItems.setEdge(vertex.get(k), edges);
+			}
+		}
+		
+		ArrayList<String> verti = playerItems.getVertex();
+		for(int j=0;j<verti.size();j++)
+		{
+			System.out.print(verti.get(j)+" -> ");
+			ArrayList<String> edgi = playerItems.getEdges(verti.get(j));
+			for(int k=0;k<edgi.size();k++)
+			{
+				System.out.print(edgi.get(k)+" -> ");
+			}
+			System.out.println("");
 		}
 	}
 		
