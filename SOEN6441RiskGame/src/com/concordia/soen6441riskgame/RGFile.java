@@ -266,7 +266,7 @@ public class RGFile {
 	}
 	
 	/**
-	 * Depth First Search algorithm to get to know if a graph is connected.
+	 * Depth First Search algorithm to check if a graph is connected.
 	 * 
 	 * 
 	 * @param country name of a country.

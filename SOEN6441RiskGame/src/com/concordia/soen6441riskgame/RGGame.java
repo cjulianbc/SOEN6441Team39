@@ -281,5 +281,30 @@ public class RGGame {
 		
 		return numberOfArmiesDueContinents;
 	}
+
+	/*
+	 * @param   player takes a player name as string 
+	 * @param   country takes a country name as string
+	 * @return all the adjacent player's countries of that SAME player
+	 */
+	ArrayList<String> getCurrentPlayerAdjacentCountries(String player, String country)
+	{
+		ArrayList<String> currentPlayerAdjacentCountries = new ArrayList<String>();
+		ArrayList<String> currentPlayerCountries=getCurrentPlayerCountries(player);
+		ArrayList<String> adjacentcountries=getEdges(country);
+		
+		for (String adcountry : adjacentcountries) {
+			
+			for (String pcountry : currentPlayerCountries) {
+				if(adcountry.equals(pcountry)) {
+					System.out.println(adcountry);
+					currentPlayerAdjacentCountries.add(adcountry);}
+				
+			}
+			
+		}
+		
+		return currentPlayerAdjacentCountries;
+	}
 	
 }

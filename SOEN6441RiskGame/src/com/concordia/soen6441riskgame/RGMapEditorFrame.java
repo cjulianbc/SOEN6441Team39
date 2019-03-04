@@ -24,8 +24,8 @@ import javax.swing.border.EmptyBorder;
 public class RGMapEditorFrame extends JFrame {
 
 	private JPanel contentPane;
-	RGFile file=new RGFile();
-	RGGame game=new RGGame();
+	private RGFile file=new RGFile();
+	private RGGame game=new RGGame();
 	private JFileChooser fileChooser=new JFileChooser();
 
 	/**
