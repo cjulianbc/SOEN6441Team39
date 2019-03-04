@@ -18,6 +18,18 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.border.LineBorder;
 
+
+/**
+ * Class that creates a frame with two panels. On the left panel, players can see the map, and its current status.
+ * On the right panel, players can interact with the application; in other words, where players can play Risk®. Players can play all the 
+ * phases on this frame.
+ * 
+ * 
+ * @author Julian Beltran, Nesar, Amit
+ * @version 1.0
+ * @since   1.0
+ *
+ */
 public class RGGameFrame extends JFrame{
 	
 	private JPanel right= new JPanel(new GridLayout(1, 1));
@@ -33,6 +45,16 @@ public class RGGameFrame extends JFrame{
 	ArrayList<String> adjacentcountries;
 	ArrayList<String> listcountry;
 
+	/**
+	 * This constructor set the frame and the panels. On the left panel the constructor add the drawing of the map that is 
+	 * created in the class RGMapGraph.
+	 * 
+     *    
+     * @param File File where the Risk® map was extracted from
+     * @param Game Current game
+     * @param Current set of players
+     *   
+	 */
 	RGGameFrame(RGFile file, RGGame game, RGPlayer player)
 	{
         this.game=game;
@@ -55,6 +77,11 @@ public class RGGameFrame extends JFrame{
         frame.setVisible(true);
 	}
 	
+	/**
+	 * This method is used to create the Setup Phase. This method draws all the components of this phase on the right panel of the frame.
+	 * 
+     *    
+	 */
 	void setUpPhase()
 	{
 		right.removeAll();
@@ -195,6 +222,12 @@ public class RGGameFrame extends JFrame{
 		
 	}
 	
+	
+	/**
+	 * This method is used to create the Reinforcement Phase. This method draws all the components of this phase on the right panel of the frame.
+	 * 
+     *    
+	 */
 	void reinforcementPhase()
 	{
 		right.removeAll();
@@ -300,7 +333,11 @@ public class RGGameFrame extends JFrame{
 		right.add(btnPlace);
 	}
 	
-	
+	/**
+	 * This method is used to create the Fortification Phase. This method draws all the components of this phase on the right panel of the frame.
+	 * 
+     *    
+	 */
 	void fortificationPhase()
 	{
 		// Clear and ready the right view for the fortificationPhase
@@ -334,14 +371,14 @@ public class RGGameFrame extends JFrame{
 		}
 		right.add(comboBox);
 		country = comboBox.getSelectedItem().toString(); // "country" is the current selected Item, it will be used to populate the no.of army available
-		lblNewLabel_1.setText(game.getArmies(country)); // setting the army in the field in realtime passing country as its parameter
+		lblNewLabel_1.setText(game.getArmies(country)); // setting the army in the field in real time passing country as its parameter
 		
 		
 		
 		listcountry= new ArrayList<String>();
 		
 		
-		// Adjacent countries of the player X. changes according to first dropdown box.
+		// Adjacent countries of the player X. changes according to first drop down box.
 		
 		JComboBox comboBox_1 = new JComboBox();
 		comboBox_1.setBounds(135, 132, 163, 20);

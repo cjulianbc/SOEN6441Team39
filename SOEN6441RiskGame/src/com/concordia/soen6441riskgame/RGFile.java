@@ -15,7 +15,7 @@ import javax.swing.JFileChooser;
  * This application only uses the tags [Continents] and [Territories].
  *
  * 
- * @author Julian Beltran
+ * @author Julian Beltran, Aamrean, Abhishek
  * @version 1.0
  * @since   1.0
  *
@@ -42,8 +42,10 @@ public class RGFile {
 	 * This method is used to extract the content of a tag of a file (Risk® map).
 	 * Possible tags are [Continents] and [Territories].
 	 * 
+	 * 
 	 * @param label Name of the tag.
 	 * @return The content of the tag.
+	 * 
 	 */
 	StringBuilder getContent(String label) throws FileNotFoundException
 	{
@@ -100,6 +102,7 @@ public class RGFile {
 	 * @param continent Set of the continents of the map.
 	 * @param countries Set of the countries of the map.
 	 * @return "true" if there's no errors. "false" if there's any error.
+	 * 
 	 */
 	boolean validateMap(String continents, String countries) {
 		if(continents.equals("")) 
@@ -231,12 +234,14 @@ public class RGFile {
 	
 	
 	/**
-	 * This method is used to validate if the graph is connected.
+	 * This method is used to validate if the graph is connected. The complete
+	 * Risk® map must be connected.
 	 * 
 	 * 
 	 * @param adjacencyMap Set of the map adjacencies.
 	 * @param countries Set of map countries.
 	 * @return "true" if it is connected. "false" if it is not connected.
+	 * 
 	 */
 	boolean isConnected(HashMap<String,ArrayList<String>> adjacencyMap,ArrayList<String> countries){
 		ArrayList<String> visited=new ArrayList<String>();
@@ -266,7 +271,7 @@ public class RGFile {
 	}
 	
 	/**
-	 * Depth First Search algorithm to check if a graph is connected.
+	 * Depth First Search algorithm to check if a graph is connected. 
 	 * 
 	 * 
 	 * @param country name of a country.
