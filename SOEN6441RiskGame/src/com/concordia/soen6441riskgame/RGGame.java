@@ -172,7 +172,7 @@ public class RGGame {
 	
 	
 	/**
-	 * This method is used to assign each player a set of random countries 
+	 * This method is used to assign each country a random player 
 	 * 
      *    
      * @param players List of Players (names) 

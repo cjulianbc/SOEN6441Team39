@@ -10,6 +10,15 @@ import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
+/**
+ * Class that creates a frame to ask a user to enter the names of the players of the Risk® game. names mus be separated by commas
+ * 
+ * 
+ * @author Julian Beltran
+ * @version 1.0
+ * @since   1.0
+ *
+ */
 public class RGPlayersFrame extends JFrame {
 
 	private JPanel contentPane;
@@ -18,23 +27,8 @@ public class RGPlayersFrame extends JFrame {
 	private RGPlayer players=new RGPlayer();
 
 	/**
-	 * Launch the application.
-	 */
-	/*public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					RGPlayersFrame frame = new RGPlayersFrame();
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}*/
-
-	/**
-	 * Create the frame.
+	 * This constructor set the frame and add all the objects a user needs to create a set of players.
+     *   
 	 */
 	public RGPlayersFrame(RGFile file, RGGame game) {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -52,7 +46,7 @@ public class RGPlayersFrame extends JFrame {
 		lblNewLabel.setBounds(71, 69, 297, 22);
 		contentPane.add(lblNewLabel);
 		
-		JLabel lblExampleAmitNesar = new JLabel("Example: Nesar,Julian,Amit ");
+		JLabel lblExampleAmitNesar = new JLabel("Example: Joe,Anna,Bruce ");
 		lblExampleAmitNesar.setBounds(71, 117, 297, 14);
 		contentPane.add(lblExampleAmitNesar);
 		
@@ -65,8 +59,8 @@ public class RGPlayersFrame extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				if(players.validateNumberOfPLayers(textArea.getText()))
 				{
-					game.assignCountries(players.setPlayers(textArea.getText()));
-					RGGameFrame gameFrame=new RGGameFrame(file, game, players);
+					game.assignCountries(players.setPlayers(textArea.getText()));//giving each country an random owner(player)
+					RGGameFrame gameFrame=new RGGameFrame(file, game, players);//creating the game frame where players can play Risk® game
 				}
 				else
 					JOptionPane.showMessageDialog(null, "Invalid number of players. Must be between 2 and 6", "Alert Message", JOptionPane.WARNING_MESSAGE);
