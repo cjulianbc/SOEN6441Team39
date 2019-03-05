@@ -42,16 +42,28 @@ import javax.swing.border.EmptyBorder;
  */
 public class RGMapEditorFrame extends JFrame {
 
+	/**
+	 * Panel where the Editor Map is placed.
+	 */
 	private JPanel contentPane;
+	/**
+	 * Created to store the file where a Risk® map is stored.
+	 */
 	private RGFile file=new RGFile();
+	/**
+	 * Created to store the information of the current game.
+	 */
 	private RGGame game=new RGGame();
+	/**
+	 * Created to show the window where the user can open or save a file.
+	 */
 	private JFileChooser fileChooser=new JFileChooser();
 
 	/**
-	 * Main method is used to create a new frame
+	 * Main method is used to create a new frame.
 	 * 
 	 * 
-	 * @param args command-line arguments for this application
+	 * @param args command-line arguments for this application.
 	 * 
 	 */
 	public static void main(String[] args) {

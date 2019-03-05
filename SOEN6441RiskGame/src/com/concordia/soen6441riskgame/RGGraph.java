@@ -16,7 +16,10 @@ import java.util.Map;
  *
  */
 	public class RGGraph {
-	
+		
+	/**
+	 * Created to store any HashMap data structure. 
+	 */
 	private Map<String,ArrayList<String>> adjVertices=new HashMap<String,ArrayList<String>>();
 	
 	/**
@@ -24,13 +27,13 @@ import java.util.Map;
 	 * 
 	 * Data Structures:
 	 * 
-	 * 1) Map Data Structure: Key=Name of the country
-	 * 2) Countries Data Structure: Key=Name of the country
-	 * 3) Continents Data Structure: Key=Name of the continent
-	 * 4) Players Data Structure: Key=Name of the player
+	 * 1) Map Data Structure: Key=Name of the country.
+	 * 2) Countries Data Structure: Key=Name of the country.
+	 * 3) Continents Data Structure: Key=Name of the continent.
+	 * 4) Players Data Structure: Key=Name of the player.
 	 * 
      *    
-     * @param vertex Name of the key
+     * @param vertex Name of the key.
      *   
 	 */
 	void addVertex(String vertex) 
@@ -41,17 +44,17 @@ import java.util.Map;
 	
 	/**
 	 * This method is used to create one value for a given key. The data structure can have more than one value. For that reason, the value of the key is an
-	 * ArrayList 
+	 * ArrayList.
 	 * 
 	 * Data Structures:
-	 * 1) Map Data Structure: Values=[Set of adjacent countries]
-	 * 2) Countries Data Structure: Values=[X Coordinate, Y Coordinate, Continent, Owner, Armies]
-	 * 3) Continents Data Structure: Values=[bonus army number, Continent's counties]
-	 * 4) Players Data Structure: Values=[Turn, Color, Armies to place in setup phase]
+	 * 1) Map Data Structure: Values=[Set of adjacent countries].
+	 * 2) Countries Data Structure: Values=[X Coordinate, Y Coordinate, Continent, Owner, Armies].
+	 * 3) Continents Data Structure: Values=[bonus army number, Continent's counties].
+	 * 4) Players Data Structure: Values=[Turn, Color, Armies to place in setup phase].
 	 * 
      *    
-     * @param vertex1 Name of the key
-     * @param vertex2 New value to add
+     * @param vertex1 Name of the key.
+     * @param vertex2 New value to add.
      *   
 	 */
 	void addEdge(String vertex1, String vertex2){
@@ -59,11 +62,11 @@ import java.util.Map;
 	}
 	
 	/**
-	 * This method is used to replace a specific value of a given key
+	 * This method is used to replace a specific value of a given key.
 	 * 
      *    
-     * @param vertex Name of the key
-     * @param edges Complete set of values to replace
+     * @param vertex Name of the key.
+     * @param edges Complete set of values to replace.
      *   
 	 */
 	void setEdge(String vertex, ArrayList<String> edges){
@@ -71,11 +74,11 @@ import java.util.Map;
 	}
 	
 	/**
-	 * This method returns the set of values of a given key
+	 * This method returns the set of values of a given key.
 	 * 
      *    
-     * @param vertex Name of the key
-     * @return Set of values of a given key  
+     * @param vertex Name of the key.
+     * @return Set of values of a given key.
      *   
 	 */
 	ArrayList<String> getEdges(String vertex){
@@ -83,10 +86,10 @@ import java.util.Map;
 	}
 	
 	/**
-	 * This method returns the set of keys of a given data structure
+	 * This method returns the set of keys of a given data structure.
 	 * 
      *    
-     * @return Set of keys of a given data structure
+     * @return Set of keys of a given data structure.
      *   
 	 */
 	ArrayList<String> getVertex(){

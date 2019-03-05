@@ -16,14 +16,21 @@ import javax.swing.JFileChooser;
  * the tags [Continents] and [Territories].
  *
  * 
- * @author Julian Beltran, Aamrean, Abhishek
+ * @author Julian Beltran, Aamrean, Abhishek.
  * @version 1.0
  * @since   1.0
  *
  */
 
 public class RGFile {
+	
+	/**
+	 * Created to store the file where a Risk® map is stored.
+	 */
 	private File file;
+	/**
+	 * Created to show the window where the user can open or save a file.
+	 */
 	private JFileChooser fileChooser=new JFileChooser();
 	
 	

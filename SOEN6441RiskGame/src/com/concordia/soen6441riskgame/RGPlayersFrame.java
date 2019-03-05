@@ -21,17 +21,29 @@ import java.awt.event.ActionEvent;
  */
 public class RGPlayersFrame extends JFrame {
 
+	/**
+	 * Panel where the players can be created.
+	 */
 	private JPanel contentPane;
+	/**
+	 * Created to store the information of the current game.
+	 */
 	private RGGame game;
+	/**
+	 * Created to store the file where a Risk® map is stored.
+	 */
 	private RGFile file;
+	/**
+	 * Created to store the set of players of the current game.
+	 */
 	private RGPlayer players=new RGPlayer();
 
 	/**
 	 * This constructor set the frame and add all the objects the user needs to create a set of players.
 	 * 
 	 * 
-	 * @param file File where the Risk® map was extracted from
-     * @param game Current game
+	 * @param file File where the Risk® map was extracted from.
+     * @param game Current game.
      *   
 	 */
 	public RGPlayersFrame(RGFile file, RGGame game) {

@@ -18,17 +18,27 @@ import javax.swing.JTextArea;
  *
  */
 public class RGMapGraph extends JComponent {
+	
+	/**
+	 * Created to store the file where a Risk® map is stored.
+	 */
 	private RGFile file;
+	/**
+	 * Created to store the information of the current game.
+	 */
 	private RGGame game;
+	/**
+	 * Created to store the set of players of the current game.
+	 */
 	private RGPlayer player;
 	
 	/**
 	 * This constructor set the objects of the current, game, graph and set of players.
 	 * 
      *    
-     * @param file File where the Risk® map is stored
-     * @param game Current game
-     * @param player Current set of players
+     * @param file File where the Risk® map is stored.
+     * @param game Current game.
+     * @param player Current set of players.
      *   
 	 */
 	RGMapGraph(RGFile file, RGGame game, RGPlayer player)
@@ -52,7 +62,7 @@ public class RGMapGraph extends JComponent {
 	 * 5) Below every textArea that represents a country there is another textArea with the name of the country.
      *    
      *    
-     * @param g object of a Graphic class 
+     * @param g object of a Graphic class. 
      * @see Graphics
      *   
 	 */

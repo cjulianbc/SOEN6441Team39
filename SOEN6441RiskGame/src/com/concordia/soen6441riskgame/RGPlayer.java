@@ -14,8 +14,17 @@ import java.util.ArrayList;
  */
 public class RGPlayer{
 	
+	/**
+	 * Created to store the names of the players.
+	 */
 	private ArrayList<String> setOfPlayers = new ArrayList<String>();
+	/**
+	 * Created to store the Players' data structure.
+	 */
 	private RGGraph playerItems=new RGGraph();
+	/**
+	 * Created to store the six colors: Green, magenta, cyan, pink, orange, and blue.
+	 */
 	private ArrayList<String> colors = new ArrayList<String>();
 	
 	
@@ -38,8 +47,8 @@ public class RGPlayer{
 	 * This method is used to validate the number of players registered by the user. Must be between 2 and 6.
 	 * 
 	 * 
-	 * @param players String with the names of players separated by commas
-	 * @return 'true' if number of players between 2 and 6; otherwise 'false'
+	 * @param players String with the names of players separated by commas.
+	 * @return 'true' if number of players between 2 and 6; otherwise 'false'.
 	 * 
 	 */
 	boolean validateNumberOfPLayers(String players)
@@ -58,8 +67,8 @@ public class RGPlayer{
 	 * the player: Turn, color, and number of armies for Setup Phase.
      * 
      *    
-     * @param players String with the names of players separated by commas 
-     * @return List with the name of the players created
+     * @param players String with the names of players separated by commas.
+     * @return List with the name of the players created.
      *   
 	 */		
 	ArrayList<String> setPlayers(String players)
@@ -130,8 +139,8 @@ public class RGPlayer{
 	 * This method returns the color of a player. 
 	 * 
      *    
-     * @param vertex Name of the player 
-     * @return Color of a player
+     * @param vertex Name of the player. 
+     * @return Color of a player.
      *   
 	 */		
 	String getPlayerColor(String vertex)
@@ -144,7 +153,7 @@ public class RGPlayer{
 	 * This method is used to set the number of armies for a player in the Setup Phase.  
 	 * 
      *    
-     * @param game object with the information of the current game
+     * @param game object with the information of the current game.
      *   
 	 */	
 	void allocateArmies(RGGame game)
@@ -164,7 +173,7 @@ public class RGPlayer{
 	 * This method is used to get the current turn in the game.  
 	 * 
      *    
-     * @return Name of the player with the current turn
+     * @return Name of the player with the current turn.
      *   
 	 */	
 	String getPlayerTurn()
@@ -187,8 +196,8 @@ public class RGPlayer{
 	 * This method is used to get the current armies a player can place on his/her countries.  
 	 * 
 	 * 
-     * @param vertex Name of the player   
-     * @return Number of armies available for a given player
+     * @param vertex Name of the player.   
+     * @return Number of armies available for a given player.
      *   
 	 */	
 	String getCurrentArmies(String vertex)
@@ -201,8 +210,8 @@ public class RGPlayer{
 	 * This method is used to subtract one army of the value 'number of armies for Setup Phase' of the players' data structure for a given player.
 	 * 
 	 * 
-     * @param numberOfArmiesToAdd Number of armies to subtract in this case  
-     * @param vertex Name of the player
+     * @param numberOfArmiesToAdd Number of armies to subtract in this case.  
+     * @param vertex Name of the player.
      *   
 	 */	
 	void setNumberOfArmiesSetup(int numberOfArmiesToAdd, String vertex)
@@ -247,7 +256,7 @@ public class RGPlayer{
 	 * This method is used to get the total of armies (of all players) to place in the Setup Phase. This is used to know when the Setup Phase is finished. 
 	 * 
 	 * 
-	 * @return Total of armies (of all players) available to place
+	 * @return Total of armies (of all players) available to place.
 	 * 
 	 */	
 	int getSumArmiesSetup() 
