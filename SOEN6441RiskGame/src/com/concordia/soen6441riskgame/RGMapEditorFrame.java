@@ -70,6 +70,7 @@ public class RGMapEditorFrame extends JFrame {
 	/**
 	 * This constructor set the frame and add all the objects a player needs to create, edit, validate, and save a Risk® map.
      *   
+     *   
 	 */
 	public RGMapEditorFrame() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -205,7 +206,7 @@ public class RGMapEditorFrame extends JFrame {
 					game.createGraph(content);
 					content=file.getContent("[Continents]");
 					game.createContinents(content);
-					RGPlayersFrame playersFrame=new RGPlayersFrame(file, game); //creating a new frame where players can be set
+					RGPlayersFrame playersFrame=new RGPlayersFrame(file, game); //creating a new frame where players can be created
 					playersFrame.setVisible(true);	
 				} catch (FileNotFoundException e1) {
 					// TODO Auto-generated catch block

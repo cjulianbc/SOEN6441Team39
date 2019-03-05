@@ -11,7 +11,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
 /**
- * Class that creates a frame where the user is asked to enter the names of the players of the Risk® game. Names must be separated by commas.
+ * This class creates a frame where the user is asked to enter the names of the players of the Risk® game. Names must be separated by commas.
  * 
  * 
  * @author Julian Beltran

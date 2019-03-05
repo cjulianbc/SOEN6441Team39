@@ -9,7 +9,7 @@ import javax.swing.JComponent;
 import javax.swing.JTextArea;
 
 /**
- * Class that draws a complete map. each country is represented by textArea, and the lines represent the adjacencies among countries. 
+ * This class draws a complete map. Each country is represented by textArea, and the lines represent the adjacencies among countries. 
  * 
  * 
  * @author Julian Beltran
@@ -26,7 +26,7 @@ public class RGMapGraph extends JComponent {
 	 * This constructor set the objects of the current, game, graph and set of players.
 	 * 
      *    
-     * @param file File where the Risk® map was extracted from
+     * @param file File where the Risk® map is stored
      * @param game Current game
      * @param player Current set of players
      *   
@@ -44,7 +44,7 @@ public class RGMapGraph extends JComponent {
 	 * This method overrides the paintComponent method that is used to paint in a canvas.  
 	 * 
 	 * Components of the canvas:
-	 * 
+	 *
 	 * 1) Each country is represented by a textArea, and every textArea has a color.
 	 * 2) Each color represents a player.
 	 * 3) Countries are connected by lines. Lines represent countries' adjacencies.
