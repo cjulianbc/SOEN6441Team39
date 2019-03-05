@@ -440,10 +440,10 @@ public class RGGameFrame extends JFrame {
 																// used to populate the no.of army available
 				lblNewLabel_1.setText(game.getArmies(country)); // setting the army in the field in realtime passing
 																// country as its parameter
-				ArrayList<String> listcountry = game.getCurrentPlayerAdjacentCountries(currentPlayerName, country);
+				ArrayList<String> listcountrytwo = game.getCurrentPlayerAdjacentCountries(currentPlayerName, country);
 				comboBox_1.removeAllItems(); // Clearing all the items from the current comboBox_1 for the new items.
-				for (int k = 0; k < listcountry.size(); k++) {
-					comboBox_1.addItem(listcountry.get(k));
+				for (int k = 0; k < listcountrytwo.size(); k++) {
+					comboBox_1.addItem(listcountrytwo.get(k));
 				}
 			}
 
