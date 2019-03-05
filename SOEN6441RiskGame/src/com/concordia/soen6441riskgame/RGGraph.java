@@ -14,7 +14,8 @@ import java.util.Map;
  * @version 1.0
  * @since   1.0
  *
- */public class RGGraph {
+ */
+	public class RGGraph {
 	
 	private Map<String,ArrayList<String>> adjVertices=new HashMap<String,ArrayList<String>>();
 	
