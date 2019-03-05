@@ -11,7 +11,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
 /**
- * Class that creates a frame to ask a user to enter the names of the players of the Risk® game. names mus be separated by commas
+ * Class that creates a frame where the user is asked to enter the names of the players of the Risk® game. Names must be separated by commas.
  * 
  * 
  * @author Julian Beltran
@@ -27,7 +27,7 @@ public class RGPlayersFrame extends JFrame {
 	private RGPlayer players=new RGPlayer();
 
 	/**
-	 * This constructor set the frame and add all the objects a user needs to create a set of players.
+	 * This constructor set the frame and add all the objects the user needs to create a set of players.
      *   
 	 */
 	public RGPlayersFrame(RGFile file, RGGame game) {
@@ -42,7 +42,7 @@ public class RGPlayersFrame extends JFrame {
 		textArea.setBounds(71, 90, 263, 29);
 		contentPane.add(textArea);
 		
-		JLabel lblNewLabel = new JLabel("Write the names of the players:");
+		JLabel lblNewLabel = new JLabel("Write the names of the players (between 2 and 6):");
 		lblNewLabel.setBounds(71, 69, 297, 22);
 		contentPane.add(lblNewLabel);
 		

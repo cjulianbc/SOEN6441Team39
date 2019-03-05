@@ -20,7 +20,7 @@ public class RGPlayer{
 	
 	
 	/**
-	 * This constructor creates a list of six colors to assign them later to every player.
+	 * This constructor creates a list of six colors to assign them later to every player where it is required
      *   
 	 */
 	RGPlayer()
@@ -34,7 +34,7 @@ public class RGPlayer{
 	}
 	
 	/**
-	 * This method is used to validate the number of players set by the user. Must be between 2 and 6.
+	 * This method is used to validate the number of players registered by the user. Must be between 2 and 6.
 	 * 
 	 * 
 	 * @param players String with the names of players separated by commas
@@ -49,9 +49,9 @@ public class RGPlayer{
 	}
 	
 	/**
-	 * This method is used to create the player's data structures: 
+	 * This method is used to create the player's data structure: 
 	 * 
-	 * 1) Players Data Structure: It is a is a HashMap data structure that contains all the information associated to each player. 
+	 * 1) Players' Data Structure: It is a HashMap data structure that contains all the information associated to each player. 
 	 * The key value is the name of the player (String), and the value of the key is an ArrayList (String) that contains all the information of 
 	 * the player: Turn, color, and number of armies for Setup Phase.
      * 
@@ -74,12 +74,12 @@ public class RGPlayer{
 			if (index2!=-1) 
 			 { 
 				player=players.substring(index1, index1+index2);//getting the name of a player
-				playerItems.addVertex(player);//creating a key of the player's data structure with the name of the player
+				playerItems.addVertex(player);//creating a key (name of the player) of the players' data structure
 				if(i==0)
-					playerItems.addEdge(player, "1");//creating Turn value. First player begins the game
+					playerItems.addEdge(player, "1");//creating 'Turn' value. First player begins the game
 				else
-					playerItems.addEdge(player, "0");//creating Turn value for the rest of the players
-				playerItems.addEdge(player, colors.get(i));//creating Color value 
+					playerItems.addEdge(player, "0");//creating 'Turn' value for the rest of the players
+				playerItems.addEdge(player, colors.get(i));//creating 'Color' value 
 				setOfPlayers.add(player);
 				players=","+players;
 				players=players.replace(","+player+",", "");//a player is already created; the player has to be deleted from String with the names of players separated by commas
@@ -97,12 +97,12 @@ public class RGPlayer{
 			 }
 			else//last player of the String with the names of players separated by commas
 			{
-				playerItems.addVertex(players);//creating a key of the player's data structure with the name of the last player
+				playerItems.addVertex(players);//creating a key (name of the player) of the players' data structure
 				if(i==0)
 					playerItems.addEdge(players, "1");
 				else
-					playerItems.addEdge(players, "0");//creating Turn value for the last players
-				playerItems.addEdge(players, colors.get(i));//creating Color value for the last player
+					playerItems.addEdge(players, "0");//creating 'Turn' value for the last players
+				playerItems.addEdge(players, colors.get(i));//creating 'Color' value for the last player
 				setOfPlayers.add(players);
 				
 				//printing a player
@@ -186,7 +186,7 @@ public class RGPlayer{
 	 * 
 	 * 
      * @param vertex Name of the player   
-     * @return edgeList.get(2) Number of armies available for a given player
+     * @return Number of armies available for a given player
      *   
 	 */	
 	String getCurrentArmies(String vertex)
@@ -196,10 +196,10 @@ public class RGPlayer{
 	}
 	
 	/**
-	 * This method is used to subtract one army of the value 'number of armies for Setup Phase' of the player's data structure for a given player.
+	 * This method is used to subtract one army of the value 'number of armies for Setup Phase' of the players' data structure for a given player.
 	 * 
 	 * 
-     * @param numberOfArmiesToAdd Number of armies to subtract   
+     * @param numberOfArmiesToAdd Number of armies to subtract in this case  
      * @param vertex Name of the player
      *   
 	 */	
@@ -207,7 +207,7 @@ public class RGPlayer{
 	{
 		ArrayList<String> edges = playerItems.getEdges(vertex);
 		String finalNumberOfArmiesToAdd=String.valueOf(Integer.valueOf(edges.get(2))+numberOfArmiesToAdd);
-		edges.set(2, finalNumberOfArmiesToAdd);//the value 'number of armies for Setup Phase' is in the second position of the player's data structure
+		edges.set(2, finalNumberOfArmiesToAdd);//the value 'number of armies for Setup Phase' is in the second position of the players' data structure
 		playerItems.setEdge(vertex, edges);
 		edges = playerItems.getEdges(vertex);
 		System.out.println(edges);
@@ -231,7 +231,7 @@ public class RGPlayer{
 				k++;
 				if(k==vertex.size())//end of the list of players? 
 				{
-					k=0;//start over. This is, with the first player
+					k=0;//start over. First player begins
 				}
 				edges = playerItems.getEdges(vertex.get(k));
 				edges.set(0, "1");//set the value in position 0
@@ -242,10 +242,9 @@ public class RGPlayer{
 	}
 	
 	/**
-	 * This method is used to get the total of armies to place in the Setup Phase. This is used to know when the Setup Phase is finished. It is the addition
-	 * of all available armies to place of all players.
+	 * This method is used to get the total of armies to place in the Setup Phase for all players. This is used to know when the Setup Phase is finished. 
 	 * 
-	 * @return total of armies available to place of all players
+	 * @return Total of armies available to place of all players
 	 * 
 	 */	
 	int getSumArmiesSetup() 
@@ -261,7 +260,7 @@ public class RGPlayer{
 	}
 	
 	/**
-	 * This method is used to set the first turn one the Setup Phase is finished
+	 * This method is used to set the first turn once the Setup Phase is finished
 	 *
 	 * 
 	 */	

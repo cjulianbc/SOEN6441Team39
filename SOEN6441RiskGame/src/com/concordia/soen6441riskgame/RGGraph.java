@@ -6,7 +6,7 @@ import java.util.Map;
 
 
 /**
- * Class that implements a collection of lists not only to represent a graph but also to handle the information of continents, the game and players. 
+ * Class that implements a collection of lists not only to represent a graph but also to handle the information of continents, the game, and the players. 
  * From this perspective, same methods can be used to manipulate the information of any data structure.
  * 
  * 

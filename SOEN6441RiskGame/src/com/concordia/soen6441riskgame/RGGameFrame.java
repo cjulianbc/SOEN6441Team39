@@ -20,9 +20,9 @@ import javax.swing.border.LineBorder;
 
 
 /**
- * Class that creates a frame with two panels. On the left panel, players can see the map, and its current status.
+ * Class that creates a frame with two panels. On the left panel, players can see the Risk® map, and its current status.
  * On the right panel, players can interact with the application; in other words, where players can play Risk®. Players can play all the 
- * phases on this frame.
+ * phases of the Risk® game on this frame.
  * 
  * 
  * @author Julian Beltran, Nesar, Amit
@@ -92,14 +92,14 @@ public class RGGameFrame extends JFrame{
 		lblSetupPhase.setBounds(148, 41, 117, 33);
 		right.add(lblSetupPhase);
 		
-		player.allocateArmies(game);
-		currentPlayerName=player.getPlayerTurn();
+		player.allocateArmies(game);//allocating armies to every player in players' data structure
+		currentPlayerName=player.getPlayerTurn();//getting current turn
 		
 		JLabel lblPlayer = new JLabel("Current: "+currentPlayerName);
 		lblPlayer.setBounds(65, 107, 113, 23);
 		right.add(lblPlayer);
 		
-		String color=player.getPlayerColor(currentPlayerName);
+		String color=player.getPlayerColor(currentPlayerName);//getting the color of the player
 		JTextArea textArea = new JTextArea();
 		textArea.setBounds(188, 97, 34, 33);
 		switch (color) {
@@ -131,7 +131,7 @@ public class RGGameFrame extends JFrame{
 		lblArmiesToPlace.setBounds(65, 149, 117, 23);
 		right.add(lblArmiesToPlace);
 		
-		String currentArmies=player.getCurrentArmies(currentPlayerName);
+		String currentArmies=player.getCurrentArmies(currentPlayerName);//getting armies available to place 
 		JTextArea textArea_1 = new JTextArea(currentArmies);
 		textArea_1.setBounds(188, 139, 34, 33);
 		right.add(textArea_1);
@@ -144,7 +144,7 @@ public class RGGameFrame extends JFrame{
 		ArrayList<String> currentPlayerCountries=game.getCurrentPlayerCountries(currentPlayerName);
 		JComboBox comboBox = new JComboBox();
 		comboBox.setBounds(65, 214, 157, 23);
-		for(int k=0;k<currentPlayerCountries.size();k++)
+		for(int k=0;k<currentPlayerCountries.size();k++)//adding all the countries owned by the player to the combo
 		{
 			comboBox.addItem(currentPlayerCountries.get(k));
 		}
@@ -155,34 +155,34 @@ public class RGGameFrame extends JFrame{
 			public void actionPerformed(ActionEvent e) {
 			
 				String countrySelected=comboBox.getSelectedItem().toString();
-				game.setNumberOfArmies(1, countrySelected);
-				player.setNumberOfArmiesSetup(-1, currentPlayerName);
+				game.setNumberOfArmies(1, countrySelected);//adding one army to the map
+				player.setNumberOfArmiesSetup(-1, currentPlayerName);//subtracting one army from the players' data structure for the Setup Phase
 				left.validate();
-				left.repaint();
+				left.repaint();//repainting the map with new armies placed
 				
-				player.setNextTurn();	
+				player.setNextTurn();//next player has to place an army	
 				
 				int sumArmiesSetup=player.getSumArmiesSetup();
 
-				if(sumArmiesSetup==0)
+				if(sumArmiesSetup==0)//is it the end of the Setup Phase? Go to the next Phase 
 				{
 					player.initializeTurn();
 					reinforcementPhase();
 				}
 				else
 				{
-					currentPlayerName=player.getPlayerTurn();
+					currentPlayerName=player.getPlayerTurn();//getting current turn
 					String currentArmies=player.getCurrentArmies(currentPlayerName);
-					while (currentArmies.equals("0")==true)
+					while (currentArmies.equals("0")==true)//the player already placed all his/her armies; next turn must be set
 					{
 						player.setNextTurn();	
 						currentPlayerName=player.getPlayerTurn();
-						currentArmies=player.getCurrentArmies(currentPlayerName);
+						currentArmies=player.getCurrentArmies(currentPlayerName);//getting armies available to place 
 					}
 				
 					lblPlayer.setText("Current: "+currentPlayerName);
 						
-					String color=player.getPlayerColor(currentPlayerName);
+					String color=player.getPlayerColor(currentPlayerName);//getting the color of the player
 					switch (color) {
 					case "green":
 						textArea.setBackground(Color.green);
@@ -210,7 +210,7 @@ public class RGGameFrame extends JFrame{
 						
 					ArrayList<String> currentPlayerCountries=game.getCurrentPlayerCountries(currentPlayerName);
 					comboBox.removeAllItems();
-					for(int k=0;k<currentPlayerCountries.size();k++)
+					for(int k=0;k<currentPlayerCountries.size();k++)//adding all the countries owned by the player to the combo
 					{
 						comboBox.addItem(currentPlayerCountries.get(k));
 					}
@@ -238,12 +238,12 @@ public class RGGameFrame extends JFrame{
 		lblSetupPhase.setBounds(119, 40, 179, 33);
 		right.add(lblSetupPhase);
 		
-		currentPlayerName=player.getPlayerTurn();
+		currentPlayerName=player.getPlayerTurn();//getting current turn
 		JLabel lblPlayer = new JLabel("Current: "+currentPlayerName);
 		lblPlayer.setBounds(46, 107, 113, 23);
 		right.add(lblPlayer);
 		
-		String color=player.getPlayerColor(currentPlayerName);
+		String color=player.getPlayerColor(currentPlayerName);//getting the color of the player
 		JTextArea textArea = new JTextArea();
 		textArea.setBounds(169, 97, 34, 33);
 		switch (color) {
@@ -279,7 +279,7 @@ public class RGGameFrame extends JFrame{
 		int currentPlayerNumberOfCountries=game.getCurrentPlayerNumberOfCountries(currentPlayerName);
 		currentPlayerNumberOfCountries=game.getNumberOfArmiesDueTerritories(currentPlayerNumberOfCountries);
 		ArrayList<String> currentPlayerCountries=game.getCurrentPlayerCountries(currentPlayerName);
-		currentPlayerNumberOfCountries=currentPlayerNumberOfCountries+(game.getNumberOfArmiesDueContinents(currentPlayerCountries));
+		currentPlayerNumberOfCountries=currentPlayerNumberOfCountries+(game.getNumberOfArmiesDueContinents(currentPlayerCountries));//getting total armies available for the Reinforcement Phase
 		JTextArea textArea_1 = new JTextArea(String.valueOf(currentPlayerNumberOfCountries));
 		textArea_1.setBounds(169, 141, 34, 33);
 		right.add(textArea_1);
@@ -291,7 +291,7 @@ public class RGGameFrame extends JFrame{
 		
 		JComboBox comboBox = new JComboBox();
 		comboBox.setBounds(46, 214, 157, 23);
-		for(int k=0;k<currentPlayerCountries.size();k++)
+		for(int k=0;k<currentPlayerCountries.size();k++)//adding all the countries owned by the player to the combo
 		{
 			comboBox.addItem(currentPlayerCountries.get(k));
 		}
@@ -309,10 +309,10 @@ public class RGGameFrame extends JFrame{
 		btnPlace.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				int armiesLeft=0;
-				if(Integer.valueOf(textArea_2.getText())<=Integer.valueOf(textArea_1.getText()) && Integer.valueOf(textArea_2.getText())>0) 
+				if(Integer.valueOf(textArea_2.getText())<=Integer.valueOf(textArea_1.getText()) && Integer.valueOf(textArea_2.getText())>0)//player can place between one and the max number of armies available for Reinforcement Phase 
 				{
-					game.setNumberOfArmies(Integer.valueOf(textArea_2.getText()), comboBox.getSelectedItem().toString());
-					armiesLeft=(Integer.valueOf(textArea_1.getText()))-(Integer.valueOf(textArea_2.getText()));
+					game.setNumberOfArmies(Integer.valueOf(textArea_2.getText()), comboBox.getSelectedItem().toString());//adding armies to the country
+					armiesLeft=(Integer.valueOf(textArea_1.getText()))-(Integer.valueOf(textArea_2.getText()));//subtracting armies available - armies just placed
 					textArea_1.setText(String.valueOf(armiesLeft));
 					textArea_2.setText("0");
 					left.validate();
@@ -324,7 +324,7 @@ public class RGGameFrame extends JFrame{
 					JOptionPane.showMessageDialog(null, "Invalid number of armies", "Alert Message", JOptionPane.WARNING_MESSAGE);
 				}
 					
-				if(armiesLeft==0)
+				if(armiesLeft==0)//all armies placed? Go to the next Phase
 					fortificationPhase();
 			}
 				

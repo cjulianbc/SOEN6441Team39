@@ -47,9 +47,9 @@ public class RGMapGraph extends JComponent {
 	 * 
 	 * 1) Each country is represented by a textArea, and every textArea has a color.
 	 * 2) Each color represents a player.
-	 * 3) Countries are connected by lines. This represents their adjacencies.
-	 * 4) Inside each country there is a number that represents the number of armies placed in that country.
-	 * 5) Below every textArea that represents a country there is a textArea with the name of the country.
+	 * 3) Countries are connected by lines. Lines represent countries' adjacencies.
+	 * 4) Inside each country (textArea) there is a number that represents the number of armies placed in that country.
+	 * 5) Below every textArea that represents a country there is another textArea with the name of the country.
      *    
      *    
      * @param g object of a Graphic class 

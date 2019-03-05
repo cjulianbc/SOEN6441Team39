@@ -28,7 +28,7 @@ import javax.swing.border.EmptyBorder;
  * 2) Game: This menu contains the option: Play
  * 
  * The starting frame let the user to create a map from scratch. If the user wants to edit a map, he/she can open an existing map, and the map information
- * will show on the two textAreas. One textArea for the continents, asd the other for the countries and their adjacent countries.
+ * will show on the two textAreas. One textArea for the continents, and the other for the countries and their adjacent countries.
  * 
  * A map can be saved (button "Save Map") and validated (button "Validate"). Before saving, a map is validated.
  * 
@@ -117,7 +117,7 @@ public class RGMapEditorFrame extends JFrame {
 				
 				try {
 					
-				//The application only can save a valid map	
+				//The application can only save a valid map	
 				if(file.validateMap(textArea.getText(), textArea_1.getText())) {
 				
 					if(fileChooser.showSaveDialog(null)==JFileChooser.APPROVE_OPTION)
