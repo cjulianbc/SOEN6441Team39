@@ -29,6 +29,7 @@ public class RGFile {
 	/**
 	 * This method is used to create a 'File' object in order to access the 
 	 * content of a file (Risk® map).
+	 * 
 	 */
 	void openFile()
 	{

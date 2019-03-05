@@ -28,6 +28,10 @@ public class RGPlayersFrame extends JFrame {
 
 	/**
 	 * This constructor set the frame and add all the objects the user needs to create a set of players.
+	 * 
+	 * 
+	 * @param file File where the Risk® map was extracted from
+     * @param game Current game
      *   
 	 */
 	public RGPlayersFrame(RGFile file, RGGame game) {
