@@ -50,9 +50,9 @@ public class RGGameFrame extends JFrame{
 	 * created in the class RGMapGraph.
 	 * 
      *    
-     * @param File File where the Risk® map was extracted from
-     * @param Game Current game
-     * @param Current set of players
+     * @param file File where the Risk® map was extracted from
+     * @param game Current game
+     * @param player Current set of players
      *   
 	 */
 	RGGameFrame(RGFile file, RGGame game, RGPlayer player)

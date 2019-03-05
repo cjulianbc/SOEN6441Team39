@@ -21,6 +21,25 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.border.EmptyBorder;
 
+/**
+ * Class that creates the starting frame of the application. This frame contains a menu bar with 2 options: 
+ * 
+ * 1) Map Editor: This menu contains the options: Open and Exit.
+ * 2) Game: This menu contains the option: Play
+ * 
+ * The starting frame let the user to create a map from scratch. If the user wants to edit a map, he/she can open an existing map, and the map information
+ * will show on the two textAreas. One textArea for the continents, asd the other for the countries and their adjacent countries.
+ * 
+ * A map can be saved (button "Save Map") and validated (button "Validate"). Before saving, a map is validated.
+ * 
+ * The option Play will open the Players' frame
+ * 
+ * 
+ * @author Julian Beltran
+ * @version 1.0
+ * @since   1.0
+ *
+ */
 public class RGMapEditorFrame extends JFrame {
 
 	private JPanel contentPane;
@@ -29,7 +48,11 @@ public class RGMapEditorFrame extends JFrame {
 	private JFileChooser fileChooser=new JFileChooser();
 
 	/**
-	 * Launch the application.
+	 * Main method is used to create a new frame
+	 * 
+	 * 
+	 * @param args command-line arguments for this application
+	 * 
 	 */
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
@@ -45,7 +68,8 @@ public class RGMapEditorFrame extends JFrame {
 	}
 
 	/**
-	 * Create the frame.
+	 * This constructor set the frame and add all the objects a player needs to create, edit, validate, and save a Risk® map.
+     *   
 	 */
 	public RGMapEditorFrame() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -87,17 +111,20 @@ public class RGMapEditorFrame extends JFrame {
 		
 		JButton btnNewButton = new JButton("Save Map");
 		btnNewButton.setBounds(34, 450, 89, 23);
+		
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				
 				try {
+					
+				//The application only can save a valid map	
 				if(file.validateMap(textArea.getText(), textArea_1.getText())) {
 				
 					if(fileChooser.showSaveDialog(null)==JFileChooser.APPROVE_OPTION)
 					{	
 						File filename=fileChooser.getSelectedFile();
 						BufferedWriter outFile = new BufferedWriter(new FileWriter(filename));
-						outFile.write("[Continents]");
+						outFile.write("[Continents]"); 
 						
 						outFile.newLine();
 						textArea.write(outFile);
@@ -138,7 +165,7 @@ public class RGMapEditorFrame extends JFrame {
 		JMenuItem mntmOpen = new JMenuItem("Open");
 		mntmOpen.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				file.openFile();
+				file.openFile(); //opening an existing Risk® map
 				try {
 					StringBuilder content=file.getContent("[Continents]");
 					textArea.setText(String.valueOf(content));
@@ -153,6 +180,14 @@ public class RGMapEditorFrame extends JFrame {
 			}
 		});
 		mnMap.add(mntmOpen);
+		
+		JMenuItem mntmExit = new JMenuItem("Exit");
+		mntmExit.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				System.exit(0);
+			}
+		});
+		mnMap.add(mntmExit);
 		
 		JMenu mnPlayRisk = new JMenu("Game");
 		mnPlayRisk.addActionListener(new ActionListener() {
@@ -170,7 +205,7 @@ public class RGMapEditorFrame extends JFrame {
 					game.createGraph(content);
 					content=file.getContent("[Continents]");
 					game.createContinents(content);
-					RGPlayersFrame playersFrame=new RGPlayersFrame(file, game);
+					RGPlayersFrame playersFrame=new RGPlayersFrame(file, game); //creating a new frame where players can be set
 					playersFrame.setVisible(true);	
 				} catch (FileNotFoundException e1) {
 					// TODO Auto-generated catch block
@@ -179,8 +214,5 @@ public class RGMapEditorFrame extends JFrame {
 			}
 		});
 		mnPlayRisk.add(mntmPlay);
-		
-		JMenu mnExit = new JMenu("Exit");
-		menuBar.add(mnExit);
 	}
 }
