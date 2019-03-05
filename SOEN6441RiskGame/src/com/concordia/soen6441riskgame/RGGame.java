@@ -1,6 +1,7 @@
 package com.concordia.soen6441riskgame;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.Random;
 import java.util.Scanner;
 
@@ -423,21 +424,53 @@ public class RGGame {
 	 */
 	ArrayList<String> getCurrentPlayerAdjacentCountries(String player, String country)
 	{
-		ArrayList<String> currentPlayerAdjacentCountries = new ArrayList<String>();
-		ArrayList<String> currentPlayerCountries=getCurrentPlayerCountries(player);
-		ArrayList<String> adjacentcountries=getEdges(country);
-		
-		for (String adcountry : adjacentcountries) {
-			
-			for (String pcountry : currentPlayerCountries) {
-				if(adcountry.equals(pcountry)) {
-					System.out.println(adcountry);
-					currentPlayerAdjacentCountries.add(adcountry);}
-				
+		// currentPlayersLinkedCountries store all the counties and return at th end
+		ArrayList<String> currentPlayersLinkedCountries = new ArrayList<String>();
+
+		// queue used to mark if visited or not
+		LinkedList<String> queue = new LinkedList<String>();
+
+		queue.add(country);
+
+		while (!queue.isEmpty()) {
+			country = queue.poll();
+			ArrayList<String> adjacentcountries = getEdges(country);
+
+			for (int k = 0; k < adjacentcountries.size(); k++) {
+				String adcountry = adjacentcountries.get(k);
+
+				if (getPlayersName(adcountry).equals(player) && !currentPlayersLinkedCountries.contains(adcountry)) {
+
+					currentPlayersLinkedCountries.add(adcountry);
+
+					queue.add(adcountry);
+
+				}
+
 			}
-			
 		}
-		return currentPlayerAdjacentCountries;
+		return currentPlayersLinkedCountries;
 	}
-	
+
+	/**
+	 * 
+	 * @param country takes a country name
+	 * @return the owner of that country
+	 */
+	String getPlayersName(String country) {
+		String playerName = "";
+		ArrayList<String> vertex = countryItems.getVertex();
+		for (int k = 0; k < vertex.size(); k++) {
+
+			if (vertex.get(k).equals(country)) {
+				ArrayList<String> edges = countryItems.getEdges(vertex.get(k));// continentItems
+				playerName = edges.get(3);
+				break;
+
+			}
+		}
+
+		return playerName;
+
+	}
 }
