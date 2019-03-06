@@ -20,9 +20,9 @@ import javax.swing.border.LineBorder;
 
 
 /**
- * Class that creates a frame with two panels. On the left panel, players can see the Risk® map, and its current status.
- * On the right panel, players can interact with the application; in other words, where players can play Risk®. Players can play all the 
- * phases of the Risk® game on this frame.
+ * Class that creates a frame with two panels. On the left panel, players can see the Riskï¿½ map, and its current status.
+ * On the right panel, players can interact with the application; in other words, where players can play Riskï¿½. Players can play all the 
+ * phases of the Riskï¿½ game on this frame.
  * 
  * 
  * @author Julian Beltran, Nesar, Amit
@@ -50,7 +50,7 @@ public class RGGameFrame extends JFrame{
 	 * created in the class RGMapGraph.
 	 * 
      *    
-     * @param file File where the Risk® map was extracted from
+     * @param file File where the Riskï¿½ map was extracted from
      * @param game Current game
      * @param player Current set of players
      *   
@@ -224,7 +224,7 @@ public class RGGameFrame extends JFrame{
 	
 	
 	/**
-	 * This method is used to create the Reinforcement Phase. This method draws all the components of this phase on the right panel of the frame.
+	 * This method is used to create the Reinforcement Phase. From this method the player is given the fortification phase.This method draws all the components of this phase on the right panel of the frame.
 	 * 
      *    
 	 */
