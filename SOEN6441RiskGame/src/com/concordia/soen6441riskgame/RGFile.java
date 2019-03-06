@@ -188,13 +188,13 @@ public class RGFile {
 			String [] countriesDetails=countriesArray[i].split(",");
 			try 
 			{
-				if(countriesDetails[i].equals(""))
+				if (countriesArray[i].equals(""))
 					continue;
 				Integer test=Integer.parseInt(countriesDetails[1]);
 				Integer test2=Integer.parseInt(countriesDetails[2]);
 				for(int j=i+1;j<countriesArray.length;j++) 
 				{
-					if(countriesDetails[j].equals(""))
+					if (countriesArray[j].equals(""))
 						continue;
 					String [] countriesDetailsValidate=countriesArray[j].split(",");
 					Integer test3=Integer.parseInt(countriesDetailsValidate[1]);
