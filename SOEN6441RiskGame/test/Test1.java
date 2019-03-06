@@ -5,7 +5,17 @@ import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-
+/**
+ * 
+ * This is a test class containing cases to validate the game map
+ * 
+ *
+ * 
+ * @author Aamrean, Abhishek.
+ * @version 1.0
+ * @since   1.0
+ *
+ */
 class Test1 {
 	
 	String continents,countries;
