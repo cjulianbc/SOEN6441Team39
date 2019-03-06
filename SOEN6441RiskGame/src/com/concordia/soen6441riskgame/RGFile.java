@@ -10,10 +10,10 @@ import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 
 /**
- * Class to manage the file where a Risk® map is stored. The map format implemented for 
- * this application is similar to the “Conquest” game (http://www.windowsgames.co.uk/conquest.html). 
+ * Class to manage the file where a Riskï¿½ map is stored. The map format implemented for 
+ * this application is similar to the ï¿½Conquestï¿½ game (http://www.windowsgames.co.uk/conquest.html). 
  * 
- * The “Conquest” format has three tags: [Map], [Continents], and [Territories]. This application only uses 
+ * The ï¿½Conquestï¿½ format has three tags: [Map], [Continents], and [Territories]. This application only uses 
  * the tags [Continents] and [Territories].
  *
  * 
@@ -26,7 +26,7 @@ import javax.swing.JOptionPane;
 public class RGFile {
 	
 	/**
-	 * Created to store the file where a Risk® map is stored.
+	 * Created to store the file where a Riskï¿½ map is stored.
 	 */
 	private File file;
 	/**
@@ -37,7 +37,7 @@ public class RGFile {
 	
 	/**
 	 * This method is used to create a 'File' object in order to access the 
-	 * content of a file (Risk® map).
+	 * content of a file (Riskï¿½ map).
 	 * 
 	 */
 	void openFile()
@@ -95,7 +95,7 @@ public class RGFile {
 	}
 	
 	/**
-	 * This method is used to validate the correctness of a Risk® map.
+	 * This method is used to validate the correctness of a Riskï¿½ map.
 	 * 
 	 * Validations: 
 	 * 
@@ -188,10 +188,14 @@ public class RGFile {
 			String [] countriesDetails=countriesArray[i].split(",");
 			try 
 			{
+				if(countriesDetails[i].equals(""))
+					continue;
 				Integer test=Integer.parseInt(countriesDetails[1]);
 				Integer test2=Integer.parseInt(countriesDetails[2]);
 				for(int j=i+1;j<countriesArray.length;j++) 
 				{
+					if(countriesDetails[j].equals(""))
+						continue;
 					String [] countriesDetailsValidate=countriesArray[j].split(",");
 					Integer test3=Integer.parseInt(countriesDetailsValidate[1]);
 					Integer test4=Integer.parseInt(countriesDetailsValidate[2]);
@@ -258,7 +262,7 @@ public class RGFile {
 	
 	/**
 	 * This method is used to validate if the graph is connected. The complete
-	 * Risk® map must be connected.
+	 * Riskï¿½ map must be connected.
 	 * 
 	 * 
 	 * @param adjacencyMap Set of the map adjacencies.
