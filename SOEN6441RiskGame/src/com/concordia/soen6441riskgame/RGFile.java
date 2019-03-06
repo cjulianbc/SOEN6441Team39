@@ -7,6 +7,7 @@ import java.util.HashMap;
 import java.util.Scanner;
 
 import javax.swing.JFileChooser;
+import javax.swing.JOptionPane;
 
 /**
  * Class to manage the file where a Risk® map is stored. The map format implemented for 
@@ -119,11 +120,13 @@ public class RGFile {
 		if(continents.equals("")) 
 		{
 			System.out.println("Please enter continent details");
+			JOptionPane.showMessageDialog(null, "Please enter continent details", "Alert Message", JOptionPane.WARNING_MESSAGE);
 			return false;
 		}
 		if(countries.equals("")) 
 		{
 			System.out.println("Please enter country details");
+			JOptionPane.showMessageDialog(null, "Please enter country details", "Alert Message", JOptionPane.WARNING_MESSAGE);
 			return false;
 		}
 		String[] continentsArray=continents.split("\n");
@@ -141,6 +144,7 @@ public class RGFile {
 				if(continentsArray[i].split("=").length!=2) 	
 				{
 					System.out.println("The file is incorrect. Please check '=' in the continents");
+					JOptionPane.showMessageDialog(null, "The file is incorrect. Please check '=' in the continents", "Alert Message", JOptionPane.WARNING_MESSAGE);
 					flag=false;
 					return flag;
 				}
@@ -154,6 +158,7 @@ public class RGFile {
 		catch (NumberFormatException s) 
 		{
 			System.out.println("Bonus army should be number");
+			JOptionPane.showMessageDialog(null, "Bonus army should be number", "Alert Message", JOptionPane.WARNING_MESSAGE);
 			return false;
 		}
 		for (String country : countriesArray) 
@@ -165,6 +170,7 @@ public class RGFile {
 			if(countryDetails.length<5) 
 			{
 				System.out.println("Please enter country details in correct format");
+				JOptionPane.showMessageDialog(null, "Please enter country details in correct format", "Alert Message", JOptionPane.WARNING_MESSAGE);
 				return false;
 			}
 			countriesList.add(countryDetails[0]);
@@ -192,6 +198,7 @@ public class RGFile {
 					if(countriesDetails[1].equals(countriesDetailsValidate[1]) && countriesDetails[2].equals(countriesDetailsValidate[2])) 
 					{
 						System.out.println("Two countries cannot have the same coordiantes");
+						JOptionPane.showMessageDialog(null, "Two countries cannot have the same coordiantes", "Alert Message", JOptionPane.WARNING_MESSAGE);
 						return false;
 					}
 				}
@@ -199,19 +206,22 @@ public class RGFile {
 			catch(NumberFormatException s) 
 			{
 				System.out.println("Coordinates should be numbers");
+				JOptionPane.showMessageDialog(null, "Coordinates should be numbers", "Alert Message", JOptionPane.WARNING_MESSAGE);
 				return false;
 			}
 		}
 		if(continentsList.size()!=continentsListValidate.size()) 
 		{
 			System.out.println("The number of continents is invalid");
+			JOptionPane.showMessageDialog(null, "The number of continents is invalid", "Alert Message", JOptionPane.WARNING_MESSAGE);
 			return false;
 		}
 		for (String continent : continentsList) 
 		{
 			if(!continentsListValidate.contains(continent)) 
 			{
-				System.out.println("The names of continents is invalid!! Please check");
+				System.out.println("The names of continents are invalid!! Please check");
+				JOptionPane.showMessageDialog(null, "The names of continents are invalid!! Please check", "Alert Message", JOptionPane.WARNING_MESSAGE);
 				return false;
 			}
 		}
@@ -222,6 +232,7 @@ public class RGFile {
 				if(!countriesList.contains(country)) 
 				{
 					System.out.println("The country in the adjacency list is not created");
+					JOptionPane.showMessageDialog(null, "The country in the adjacency list is not created", "Alert Message", JOptionPane.WARNING_MESSAGE);
 					return false;
 				}
 			}
@@ -234,6 +245,7 @@ public class RGFile {
 				if(!adjacencyMap.get(adjacentCountry).contains(countrykey)) 
 				{
 					System.out.println("The Connections should be both ways for countries");
+					JOptionPane.showMessageDialog(null, "The Connections should be both ways for countries", "Alert Message", JOptionPane.WARNING_MESSAGE);
 					return false;
 				}
 			}
@@ -271,10 +283,12 @@ public class RGFile {
 		}
 		 if(flag==1) {
 			 System.out.println("Graph is connected");
+			 JOptionPane.showMessageDialog(null, "Graph is connected", "Alert Message", JOptionPane.WARNING_MESSAGE);
 			 return true;
 		 }
 		 else {
 			 System.out.println("Graph is not connected");
+			 JOptionPane.showMessageDialog(null, "Graph is not connected", "Alert Message", JOptionPane.WARNING_MESSAGE);
 			 return false; 
 		 }
 			 
