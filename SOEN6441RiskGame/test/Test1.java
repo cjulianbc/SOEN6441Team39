@@ -1,8 +1,9 @@
 package com.concordia.soen6441riskgame;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 /**
@@ -20,6 +21,7 @@ class Test1 {
 	
 	String continents,countries;
 	RGFile file;
+	RGGame game = new RGGame();
 	@BeforeEach public void initialize() {
 		file=new RGFile();
 		}
@@ -144,7 +146,10 @@ class Test1 {
 		  "Canada,69,69,North America,USA";
 		  assertFalse(file.validateMap(continents, countries)); }
 	 
-	 
+	 @Test
+		void testGetNumberOfArmiesDueTerritories() {
+			assertEquals(game.getNumberOfArmiesDueTerritories(10), 3);
+		}
 	 
 
 }
