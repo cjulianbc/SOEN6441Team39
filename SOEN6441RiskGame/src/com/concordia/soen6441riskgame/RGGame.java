@@ -1,9 +1,13 @@
 package com.concordia.soen6441riskgame;
 
+import java.awt.Color;
 import java.util.ArrayList;
 import java.util.LinkedList;
+import java.util.Observable;
 import java.util.Random;
 import java.util.Scanner;
+
+import javax.swing.JOptionPane;
 
 /**
  * Class to store and control the information of a game. Only one game is
@@ -15,7 +19,7 @@ import java.util.Scanner;
  * @since 1.0
  *
  */
-public class RGGame {
+public class RGGame extends Observable{
 
 	/**
 	 * Created to store the Graph's data structure.
@@ -32,6 +36,52 @@ public class RGGame {
 	 */
 	private RGGraph continentItems = new RGGraph();
 
+	/**
+	 * Created to store the current game (only one game is possible)
+	 */
+	private static RGGame game=new RGGame();
+	
+	/**
+	 * Created to store the current game (only one game is possible)
+	 */
+	private String phase="";
+	
+	/**
+	 * This method is used to assure only one instance (only one game) is created
+	 * 
+	 * 
+	 * @return Current game.
+	 * 
+	 */
+	static RGGame getGame()
+	{
+		if (game==null)
+			game=new RGGame();
+		return game;
+	}
+	
+	/**
+	 * This method is used to set the current phase of the game.
+	 * 
+	 * 
+	 */
+	void setPhase(String phase)
+	{
+		this.phase=phase;
+	}
+	
+	/**
+	 * This method returns the current phase of the game for a specific moment.
+	 * 
+	 * 
+	 * @return Current phase of the game for a specific moment.
+	 * 
+	 */
+	String getPhase()
+	{
+		return phase;
+	}
+	
 	/**
 	 * This method is used to create two data structures:
 	 * 
@@ -401,12 +451,13 @@ public class RGGame {
 	 *         
 	 */
 	ArrayList<String> getCurrentPlayerAdjacentCountries(String player, String country) {
-		// currentPlayersLinkedCountries store all the counties and return at th end
+		// currentPlayersLinkedCountries store all the counties and return at the end
 		ArrayList<String> currentPlayersLinkedCountries = new ArrayList<String>();
 
 		// queue used to mark if visited or not
 		LinkedList<String> queue = new LinkedList<String>();
 
+		String originalCountry=country;
 		queue.add(country);
 
 		while (!queue.isEmpty()) {
@@ -416,7 +467,7 @@ public class RGGame {
 			for (int k = 0; k < adjacentcountries.size(); k++) {
 				String adcountry = adjacentcountries.get(k);
 
-				if (getPlayersName(adcountry).equals(player) && !currentPlayersLinkedCountries.contains(adcountry)) {
+				if (getPlayersName(adcountry).equals(player) && !currentPlayersLinkedCountries.contains(adcountry) && !adcountry.contentEquals(originalCountry)) {
 
 					currentPlayersLinkedCountries.add(adcountry);
 
@@ -452,5 +503,120 @@ public class RGGame {
 
 		return playerName;
 
+	}
+	
+	/**
+	 * This method is used to set initial values for the current game:
+	 * 
+	 *  1) Set the number of armies for a player in the Setup Phase
+	 *  2) Allocate zero cards for every player.
+	 *  3) Allocate zero armies for every player for Reinforcement Phase.
+	 * 
+	 * 
+	 */
+	void initializePanels()
+	{
+		RGPlayer players=RGPlayer.getPlayers();
+		players.allocateArmies(game);//allocating armies to every player in players' data structure
+		players.initializeCards();//allocating zero cards for each player
+		players.initializeArmiesForReinforcementPhase();//allocating zero armies for every player
+		setChanged();
+		notifyObservers(this);
+	}
+	
+	/**
+	 * This method is used to process the actions taken by a player during the Setup Phase:
+	 * 
+	 * @param selectedCountry Selected country from list.
+	 * @param currentPlayerName Name of the player.
+	 * 
+	 * 
+	 */
+	void setupPhase(String selectedCountry, String currentPlayerName)
+	{
+		
+		RGPlayer players=RGPlayer.getPlayers();
+		((RGGame) game).setNumberOfArmies(1, selectedCountry);//adding one army to the map
+		players.setNumberOfArmiesSetup(-1, currentPlayerName);//subtracting one army from the players' data structure for the Setup Phase
+		players.setNextTurn();//next player has to place an army	
+		
+		int sumArmiesSetup=players.getSumArmiesSetup();
+
+		if(sumArmiesSetup==0)//is it the end of the Setup Phase? Go to the next Phase 
+		{
+			players.initializeTurn();
+			game.setPhase("Reinforcement");
+		}
+		else
+		{
+			currentPlayerName=players.getPlayerTurn();//getting current turn
+			String currentArmies=players.getCurrentArmies(currentPlayerName);
+			while (currentArmies.equals("0")==true)//the player already placed all his/her armies; next turn must be set
+			{
+				players.setNextTurn();	
+				currentPlayerName=players.getPlayerTurn();
+				currentArmies=players.getCurrentArmies(currentPlayerName);//getting armies available to place 
+			}
+		}
+		
+		setChanged();
+		notifyObservers(this);
+	}
+	
+	/**
+	 * This method is used to process the actions taken by a player during the Reinforcement Phase:
+	 * 
+	 * @param selectedCountry Selected country from list.
+	 * @param currentPlayerName Name of the player.
+	 * @param armiesToPlace Number of armies to place in a given country.
+	 * 
+	 * 
+	 */
+	void reinforcementPhase(String selectedCountry, String currentPlayerName, String armiesToPlace)
+	{
+		
+		RGPlayer players=RGPlayer.getPlayers();
+		String totalArmiesAvailable=players.getNumberOfArmiesForReinforcement(currentPlayerName);
+		game.setNumberOfArmies(Integer.valueOf(armiesToPlace), selectedCountry);//adding armies to the country
+		players.subtractArmiesForReinforcementPhase(currentPlayerName,armiesToPlace);
+		totalArmiesAvailable=players.getNumberOfArmiesForReinforcement(currentPlayerName);
+			
+		if(totalArmiesAvailable.contentEquals("0"))//all armies placed? Go to the next Phase
+			game.setPhase("Fortification");
+		
+		setChanged();
+		notifyObservers(this);
+	}
+	
+	/**
+	 * This method is used to process the actions taken by a player during the Fortification Phase:
+	 * 
+	 * @param countryFrom Origin country.
+	 * @param countryTo Destination country.
+	 * @param armiesToMove Number of armies to move.
+	 * 
+	 * 
+	 */
+	void fortificationPhase(String countryFrom, String countryTo, int armiesToMove)
+	{
+		RGPlayer players=RGPlayer.getPlayers();
+		game.setNumberOfArmies(armiesToMove, countryFrom);
+		game.setNumberOfArmies(-armiesToMove, countryTo);
+		players.setNextTurn();
+		game.setPhase("Reinforcement");
+		setChanged();
+		notifyObservers(this);
+	}
+	
+	/**
+	 * This method is used to skip the Fortification Phase due to the player does not want to move any army.
+	 * 
+	 * 
+	 */
+	void fortificationPhaseNoMovements()
+	{
+		game.setPhase("Reinforcement");
+		setChanged();
+		notifyObservers(this);
 	}
 }

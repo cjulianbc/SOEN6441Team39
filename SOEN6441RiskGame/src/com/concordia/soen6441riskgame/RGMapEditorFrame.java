@@ -49,11 +49,11 @@ public class RGMapEditorFrame extends JFrame {
 	/**
 	 * Created to store the file where a Risk® map is stored.
 	 */
-	private RGFile file=new RGFile();
+	private RGFile file=RGFile.getGameFile();
 	/**
 	 * Created to store the information of the current game.
 	 */
-	private RGGame game=new RGGame();
+	private RGGame game=RGGame.getGame();
 	/**
 	 * Created to show the window where the user can open or save a file.
 	 */
@@ -218,7 +218,7 @@ public class RGMapEditorFrame extends JFrame {
 					game.createGraph(content);
 					content=file.getContent("[Continents]");
 					game.createContinents(content);
-					RGPlayersFrame playersFrame=new RGPlayersFrame(file, game); //creating a new frame where players can be created
+					RGPlayersFrame playersFrame=new RGPlayersFrame(); //creating a new frame where players can be created
 					playersFrame.setVisible(true);	
 				} catch (FileNotFoundException e1) {
 					// TODO Auto-generated catch block
@@ -228,4 +228,6 @@ public class RGMapEditorFrame extends JFrame {
 		});
 		mnPlayRisk.add(mntmPlay);
 	}
+	
+	
 }

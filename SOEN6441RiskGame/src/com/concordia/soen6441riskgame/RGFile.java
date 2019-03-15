@@ -10,10 +10,10 @@ import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 
 /**
- * Class to manage the file where a Risk� map is stored. The map format implemented for 
- * this application is similar to the �Conquest� game (http://www.windowsgames.co.uk/conquest.html). 
+ * Class to manage the file where a Risk map is stored. The map format implemented for 
+ * this application is similar to the Conquest game (http://www.windowsgames.co.uk/conquest.html). 
  * 
- * The �Conquest� format has three tags: [Map], [Continents], and [Territories]. This application only uses 
+ * The Conquest format has three tags: [Map], [Continents], and [Territories]. This application only uses 
  * the tags [Continents] and [Territories].
  *
  * 
@@ -26,18 +26,37 @@ import javax.swing.JOptionPane;
 public class RGFile {
 	
 	/**
-	 * Created to store the file where a Risk� map is stored.
+	 * Created to store the file where a Risk map is stored.
 	 */
 	private File file;
+	
 	/**
 	 * Created to show the window where the user can open or save a file.
 	 */
 	private JFileChooser fileChooser=new JFileChooser();
 	
+	/**
+	 * Created to store the file where the map is stored.
+	 */
+	private static RGFile gameFile=new RGFile();
+	
+	/**
+	 * This method is used to assure only one instance (only one file) is created.
+	 * 
+	 * 
+	 * @return File where map is stored.
+	 * 
+	 */
+	static RGFile getGameFile()
+	{
+		if (gameFile==null)
+			gameFile=new RGFile();
+		return gameFile;
+	}
 	
 	/**
 	 * This method is used to create a 'File' object in order to access the 
-	 * content of a file (Risk� map).
+	 * content of a file (Risk map).
 	 * 
 	 */
 	void openFile()
@@ -95,7 +114,7 @@ public class RGFile {
 	}
 	
 	/**
-	 * This method is used to validate the correctness of a Risk� map.
+	 * This method is used to validate the correctness of a Risk map.
 	 * 
 	 * Validations: 
 	 * 
@@ -262,7 +281,7 @@ public class RGFile {
 	
 	/**
 	 * This method is used to validate if the graph is connected. The complete
-	 * Risk� map must be connected.
+	 * Risk map must be connected.
 	 * 
 	 * 
 	 * @param adjacencyMap Set of the map adjacencies.
@@ -315,6 +334,35 @@ public class RGFile {
 				DFS(adjacent,visited,adjacencyMap);
 			}
 		}
+	}
+	
+	/**
+	 * This method is used to extract the name of file where the image of the map is stored.
+	 * 
+	 * 
+	 * @return Name of file where the image of the map is stored.
+	 * 
+	 */
+	StringBuilder getMapImageFileName(String label) throws FileNotFoundException
+	{
+		StringBuilder content=new StringBuilder();
+		Scanner buffer=new Scanner(file);
+		String actualLine;
+		String endChar;
+		while(buffer.hasNext())//file is not empty
+		{
+			actualLine=buffer.nextLine();
+			if(actualLine.equals(label))//searching tag
+			{
+				actualLine=buffer.nextLine();
+				actualLine=buffer.nextLine();
+				actualLine=actualLine.substring(actualLine.lastIndexOf("=") + 1);
+				content.append(actualLine);
+				break;
+			}
+		}
+		buffer.close();
+		return content;
 	}
 	
 }

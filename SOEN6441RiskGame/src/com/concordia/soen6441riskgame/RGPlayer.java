@@ -1,31 +1,30 @@
 package com.concordia.soen6441riskgame;
 
 import java.util.ArrayList;
+import java.util.Observable;
 
-
-/**
- * Class to store and control the information of a set of players --between 2 and 6 players per game.
- * 
- * 
- * @author Julian Beltran
- * @version 1.0
- * @since   1.0
- *
- */
-public class RGPlayer{
+public class RGPlayer extends Observable {
 	
 	/**
 	 * Created to store the names of the players.
 	 */
 	private ArrayList<String> setOfPlayers = new ArrayList<String>();
+	
 	/**
 	 * Created to store the Players' data structure.
 	 */
 	private RGGraph playerItems=new RGGraph();
+	
 	/**
 	 * Created to store the six colors: Green, magenta, cyan, pink, orange, and blue.
 	 */
 	private ArrayList<String> colors = new ArrayList<String>();
+	
+	/**
+	 * Created to store the set of players of the current game
+	 */
+	private static RGPlayer players=new RGPlayer();
+	
 	
 	
 	/**
@@ -41,6 +40,20 @@ public class RGPlayer{
 		colors.add("pink");
 		colors.add("orange");
 		colors.add("blue");	
+	}
+	
+	/**
+	 * This method is used to assure only one instance (only one set of players) is created
+	 * 
+	 * 
+	 * @return Set of players.
+	 * 
+	 */
+	static RGPlayer getPlayers()
+	{
+		if (players==null)
+			players=new RGPlayer();
+		return players;
 	}
 	
 	/**
@@ -166,6 +179,36 @@ public class RGPlayer{
 		{
 			numberOfArmiesAlreadyPlaced=game.getCurrentPlayerNumberOfCountries(vertex.get(k));//one army is already placed in every country
 			playerItems.addEdge(vertex.get(k), String.valueOf(numberOfArmiesSetup-numberOfArmiesAlreadyPlaced));//armies already placed must be subtracted
+		}
+	}
+	
+	/**
+	 * This method is used to allocate zero cards for every player for the Attack Phase 
+	 * 
+     *   
+	 */	
+	void initializeCards()
+	{
+		ArrayList<String> vertex = playerItems.getVertex();
+		for(int k=0;k<vertex.size();k++)//for each player
+		{
+			playerItems.addEdge(vertex.get(k), "0");//initializing in zero number of cards type A
+			playerItems.addEdge(vertex.get(k), "0");//initializing in zero number of cards type B
+			playerItems.addEdge(vertex.get(k), "0");//initializing in zero number of cards type C
+		}
+	}
+	
+	/**
+	 * This method is used to allocate zero armies for every player for the Reinforcement Phase 
+	 * 
+     *   
+	 */	
+	void initializeArmiesForReinforcementPhase()
+	{
+		ArrayList<String> vertex = playerItems.getVertex();
+		for(int k=0;k<vertex.size();k++)//for each player
+		{
+			playerItems.addEdge(vertex.get(k), "0");//initializing in zero number of armies for Reinforcement Phase
 		}
 	}
 	
@@ -308,5 +351,57 @@ public class RGPlayer{
 			System.out.println("");
 		}
 	}
+	
+	/**
+	 * This method is used to get the total of armies for Reinforcement Phase stored in position 6 of Players' data structure. 
+	 * 
+	 * 
+	 * @param currentPlayerName Name of the player.
+	 * @return Total of armies for Reinforcement Phase
+	 * 
+	 */	
+	String getNumberOfArmiesForReinforcement(String currentPlayerName)
+	{
+		ArrayList<String> edges = playerItems.getEdges(currentPlayerName);
+		String numberOfArmiesForReinforcement=edges.get(6);
+		return numberOfArmiesForReinforcement;
+	}
+	
+	/**
+	 * This method is used to set the total of armies for Reinforcement Phase given a player. 
+	 * 
+	 * 
+	 * @param currentPlayerName Name of the player.
+	 * 
+	 */	
+	void setNumberOfArmiesForReinforcement(String currentPlayerName)
+	{
+		RGGame game=RGGame.getGame();
 		
+		int currentPlayerNumberOfCountries=game.getCurrentPlayerNumberOfCountries(currentPlayerName);
+		currentPlayerNumberOfCountries=game.getNumberOfArmiesDueTerritories(currentPlayerNumberOfCountries);
+		ArrayList<String> currentPlayerCountries=game.getCurrentPlayerCountries(currentPlayerName);
+		currentPlayerNumberOfCountries=currentPlayerNumberOfCountries+game.getNumberOfArmiesDueContinents(currentPlayerCountries);
+		ArrayList<String> edges = playerItems.getEdges(currentPlayerName);
+		edges.set(6, String.valueOf(currentPlayerNumberOfCountries));
+		playerItems.setEdge(currentPlayerName, edges);
+	}
+	
+	/**
+	 * This method is used to subtract the number of armies just placed in a country from the total number of armies available to place. 
+	 * 
+	 * 
+	 * @param currentPlayerName Name of the player.
+	 * @param armiesToPlace Number of armies to place.
+	 * 
+	 */	
+	void subtractArmiesForReinforcementPhase(String currentPlayerName, String armiesToPlace)
+	{
+		ArrayList<String> edges = playerItems.getEdges(currentPlayerName);
+		String currentValueOfArmies=edges.get(6);
+		int newValueOfArmies=(Integer.valueOf(currentValueOfArmies))-(Integer.valueOf(armiesToPlace));
+		edges.set(6, String.valueOf(newValueOfArmies));
+		playerItems.setEdge(currentPlayerName, edges);
+	}
+
 }

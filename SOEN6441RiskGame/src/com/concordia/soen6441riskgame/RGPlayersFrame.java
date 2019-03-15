@@ -28,15 +28,15 @@ public class RGPlayersFrame extends JFrame {
 	/**
 	 * Created to store the information of the current game.
 	 */
-	private RGGame game;
+	private RGGame game=RGGame.getGame();
 	/**
 	 * Created to store the file where a Risk® map is stored.
 	 */
-	private RGFile file;
+	private RGFile file=RGFile.getGameFile();
 	/**
 	 * Created to store the set of players of the current game.
 	 */
-	private RGPlayer players=new RGPlayer();
+	private RGPlayer players=RGPlayer.getPlayers();
 
 	/**
 	 * This constructor set the frame and add all the objects the user needs to create a set of players.
@@ -46,7 +46,7 @@ public class RGPlayersFrame extends JFrame {
      * @param game Current game.
      *   
 	 */
-	public RGPlayersFrame(RGFile file, RGGame game) {
+	public RGPlayersFrame() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 404, 245);
 		contentPane = new JPanel();
@@ -76,7 +76,8 @@ public class RGPlayersFrame extends JFrame {
 				if(players.validateNumberOfPLayers(textArea.getText()))
 				{
 					game.assignCountries(players.setPlayers(textArea.getText()));//giving each country an random owner(player)
-					RGGameFrame gameFrame=new RGGameFrame(file, game, players);//creating the game frame where players can play Risk® game
+					RGGameFrame gameFrame=new RGGameFrame();//creating the game frame where players can play Risk® game
+					gameFrame.setVisible(true);
 				}
 				else
 					JOptionPane.showMessageDialog(null, "Invalid number of players. Must be between 2 and 6", "Alert Message", JOptionPane.WARNING_MESSAGE);
@@ -86,4 +87,5 @@ public class RGPlayersFrame extends JFrame {
 		btnGo.setBounds(148, 142, 89, 23);
 		contentPane.add(btnGo);
 	}
+	
 }

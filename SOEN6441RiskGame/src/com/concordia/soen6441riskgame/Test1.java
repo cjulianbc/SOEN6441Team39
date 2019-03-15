@@ -20,10 +20,10 @@ import org.junit.jupiter.api.Test;
 class Test1 {
 	
 	String continents,countries;
-	RGFile file;
-	RGGame game = new RGGame();
+	RGFileOLD file;
+	RGGameOLD game = new RGGameOLD();
 	@BeforeEach public void initialize() {
-		file=new RGFile();
+		file=new RGFileOLD();
 		}
 	
 	@Test
