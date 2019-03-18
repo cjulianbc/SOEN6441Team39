@@ -213,6 +213,23 @@ public class RGPlayer extends Observable {
 	}
 	
 	/**
+	 * This method is used to create positions 7, 8, 9, 10 in players' data structure to store the actions performed by players during play time 
+	 * 
+     *   
+	 */	
+	void initializePerformedActionsForEachPhase()
+	{
+		ArrayList<String> vertex = playerItems.getVertex();
+		for(int k=0;k<vertex.size();k++)//for each player
+		{
+			playerItems.addEdge(vertex.get(k), "Attack Phase:");//Actions performed in Attack Phase
+			playerItems.addEdge(vertex.get(k), "Setup Phase:");//Actions performed in Setup Phase
+			playerItems.addEdge(vertex.get(k), "Reinforcemen Phase:");//Actions performed in Reinforcement Phase
+			playerItems.addEdge(vertex.get(k), "Fortification Phase:");//Actions performed in Fortification Phase
+		}
+	}
+	
+	/**
 	 * This method is used to get the current turn in the game.  
 	 * 
      *    
@@ -403,5 +420,34 @@ public class RGPlayer extends Observable {
 		edges.set(6, String.valueOf(newValueOfArmies));
 		playerItems.setEdge(currentPlayerName, edges);
 	}
-
+	
+	/**
+	 * This method is used to store the actions performed during play time in the players' data structure for Attack Phase given a player name.
+	 * 
+	 * 
+	 * @param actionPerformed List of action performed in Attack Phase.
+	 * @param currentPlayerName Name of the player.
+	 * 
+	 */	
+	void setAttackActions(StringBuilder actionPerformed, String currentPlayerName)
+	{
+		ArrayList<String> edges = playerItems.getEdges(currentPlayerName);
+		String currentActions=edges.get(7);
+		currentActions=currentActions+actionPerformed;
+		edges.set(7, currentActions);
+		playerItems.setEdge(currentPlayerName, edges);
+	}
+	
+	/**
+	 * This method is used to obtain the list of actions performed by any user in AttackPhase.
+	 * 
+	 * 
+	 * @return List of actions.
+	 * 
+	 */	
+	String getActionsAttackPhase(String currentPlayerName)
+	{
+		ArrayList<String> edges = playerItems.getEdges(currentPlayerName);
+		return edges.get(7);
+	}
 }

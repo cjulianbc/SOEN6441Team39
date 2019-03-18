@@ -61,12 +61,12 @@ public class RGMapView extends JPanel implements Observer{
 		//Converting BMP image to PNG image
 		BufferedImage input_image = null; 
 		try {
-			input_image = ImageIO.read(new File("C://Users//cesar//Documents//"+content));
+			input_image = ImageIO.read(new File(String.valueOf("C:\\Users\\cesar\\Documents\\"+content)));
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} //read bmp into input_image object
-		File outputfile = new File("C://Users//cesar//Documents//Map.png"); //create new outputfile object
+		File outputfile = new File("C:\\Users\\cesar\\Documents\\Map.png"); //create new outputfile object
 		try {
 			ImageIO.write(input_image, "PNG", outputfile);
 		} catch (IOException e) {
@@ -78,7 +78,7 @@ public class RGMapView extends JPanel implements Observer{
 		JLabel lblNewLabel = new JLabel();
 		lblNewLabel.setVerticalTextPosition(SwingConstants.TOP);
 		lblNewLabel.setVerticalAlignment(SwingConstants.TOP);
-	    lblNewLabel.setIcon(new ImageIcon("C://Users//cesar//Documents//Map.png"));
+	    lblNewLabel.setIcon(new ImageIcon("C:\\Users\\cesar\\Documents\\Map.png"));
 	    lblNewLabel.setBounds(0, 0, 900, 640);
 	    add(lblNewLabel);
 	    lblNewLabel.setLayout(null);

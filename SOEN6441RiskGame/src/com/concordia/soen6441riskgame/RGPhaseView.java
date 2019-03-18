@@ -2,6 +2,7 @@ package com.concordia.soen6441riskgame;
 
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
@@ -10,11 +11,14 @@ import java.util.Observer;
 
 import javax.swing.JButton;
 import javax.swing.JComboBox;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
+import javax.swing.border.EmptyBorder;
 
 public class RGPhaseView extends JPanel implements Observer{
 	
@@ -199,6 +203,189 @@ public class RGPhaseView extends JPanel implements Observer{
 			});
 			btnPlace.setBounds(46, 248, 73, 23);
 			add(btnPlace);
+		}
+		
+		if(phase.contentEquals("Attack"))
+		{
+			JLabel lblSetupPhase = new JLabel("ATTACK PHASE");
+			lblSetupPhase.setBounds(134, 40, 141, 33);
+			add(lblSetupPhase);
+			
+			String currentPlayerName=players.getPlayerTurn();//getting current turn
+			JLabel lblCurrent = new JLabel("Current: "+currentPlayerName);
+			lblCurrent.setBounds(87, 95, 113, 23);
+			add(lblCurrent);
+			
+			String color=players.getPlayerColor(currentPlayerName);//getting the color of the player
+			JTextArea textArea_1 = new JTextArea();
+			textArea_1.setBounds(205, 84, 34, 33);
+			switch (color) {
+			case "green":
+				textArea_1.setBackground(Color.green);
+			    break;
+			case "magenta":
+				textArea_1.setBackground(Color.magenta);
+			    break;
+			case "cyan":
+				textArea_1.setBackground(Color.cyan); 
+			    break;
+			case "pink":
+				textArea_1.setBackground(Color.pink);
+			    break;
+			case "orange":
+				textArea_1.setBackground(Color.orange); 
+			    break;
+			case "blue":
+				textArea_1.setBackground(Color.blue); 
+			    break;
+			default:
+			    break;
+			}
+			add(textArea_1);
+			
+			JLabel lblPlayer = new JLabel("Attacker");
+			lblPlayer.setBounds(76, 138, 113, 23);
+			add(lblPlayer);
+			
+			JLabel lblCountry = new JLabel("From:");
+			lblCountry.setBounds(33, 172, 106, 23);
+			
+			JLabel lblDefender = new JLabel("Defender");
+			lblDefender.setBounds(233, 138, 113, 23);
+			add(lblDefender);
+			
+			JLabel lblTo = new JLabel("To:");
+			lblTo.setBounds(196, 172, 106, 23);
+			add(lblTo);
+			add(lblCountry);
+			
+			ArrayList<String> countriesAttacker = new ArrayList<String>();
+			countriesAttacker=((RGGame) game).getCountriesAttacker(currentPlayerName);
+			JComboBox comboBox = new JComboBox();
+			JComboBox comboBox_1 = new JComboBox();
+			JComboBox comboBox_2 = new JComboBox();
+			JComboBox comboBox_3 = new JComboBox();
+			comboBox.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					ArrayList<String> countriesDefender = new ArrayList<String>();
+					String selectedCountry=comboBox.getSelectedItem().toString();
+					System.out.println(selectedCountry);
+					countriesDefender=((RGGame) game).getCountriesDefender(selectedCountry,currentPlayerName);
+					
+					comboBox_1.addActionListener(new ActionListener() {
+						public void actionPerformed(ActionEvent e) {
+							if(comboBox_1.getItemCount()!=0)
+							{
+								ArrayList<String> diceDefender = new ArrayList<String>();
+								String selectedCountryDefender=comboBox_1.getSelectedItem().toString();
+								diceDefender=((RGGame) game).getDiceDefender(selectedCountryDefender);
+								
+								JLabel label = new JLabel("Dice:");
+								label.setBounds(196, 227, 106, 23);
+								add(label);
+								
+								comboBox_3.removeAllItems(); 
+								for(int k=0;k<diceDefender.size();k++)//adding all the countries available to attack
+								{
+									comboBox_3.addItem(diceDefender.get(k));
+								}
+							}
+						}
+					});
+					
+					comboBox_1.removeAllItems(); 
+					for(int k=0;k<countriesDefender.size();k++)//adding all the countries available to attack
+					{
+						comboBox_1.addItem(countriesDefender.get(k));
+					}
+					
+					//Setting dice to attack
+					ArrayList<String> diceAttacker = new ArrayList<String>();
+					diceAttacker=((RGGame) game).getDiceAttacker(selectedCountry);
+					
+					JLabel lblDice = new JLabel("Dice:");
+					lblDice.setBounds(33, 227, 106, 23);
+					add(lblDice);
+					
+					comboBox_2.removeAllItems(); 
+					for(int k=0;k<diceAttacker.size();k++)//adding all the countries available to attack
+					{
+						comboBox_2.addItem(diceAttacker.get(k));
+					}
+				}
+			});
+			comboBox.setBounds(33, 193, 127, 23);
+			comboBox_1.setBounds(194, 193, 127, 23);
+			comboBox_2.setBounds(33, 248, 127, 23);
+			comboBox_3.setBounds(194, 248, 127, 23);
+			for(int k=0;k<countriesAttacker.size();k++)//adding all the countries where to attack from (minimum two army in each country)
+			{
+				comboBox.addItem(countriesAttacker.get(k));
+			}
+			add(comboBox);
+			add(comboBox_1);
+			add(comboBox_2);
+			add(comboBox_3);
+			
+			JButton btnPlace = new JButton("All Out!");
+			JButton btnEnd = new JButton("End");
+			JButton btnOneBattle = new JButton("One Battle");
+			btnPlace.setFont(new Font("Tahoma", Font.PLAIN, 9));
+			btnPlace.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+				}
+			});
+			btnPlace.setBounds(46, 293, 73, 23);
+			add(btnPlace);
+			
+			btnOneBattle.setFont(new Font("Tahoma", Font.PLAIN, 9));
+			btnOneBattle.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					String selectedCountryAttacker=comboBox.getSelectedItem().toString();
+					String selectedCountryDefender=comboBox_1.getSelectedItem().toString();
+					String selectedDiceAttacker=comboBox_2.getSelectedItem().toString();
+					String selectedDiceDefender=comboBox_3.getSelectedItem().toString();
+					((RGGame) game).attackPhase(selectedCountryAttacker,selectedCountryDefender,selectedDiceAttacker,selectedDiceDefender,currentPlayerName);
+					if (((RGGame) game).getAttackStatus().contentEquals("end")) 
+					{
+						btnPlace.disable();
+						btnOneBattle.disable();
+						btnEnd.disable();	
+					}
+					if (((RGGame) game).getAttackStatus().contentEquals("move")) 
+					{
+						
+					}
+				}
+			});
+			btnOneBattle.setBounds(134, 293, 85, 23);
+			add(btnOneBattle);
+			
+			btnEnd.setFont(new Font("Tahoma", Font.PLAIN, 9));
+			btnEnd.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					((RGGame) game).attackPhaseNoMovements();
+				}
+			});
+			btnEnd.setBounds(233, 293, 73, 23);
+			add(btnEnd);
+			
+			JLabel lblActions = new JLabel("Actions:");
+			lblActions.setBounds(33, 330, 106, 23);
+			add(lblActions);
+			
+			JScrollPane scrollPane = new JScrollPane();
+			scrollPane.setBounds(33, 352, 290, 95);
+			add(scrollPane);
+			
+			String actionsAttackPhase=players.getActionsAttackPhase(currentPlayerName);
+			JTextArea textArea = new JTextArea();
+			textArea.setFont(new Font("Monospaced", Font.PLAIN, 10));
+			//textArea.setBounds(33, 352, 290, 102);
+			textArea.setText(actionsAttackPhase);
+			scrollPane.setViewportView(textArea);
+			//add(textArea);
+			
 		}
 		
 		if(phase.contentEquals("Fortification"))

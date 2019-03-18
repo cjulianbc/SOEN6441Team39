@@ -2,6 +2,7 @@ package com.concordia.soen6441riskgame;
 
 import java.awt.Color;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.LinkedList;
 import java.util.Observable;
 import java.util.Random;
@@ -37,14 +38,24 @@ public class RGGame extends Observable{
 	private RGGraph continentItems = new RGGraph();
 
 	/**
-	 * Created to store the current game (only one game is possible)
+	 * Created to store the set of cards players use in Reinforcement Phase
+	 */
+	private RGGraph cardItems = new RGGraph();
+	
+	/**
+	 * Created to store the current game (only one game is possible).
 	 */
 	private static RGGame game=new RGGame();
 	
 	/**
-	 * Created to store the current game (only one game is possible)
+	 * Created to store the current game (only one game is possible).
 	 */
 	private String phase="";
+	
+	/**
+	 * Created to store the status of the Attack Phase for a given player.
+	 */
+	private String attackStatus="";
 	
 	/**
 	 * This method is used to assure only one instance (only one game) is created
@@ -347,12 +358,15 @@ public class RGGame extends Observable{
 	 * @return List of countries a player owns.
 	 * 
 	 */
-	ArrayList<String> getCurrentPlayerCountries(String player) {
+	ArrayList<String> getCurrentPlayerCountries(String player) 
+	{
 		ArrayList<String> currentPlayerCountries = new ArrayList<String>();
 		ArrayList<String> vertex = countryItems.getVertex();
-		for (int k = 0; k < vertex.size(); k++) {
+		for (int k = 0; k < vertex.size(); k++) 
+		{
 			ArrayList<String> edges = countryItems.getEdges(vertex.get(k));
-			if (edges.get(3) == player) {
+			if (edges.get(3) == player) 
+			{
 				currentPlayerCountries.add(vertex.get(k));
 			}
 		}
@@ -367,7 +381,8 @@ public class RGGame extends Observable{
 	 * @param vertex Name of the country.
 	 * 
 	 */
-	void setNumberOfArmies(int numberOfArmiesToAdd, String vertex) {
+	void setNumberOfArmies(int numberOfArmiesToAdd, String vertex) 
+	{
 		ArrayList<String> edges = countryItems.getEdges(vertex);
 		String finalNumberOfArmiesToAdd = String.valueOf(Integer.valueOf(edges.get(4)) + numberOfArmiesToAdd);
 		edges.set(4, finalNumberOfArmiesToAdd);
@@ -384,12 +399,15 @@ public class RGGame extends Observable{
 	 * @return Number of countries a player owns.
 	 * 
 	 */
-	int getCurrentPlayerNumberOfCountries(String player) {
+	int getCurrentPlayerNumberOfCountries(String player) 
+	{
 		int currentPlayerNumberOfCountries = 0;
 		ArrayList<String> vertex = countryItems.getVertex();
-		for (int k = 0; k < vertex.size(); k++) {
+		for (int k = 0; k < vertex.size(); k++) 
+		{
 			ArrayList<String> edges = countryItems.getEdges(vertex.get(k));
-			if (edges.get(3) == player) {
+			if (edges.get(3) == player) 
+			{
 				currentPlayerNumberOfCountries++;
 			}
 		}
@@ -406,7 +424,8 @@ public class RGGame extends Observable{
 	 * @return Number of armies a player has the right to place on his/her countries.
 	 * 
 	 */
-	int getNumberOfArmiesDueTerritories(int currentPlayerNumberOfCountries) {
+	int getNumberOfArmiesDueTerritories(int currentPlayerNumberOfCountries) 
+	{
 		if (currentPlayerNumberOfCountries >= 9)
 			currentPlayerNumberOfCountries = currentPlayerNumberOfCountries / 3;
 		else
@@ -424,15 +443,18 @@ public class RGGame extends Observable{
 	 * @return Number of armies a player has the right to place on his/her countries.
 	 * 
 	 */
-	int getNumberOfArmiesDueContinents(ArrayList<String> currentPlayerCountries) {
+	int getNumberOfArmiesDueContinents(ArrayList<String> currentPlayerCountries) 
+	{
 		int numberOfArmiesDueContinents = 0;
 		int numberOfArmiesDueContinentsAux;
 		ArrayList<String> vertex = continentItems.getVertex();
-		for (int k = 0; k < vertex.size(); k++) {
+		for (int k = 0; k < vertex.size(); k++) 
+		{
 			ArrayList<String> edges = continentItems.getEdges(vertex.get(k));
 			numberOfArmiesDueContinentsAux = (Integer.valueOf(edges.get(0)));
 			edges.remove(0);
-			if (currentPlayerCountries.containsAll(edges)) {
+			if (currentPlayerCountries.containsAll(edges)) 
+			{
 				System.out.println(vertex.get(k));
 				System.out.println(numberOfArmiesDueContinentsAux);
 				numberOfArmiesDueContinents = numberOfArmiesDueContinents + numberOfArmiesDueContinentsAux;
@@ -508,28 +530,74 @@ public class RGGame extends Observable{
 	/**
 	 * This method is used to set initial values for the current game:
 	 * 
+	 * 
 	 *  1) Set the number of armies for a player in the Setup Phase
 	 *  2) Allocate zero cards for every player.
 	 *  3) Allocate zero armies for every player for Reinforcement Phase.
 	 * 
-	 * 
 	 */
-	void initializePanels()
+	void initializeGame()
 	{
 		RGPlayer players=RGPlayer.getPlayers();
-		players.allocateArmies(game);//allocating armies to every player in players' data structure
+		players.allocateArmies(game);//allocating available armies for every player to place in Setup Phase
 		players.initializeCards();//allocating zero cards for each player
+		initializeSetOfCards();
 		players.initializeArmiesForReinforcementPhase();//allocating zero armies for every player
+		players.initializePerformedActionsForEachPhase();//creating positions in players' data structure to store actions performed by players during play time
 		setChanged();
 		notifyObservers(this);
 	}
 	
 	/**
+	 * This method is used to create the set of cards in the cardItems' data structure. A random type is assigned for every country in position 0. 
+	 * 
+	 * Types: 
+	 * 1) Infantry represented by number (0).
+	 * 2) Cavalry: Represented by number (1).
+	 * 3) Artillery: Represented by number (2).
+	 * 4) Wild: Represented by number (3).
+	 * 
+	 * In position 1, it will be stored the owner of the card.
+	 * 
+	 */
+	void initializeSetOfCards()
+	{
+		ArrayList<String> vertex = countryItems.getVertex();
+		ArrayList<Integer> cardType = new ArrayList<Integer>();
+		int randomCardType, i=0;
+		
+		//adding cards, and card's type for every country
+		for (int k = 0; k < vertex.size(); k++) 
+		{
+			cardItems.addVertex(vertex.get(k));
+			if (i <= 2) 
+			{
+				cardItems.addEdge(vertex.get(k), String.valueOf(i));
+				cardItems.addEdge(vertex.get(k), "");
+				if (i == 2)
+					i = 0;
+				else
+					i++;
+			}
+			
+		}
+		
+		//adding Wild cards
+		cardItems.addVertex("Wild 1");
+		cardItems.addEdge("Wild 1", "3");
+		cardItems.addEdge("Wild 1", "");
+		cardItems.addVertex("Wild 2");
+		cardItems.addEdge("Wild 2", "3");
+		cardItems.addEdge("Wild 2", "");
+	}
+	
+	
+	/**
 	 * This method is used to process the actions taken by a player during the Setup Phase:
+	 * 
 	 * 
 	 * @param selectedCountry Selected country from list.
 	 * @param currentPlayerName Name of the player.
-	 * 
 	 * 
 	 */
 	void setupPhase(String selectedCountry, String currentPlayerName)
@@ -566,10 +634,10 @@ public class RGGame extends Observable{
 	/**
 	 * This method is used to process the actions taken by a player during the Reinforcement Phase:
 	 * 
+	 * 
 	 * @param selectedCountry Selected country from list.
 	 * @param currentPlayerName Name of the player.
 	 * @param armiesToPlace Number of armies to place in a given country.
-	 * 
 	 * 
 	 */
 	void reinforcementPhase(String selectedCountry, String currentPlayerName, String armiesToPlace)
@@ -582,7 +650,7 @@ public class RGGame extends Observable{
 		totalArmiesAvailable=players.getNumberOfArmiesForReinforcement(currentPlayerName);
 			
 		if(totalArmiesAvailable.contentEquals("0"))//all armies placed? Go to the next Phase
-			game.setPhase("Fortification");
+			game.setPhase("Attack");
 		
 		setChanged();
 		notifyObservers(this);
@@ -591,10 +659,10 @@ public class RGGame extends Observable{
 	/**
 	 * This method is used to process the actions taken by a player during the Fortification Phase:
 	 * 
+	 * 
 	 * @param countryFrom Origin country.
 	 * @param countryTo Destination country.
 	 * @param armiesToMove Number of armies to move.
-	 * 
 	 * 
 	 */
 	void fortificationPhase(String countryFrom, String countryTo, int armiesToMove)
@@ -619,4 +687,287 @@ public class RGGame extends Observable{
 		setChanged();
 		notifyObservers(this);
 	}
+	
+	/**
+	 * This method is used to obtain the list of countries a given player can use to attack.
+	 * 
+	 * 
+	 * @return List of countries a given player can use to attack.
+	 * 
+	 */
+	ArrayList<String> getCountriesAttacker(String currentPlayerName)
+	{
+		ArrayList<String> countriesAttacker = new ArrayList<String>();
+		ArrayList<String> vertex = countryItems.getVertex();
+		for (int k = 0; k < vertex.size(); k++) {
+			ArrayList<String> edges = countryItems.getEdges(vertex.get(k));
+			if ((edges.get(3)).contentEquals(currentPlayerName) && (Integer.valueOf(edges.get(4)))>=2) 
+			{
+				ArrayList<String> countriesDefender = new ArrayList<String>();
+				countriesDefender=getCountriesDefender(vertex.get(k),currentPlayerName);
+				if (!countriesDefender.isEmpty())
+					countriesAttacker.add(vertex.get(k));
+			}
+		}
+		return countriesAttacker;
+	}
+	
+	/**
+	 * This method is used to obtain the list of countries a given player can attack.
+	 * 
+	 * 
+	 * @return List of countries a given player can attack.
+	 * 
+	 */
+	ArrayList<String> getCountriesDefender(String selectedCountry, String currentPlayerName)
+	{
+		ArrayList<String> countriesDefender = new ArrayList<String>();
+		ArrayList<String> edgesGraph = graph.getEdges(selectedCountry);
+		ArrayList<String> edgesCountryItems;
+		String currentCountry;
+		for (int k = 0; k < edgesGraph.size(); k++) 
+		{
+			currentCountry=edgesGraph.get(k);
+			edgesCountryItems = countryItems.getEdges(currentCountry);
+			
+			if (!edgesCountryItems.get(3).contentEquals(currentPlayerName)) 
+			{
+				countriesDefender.add(currentCountry);
+			}
+		}
+		return countriesDefender;
+	}
+	
+	/**
+	 * This method is used to obtain the list with the number of dice a player can use to attack.
+	 * 
+	 * 
+	 * @return List with the number of dice a player can use to attack.
+	 * 
+	 */
+	ArrayList<String> getDiceAttacker(String selectedCountry)
+	{
+		ArrayList<String> diceAttacker = new ArrayList<String>();
+		ArrayList<String> edges = countryItems.getEdges(selectedCountry);
+		int numberOfArmy=Integer.valueOf(edges.get(4));
+		if (numberOfArmy==2)
+		{
+			diceAttacker.add("1");
+		}
+		if (numberOfArmy==3)
+		{
+			diceAttacker.add("1");
+			diceAttacker.add("2");
+		}
+		if (numberOfArmy>=4)
+		{
+			diceAttacker.add("1");
+			diceAttacker.add("2");
+			diceAttacker.add("3");
+		}
+		return diceAttacker;
+	}
+	
+	/**
+	 * This method is used to obtain the list with the number of dice a player can use to attack.
+	 * 
+	 * 
+	 * @return List with the number of dice a player can use to attack.
+	 * 
+	 */
+	ArrayList<String> getDiceDefender(String selectedCountry)
+	{
+		ArrayList<String> diceDefender = new ArrayList<String>();
+		ArrayList<String> edges = countryItems.getEdges(selectedCountry);
+		int numberOfArmy=Integer.valueOf(edges.get(4));
+		if (numberOfArmy==1)
+		{
+			diceDefender.add("1");
+		}
+		if (numberOfArmy>=2)
+		{
+			diceDefender.add("1");
+			diceDefender.add("2");
+		}
+		return diceDefender;
+	}
+	
+	/**
+	 * This method is used to process the actions taken by a player during the Attack Phase:
+	 * 
+	 * 
+	 * @param selectedCountryAttacker Attacking country
+	 * @param selectedCountryDefender Attacked country.
+	 * @param selectedDiceAttacker Number of dice to attack.
+	 * @param selectedDiceDefender Number of dice to defend.
+	 * @return Message that contains information about the winner and the loser
+	 * 
+	 */
+	void attackPhase(String selectedCountryAttacker,String selectedCountryDefender,String selectedDiceAttacker,String selectedDiceDefender,String currentPlayerName)
+	{
+		 StringBuilder actionPerformed=new StringBuilder();
+		 int randomNumberOneToSix;
+		 ArrayList<Integer> setAttackerDiceNumbers = new ArrayList<Integer>();
+		 ArrayList<Integer> setDefenderDiceNumbers = new ArrayList<Integer>();
+		 
+		 //Tossing dice for attacker
+		 actionPerformed.append("\n");
+		 actionPerformed.append("-Dice results for attacker (");
+		 for (int k = 0; k < Integer.valueOf(selectedDiceAttacker); k++)
+		 {
+			 randomNumberOneToSix = new Random().nextInt(6);
+			 randomNumberOneToSix++;
+			 setAttackerDiceNumbers.add(randomNumberOneToSix);
+			 actionPerformed.append("["+randomNumberOneToSix+"]");
+		 }
+		 actionPerformed.append(")");
+		 actionPerformed.append("\n");
+		 
+		//Tossing dice for defender
+		 actionPerformed.append("-Dice results for defender (");
+		 for (int k = 0; k < Integer.valueOf(selectedDiceDefender); k++)
+		 {
+			 randomNumberOneToSix = new Random().nextInt(6);
+			 randomNumberOneToSix++;
+			 setDefenderDiceNumbers.add(randomNumberOneToSix);
+			 actionPerformed.append("["+randomNumberOneToSix+"]");
+		 }
+		 actionPerformed.append(")");
+		 actionPerformed.append("\n");
+		 
+		 System.out.println(setAttackerDiceNumbers);
+		 System.out.println(setDefenderDiceNumbers);
+		 
+		 //Battle begins
+		 int highestDiceAttacker;
+		 int highestDiceDefender;
+		 while(!setAttackerDiceNumbers.isEmpty() && !setDefenderDiceNumbers.isEmpty())
+		 {
+			 highestDiceAttacker=Collections.max(setAttackerDiceNumbers);
+			 highestDiceDefender=Collections.max(setDefenderDiceNumbers);
+			 if(highestDiceAttacker>highestDiceDefender)
+			 {
+				 actionPerformed.append("-Attacker wins (Attacker:"+highestDiceAttacker+" vs Defender:"+highestDiceDefender+")");
+				 actionPerformed.append("\n");
+				 game.setNumberOfArmies(-1, selectedCountryDefender);
+			 }
+			 else if(highestDiceAttacker<=highestDiceDefender)
+			 {
+				 actionPerformed.append("-Defender wins (Attacker:"+highestDiceAttacker+" vs Defender:"+highestDiceDefender+")");
+				 actionPerformed.append("\n");
+				 game.setNumberOfArmies(-1, selectedCountryAttacker);
+			 }
+			 int highestDiceAttackerIndex = setAttackerDiceNumbers.indexOf(highestDiceAttacker);
+			 setAttackerDiceNumbers.remove(highestDiceAttackerIndex);
+			 int highestDiceDefenderIndex = setDefenderDiceNumbers.indexOf(highestDiceDefender);
+			 setDefenderDiceNumbers.remove(highestDiceDefenderIndex);
+		 }
+		 
+		 //Country captured?
+		 int numberOfCountries=Integer.valueOf(game.getArmies(selectedCountryDefender));
+		 if(numberOfCountries==0)//country was captured
+		 {
+			 //setting owner and moving armies (Risk rule: "Move at least as many armies as the number of dice winner rolled in the last battle")
+			 ArrayList<String> edges = countryItems.getEdges(selectedCountryDefender);
+			 edges.set(3, currentPlayerName);
+			 countryItems.setEdge(selectedCountryDefender, edges);
+			 game.setNumberOfArmies((Integer.valueOf(selectedDiceAttacker))*(-1), selectedCountryAttacker);
+			 game.setNumberOfArmies(Integer.valueOf(selectedDiceAttacker), selectedCountryDefender);
+			 actionPerformed.append("-"+selectedDiceAttacker+" army already moved to your new captured territory");
+			 actionPerformed.append("\n");
+			 
+			 //informing who won and who lost
+			 actionPerformed.append("-"+selectedCountryDefender+" was captured by "+currentPlayerName+" from "+selectedCountryAttacker);
+			 actionPerformed.append("\n");
+			 
+			 //attacker won a card
+			 ArrayList<String> vertex = cardItems.getVertex();
+			 int randomCard = new Random().nextInt(vertex.size());
+			 edges = cardItems.getEdges(vertex.get(randomCard));
+			 
+			 while(!edges.get(1).contentEquals(""))
+			 {
+				 randomCard = new Random().nextInt(vertex.size());
+				 edges = cardItems.getEdges(vertex.get(randomCard));
+			 }
+			 edges.set(1, currentPlayerName);
+			 cardItems.setEdge(vertex.get(randomCard), edges);
+			 if(edges.get(0).contentEquals("0")) 
+			 {
+				 actionPerformed.append("-"+currentPlayerName+" won an Infantry ("+vertex.get(randomCard)+") card");
+				 actionPerformed.append("\n");
+			 }
+			 if(edges.get(0).contentEquals("1")) 
+			 {
+				 actionPerformed.append("-"+currentPlayerName+" won a Cavalry ("+vertex.get(randomCard)+") card");
+				 actionPerformed.append("\n");
+			 }
+			 if(edges.get(0).contentEquals("2")) 
+			 {
+				 actionPerformed.append("-"+currentPlayerName+" won an Artillery ("+vertex.get(randomCard)+") card");
+				 actionPerformed.append("\n");
+			 }
+			 if(edges.get(0).contentEquals("3")) 
+			 {
+				 actionPerformed.append("-"+currentPlayerName+" won a Wild card :)");
+				 actionPerformed.append("\n");
+			 } 
+			 
+			//printing cards data structure
+			ArrayList<String> verti = cardItems.getVertex();
+			for (int j = 0; j < verti.size(); j++) {
+				System.out.print(verti.get(j) + " -> ");
+				ArrayList<String> edgi = cardItems.getEdges(verti.get(j));
+				for (int k = 0; k < edgi.size(); k++) {
+					System.out.print(edgi.get(k) + " -> ");
+				}
+				System.out.println("");
+			}
+			
+			//current player controls all territories?
+			vertex = countryItems.getVertex();
+			int totalCountriesOwned=0;
+			for (int k = 0; k < vertex.size(); k++) 
+			{
+				edges = countryItems.getEdges(vertex.get(k));// continentItems
+				if(edges.get(3).contentEquals(currentPlayerName))
+					totalCountriesOwned++;//counting countries owned by current player
+			}
+		 	if(totalCountriesOwned==Integer.valueOf(vertex.size()))
+		 	{
+		 		actionPerformed.append("-This is the end. You won!");
+				actionPerformed.append("\n");
+				game.attackStatus="end";
+		 	}
+		 	else
+		 		game.attackStatus="move";
+			
+		 }
+		  
+		 //Storing performed actions 
+		 RGPlayer players=RGPlayer.getPlayers();
+		 players.setAttackActions(actionPerformed, currentPlayerName);
+		 setChanged();
+		 notifyObservers(this);
+
+	}
+	
+	/**
+	 * This method is used to skip the Attack Phase due to the player does not want to attack.
+	 * 
+	 * 
+	 */
+	void attackPhaseNoMovements()
+	{
+		game.setPhase("Fortification");
+		setChanged();
+		notifyObservers(this);
+	}
+	
+	String getAttackStatus()
+	{
+		return game.attackStatus;
+	}
+	
+	
 }

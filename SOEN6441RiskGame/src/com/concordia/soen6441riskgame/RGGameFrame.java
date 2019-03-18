@@ -31,14 +31,14 @@ public class RGGameFrame extends JFrame {
 	
 		//creating Phase View Panel. It is the upper right panel on the screen
 		JPanel phaseViewPanel = new JPanel();
-		phaseViewPanel.setBounds(905, 0, 400, 452);
+		phaseViewPanel.setBounds(905, 0, 400, 550);
 		contentPane.add(phaseViewPanel);
 		phaseViewPanel.setVisible(true);
 		phaseViewPanel.add(phaseView);
 		
 		//creating Players World Domination View panel. It is the upper right panel on the screen
 		JPanel dominationViewPanel = new JPanel();
-		dominationViewPanel.setBounds(905, 452, 400, 193);
+		dominationViewPanel.setBounds(905, 550, 400, 95);
 		contentPane.add(dominationViewPanel);
 		dominationViewPanel.setVisible(true);
 		dominationViewPanel.add(dominationView);
@@ -62,7 +62,7 @@ public class RGGameFrame extends JFrame {
 		
 		//allocating armies to every player in players' data structure
 		game.setPhase("Setup");
-		game.initializePanels();
+		game.initializeGame();
 		
 		
 		
