@@ -352,9 +352,10 @@ public class RGPhaseView extends JPanel implements Observer{
 						btnOneBattle.disable();
 						btnEnd.disable();	
 					}
-					if (((RGGame) game).getAttackStatus().contentEquals("move")) 
+					else if (((RGGame) game).getAttackStatus().contentEquals("move")) 
 					{
-						
+						RGCapturedTerritoryFrame frame = new RGCapturedTerritoryFrame(selectedCountryAttacker,selectedCountryDefender,currentPlayerName);
+						frame.setVisible(true);
 					}
 				}
 			});
@@ -378,13 +379,19 @@ public class RGPhaseView extends JPanel implements Observer{
 			scrollPane.setBounds(33, 352, 290, 95);
 			add(scrollPane);
 			
-			String actionsAttackPhase=players.getActionsAttackPhase(currentPlayerName);
+			String actionsAttackPhase=players.getActionsPerformed(currentPlayerName, "attack");
 			JTextArea textArea = new JTextArea();
 			textArea.setFont(new Font("Monospaced", Font.PLAIN, 10));
 			//textArea.setBounds(33, 352, 290, 102);
 			textArea.setText(actionsAttackPhase);
 			scrollPane.setViewportView(textArea);
 			//add(textArea);
+			
+			//No more territories to attack?
+			if(countriesAttacker.size()==0 && !((RGGame) game).getAttackStatus().contentEquals("move"))
+			{
+				((RGGame) game).attackPhaseNoAttackers(currentPlayerName);
+			}
 			
 		}
 		

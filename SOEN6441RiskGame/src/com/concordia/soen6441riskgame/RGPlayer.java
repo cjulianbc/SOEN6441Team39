@@ -222,10 +222,10 @@ public class RGPlayer extends Observable {
 		ArrayList<String> vertex = playerItems.getVertex();
 		for(int k=0;k<vertex.size();k++)//for each player
 		{
-			playerItems.addEdge(vertex.get(k), "Attack Phase:");//Actions performed in Attack Phase
-			playerItems.addEdge(vertex.get(k), "Setup Phase:");//Actions performed in Setup Phase
-			playerItems.addEdge(vertex.get(k), "Reinforcemen Phase:");//Actions performed in Reinforcement Phase
-			playerItems.addEdge(vertex.get(k), "Fortification Phase:");//Actions performed in Fortification Phase
+			playerItems.addEdge(vertex.get(k), "Attack Phase:  \n");//Actions performed in Attack Phase
+			playerItems.addEdge(vertex.get(k), "Setup Phase: \n");//Actions performed in Setup Phase
+			playerItems.addEdge(vertex.get(k), "Reinforcemen Phase: \n");//Actions performed in Reinforcement Phase
+			playerItems.addEdge(vertex.get(k), "Fortification Phase: \n");//Actions performed in Fortification Phase
 		}
 	}
 	
@@ -427,27 +427,38 @@ public class RGPlayer extends Observable {
 	 * 
 	 * @param actionPerformed List of action performed in Attack Phase.
 	 * @param currentPlayerName Name of the player.
+	 * @param phase Current phase.
 	 * 
 	 */	
-	void setAttackActions(StringBuilder actionPerformed, String currentPlayerName)
+	void setActionsPerformed(StringBuilder actionPerformed, String currentPlayerName, String phase)
 	{
-		ArrayList<String> edges = playerItems.getEdges(currentPlayerName);
-		String currentActions=edges.get(7);
-		currentActions=currentActions+actionPerformed;
-		edges.set(7, currentActions);
-		playerItems.setEdge(currentPlayerName, edges);
+		if (phase.contentEquals("attack"))
+		{
+			ArrayList<String> edges = playerItems.getEdges(currentPlayerName);
+			String currentActions=edges.get(7);
+			currentActions=currentActions+actionPerformed;
+			edges.set(7, currentActions);
+			playerItems.setEdge(currentPlayerName, edges);
+		}
 	}
 	
 	/**
 	 * This method is used to obtain the list of actions performed by any user in AttackPhase.
 	 * 
 	 * 
+	 * @param currentPlayerName Name of the player.
+	 * @param phase Current phase.
 	 * @return List of actions.
 	 * 
 	 */	
-	String getActionsAttackPhase(String currentPlayerName)
+	String getActionsPerformed(String currentPlayerName, String phase)
 	{
-		ArrayList<String> edges = playerItems.getEdges(currentPlayerName);
-		return edges.get(7);
+		String actionsPerformed="";
+		if (phase.contentEquals("attack"))
+		{
+			ArrayList<String> edges = playerItems.getEdges(currentPlayerName);
+			actionsPerformed=edges.get(7);
+		}
+		return actionsPerformed;
 	}
 }

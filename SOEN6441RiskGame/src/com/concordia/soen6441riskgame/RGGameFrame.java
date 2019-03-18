@@ -9,6 +9,19 @@ import java.awt.event.MouseEvent;
 import javax.swing.JTextArea;
 import java.awt.event.MouseAdapter;
 
+/**
+ * Class that creates a frame with three panels: 
+ * 
+ * 1) On the left panel, players can see the Risk map.
+ * 2) On the right-north panel, players can see the Phase View where can interact with the application.
+ * 3) On the right-south panel, players can see the World DOmination View.
+ * 
+ * 
+ * @author Julian Beltran
+ * @version 1.0
+ * @since   1.0
+ *
+ */
 public class RGGameFrame extends JFrame {
 
 	private JPanel contentPane;
@@ -17,7 +30,9 @@ public class RGGameFrame extends JFrame {
 	private RGDominationView dominationView=new RGDominationView();
 
 	/**
-	 * Create the frame.
+	 * This constructor creates the main frame (window) and the three panels (left, right-north, and right-south).
+	 * 
+     *   
 	 */
 	public RGGameFrame() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -63,8 +78,5 @@ public class RGGameFrame extends JFrame {
 		//allocating armies to every player in players' data structure
 		game.setPhase("Setup");
 		game.initializeGame();
-		
-		
-		
 	}
 }

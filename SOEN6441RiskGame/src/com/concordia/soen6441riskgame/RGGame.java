@@ -58,6 +58,11 @@ public class RGGame extends Observable{
 	private String attackStatus="";
 	
 	/**
+	 * Created to know if a card was given to a player to avoid giving another card during the same turn for the same player.
+	 */
+	private boolean cardGiven=false;
+	
+	/**
 	 * This method is used to assure only one instance (only one game) is created
 	 * 
 	 * 
@@ -650,8 +655,11 @@ public class RGGame extends Observable{
 		totalArmiesAvailable=players.getNumberOfArmiesForReinforcement(currentPlayerName);
 			
 		if(totalArmiesAvailable.contentEquals("0"))//all armies placed? Go to the next Phase
+		{
 			game.setPhase("Attack");
-		
+			cardGiven=false;
+		}
+
 		setChanged();
 		notifyObservers(this);
 	}
@@ -683,6 +691,8 @@ public class RGGame extends Observable{
 	 */
 	void fortificationPhaseNoMovements()
 	{
+		RGPlayer players=RGPlayer.getPlayers();
+		players.setNextTurn();
 		game.setPhase("Reinforcement");
 		setChanged();
 		notifyObservers(this);
@@ -809,9 +819,12 @@ public class RGGame extends Observable{
 		 int randomNumberOneToSix;
 		 ArrayList<Integer> setAttackerDiceNumbers = new ArrayList<Integer>();
 		 ArrayList<Integer> setDefenderDiceNumbers = new ArrayList<Integer>();
+		 RGPlayer players=RGPlayer.getPlayers();
+		 
+		 //getting stored actions for Attack Phase
+		 actionPerformed.append(players.getActionsPerformed(currentPlayerName, "attack"));
 		 
 		 //Tossing dice for attacker
-		 actionPerformed.append("\n");
 		 actionPerformed.append("-Dice results for attacker (");
 		 for (int k = 0; k < Integer.valueOf(selectedDiceAttacker); k++)
 		 {
@@ -881,37 +894,41 @@ public class RGGame extends Observable{
 			 actionPerformed.append("\n");
 			 
 			 //attacker won a card
-			 ArrayList<String> vertex = cardItems.getVertex();
-			 int randomCard = new Random().nextInt(vertex.size());
-			 edges = cardItems.getEdges(vertex.get(randomCard));
-			 
-			 while(!edges.get(1).contentEquals(""))
+			 if(cardGiven==false)
 			 {
-				 randomCard = new Random().nextInt(vertex.size());
+				 ArrayList<String> vertex = cardItems.getVertex();
+				 int randomCard = new Random().nextInt(vertex.size());
 				 edges = cardItems.getEdges(vertex.get(randomCard));
+				 
+				 while(!edges.get(1).contentEquals(""))
+				 {
+					 randomCard = new Random().nextInt(vertex.size());
+					 edges = cardItems.getEdges(vertex.get(randomCard));
+				 }
+				 edges.set(1, currentPlayerName);
+				 cardItems.setEdge(vertex.get(randomCard), edges);
+				 if(edges.get(0).contentEquals("0")) 
+				 {
+					 actionPerformed.append("-"+currentPlayerName+" won an Infantry ("+vertex.get(randomCard)+") card");
+					 actionPerformed.append("\n");
+				 }
+				 if(edges.get(0).contentEquals("1")) 
+				 {
+					 actionPerformed.append("-"+currentPlayerName+" won a Cavalry ("+vertex.get(randomCard)+") card");
+					 actionPerformed.append("\n");
+				 }
+				 if(edges.get(0).contentEquals("2")) 
+				 {
+					 actionPerformed.append("-"+currentPlayerName+" won an Artillery ("+vertex.get(randomCard)+") card");
+					 actionPerformed.append("\n");
+				 }
+				 if(edges.get(0).contentEquals("3")) 
+				 {
+					 actionPerformed.append("-"+currentPlayerName+" won a Wild card :)");
+					 actionPerformed.append("\n");
+				 }
+				 cardGiven=true;
 			 }
-			 edges.set(1, currentPlayerName);
-			 cardItems.setEdge(vertex.get(randomCard), edges);
-			 if(edges.get(0).contentEquals("0")) 
-			 {
-				 actionPerformed.append("-"+currentPlayerName+" won an Infantry ("+vertex.get(randomCard)+") card");
-				 actionPerformed.append("\n");
-			 }
-			 if(edges.get(0).contentEquals("1")) 
-			 {
-				 actionPerformed.append("-"+currentPlayerName+" won a Cavalry ("+vertex.get(randomCard)+") card");
-				 actionPerformed.append("\n");
-			 }
-			 if(edges.get(0).contentEquals("2")) 
-			 {
-				 actionPerformed.append("-"+currentPlayerName+" won an Artillery ("+vertex.get(randomCard)+") card");
-				 actionPerformed.append("\n");
-			 }
-			 if(edges.get(0).contentEquals("3")) 
-			 {
-				 actionPerformed.append("-"+currentPlayerName+" won a Wild card :)");
-				 actionPerformed.append("\n");
-			 } 
 			 
 			//printing cards data structure
 			ArrayList<String> verti = cardItems.getVertex();
@@ -925,7 +942,7 @@ public class RGGame extends Observable{
 			}
 			
 			//current player controls all territories?
-			vertex = countryItems.getVertex();
+			ArrayList<String> vertex = countryItems.getVertex();
 			int totalCountriesOwned=0;
 			for (int k = 0; k < vertex.size(); k++) 
 			{
@@ -945,8 +962,7 @@ public class RGGame extends Observable{
 		 }
 		  
 		 //Storing performed actions 
-		 RGPlayer players=RGPlayer.getPlayers();
-		 players.setAttackActions(actionPerformed, currentPlayerName);
+		 players.setActionsPerformed(actionPerformed, currentPlayerName, "attack");
 		 setChanged();
 		 notifyObservers(this);
 
@@ -964,10 +980,92 @@ public class RGGame extends Observable{
 		notifyObservers(this);
 	}
 	
+	/**
+	 * This method is used to know if a player captured a territory and then show up a frame to let players move army to the new captured
+	 * territory.
+	 * 
+	 * 
+	 * @return Status.
+	 * 
+	 */
 	String getAttackStatus()
 	{
 		return game.attackStatus;
 	}
 	
+	/**
+	 * This method is used to set the status "move" to know if a player has captured a territory. The word "move" is used to show up a frame to let 
+	 * players move army to the new captured territory.
+	 * 
+	 * 
+	 * @param Status.
+	 * 
+	 */
+	void setAttackStatus(String status)
+	{
+		game.attackStatus=status;
+	}
+	
+	/**
+	 * This method is used to skip deployment of army to a new captured territory in Attack Phase.
+	 * 
+	 * 
+	 */
+	void capturedTerritoriesNoMovements()
+	{
+		game.setAttackStatus("");
+		setChanged();
+		notifyObservers(this);
+	}
+	
+	/**
+	 * This method is used to deploy army to a new captured territory in Attack Phase.
+	 * 
+	 * 
+	 * @param selectedCountryAttacker Attacking country.
+	 * @param selectedCountryDefender Attacked country.
+	 * @param armyToDeploy Number of army to deploy.
+	 * @param currentPlayerName Name of the player.
+	 * 
+	 */
+	void capturedTerritoriesArmyDeployment(String selectedCountryAttacker, String selectedCountryDefender, String armyToDeploy, String currentPlayerName)
+	{	
+		StringBuilder actionPerformed=new StringBuilder();
+		RGPlayer players=RGPlayer.getPlayers();
+		actionPerformed.append(players.getActionsPerformed(currentPlayerName, "attack"));
+		game.setNumberOfArmies(-Integer.valueOf(armyToDeploy), selectedCountryAttacker);
+		game.setNumberOfArmies(Integer.valueOf(armyToDeploy), selectedCountryDefender);
+		game.setAttackStatus("");
+
+		//Storing performed actions 
+		actionPerformed.append("-"+armyToDeploy+" army deployed from "+selectedCountryAttacker+" to "+selectedCountryDefender);
+		actionPerformed.append("\n");
+		players.setActionsPerformed(actionPerformed, currentPlayerName, "attack");
+		
+		setChanged();
+		notifyObservers(this);
+	}
+	
+	/**
+	 * This method is used to move to the next phase due to there are no more available territories to attack.
+	 * 
+	 * 
+	 * @param currentPlayerName Name of the player.
+	 * 
+	 */
+	void attackPhaseNoAttackers(String currentPlayerName)
+	{
+		//Storing performed actions 
+		StringBuilder actionPerformed=new StringBuilder();
+		RGPlayer players=RGPlayer.getPlayers();
+		actionPerformed.append(players.getActionsPerformed(currentPlayerName, "attack"));
+		actionPerformed.append("-No more available territories to attack");
+		actionPerformed.append("\n");
+		players.setActionsPerformed(actionPerformed, currentPlayerName, "attack");
+		
+		game.setPhase("Fortification");
+		setChanged();
+		notifyObservers(this);
+	}
 	
 }
