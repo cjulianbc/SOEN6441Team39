@@ -202,6 +202,21 @@ public class RGPhaseView extends JPanel implements Observer{
 			});
 			btnPlace.setBounds(46, 218, 73, 23);
 			add(btnPlace);
+			
+			JLabel lblActions = new JLabel("Actions:");
+			lblActions.setBounds(33, 300, 106, 23);
+			add(lblActions);
+			
+			JScrollPane scrollPane = new JScrollPane();
+			scrollPane.setBounds(33, 322, 290, 95);
+			add(scrollPane);
+			
+			String actionsReinforcementPhase=players.getActionsPerformed(currentPlayerName, "reinforcement");
+			JTextArea textArea_1 = new JTextArea();
+			textArea_1.setFont(new Font("Monospaced", Font.PLAIN, 10));
+			textArea_1.setText("");
+			textArea_1.setText(actionsReinforcementPhase);
+			scrollPane.setViewportView(textArea_1);
 		}
 		
 		if(phase.contentEquals("Attack"))
@@ -411,28 +426,10 @@ public class RGPhaseView extends JPanel implements Observer{
 		
 		if(phase.contentEquals("Fortification"))
 		{
-			// print the number of armies available in a country
-			JLabel lblNewLabel_1 = new JLabel(); // @ print No.of armies
-			lblNewLabel_1.setEnabled(false); // makes editable or not
-			lblNewLabel_1.setBounds(169, 167, 117, 23); // 46, 191,
-			add(lblNewLabel_1);
-
-			JLabel lblAvaiableArmy = new JLabel("Avaiable Army");
-			lblAvaiableArmy.setBounds(46, 167, 86, 14);
-			add(lblAvaiableArmy);
-
-			JLabel lblConnectedCountriesOf = new JLabel("Connected Countries of the selected player");
-			lblConnectedCountriesOf.setBounds(46, 215, 115, 14);
-			add(lblConnectedCountriesOf);
-
-			JLabel lblNoOfArmy = new JLabel("No. of Army Moving");
-			lblNoOfArmy.setBounds(46, 263, 115, 14);
-			add(lblNoOfArmy);
-
 			JLabel lblSetupPhase = new JLabel("FORTIFICATION PHASE");
 			lblSetupPhase.setBounds(119, 10, 179, 33);
 			add(lblSetupPhase);
-
+			
 			String currentPlayerName = players.getPlayerTurn();
 			JLabel lblPlayer = new JLabel("Current: " + currentPlayerName);
 			lblPlayer.setBounds(46, 77, 113, 23);
@@ -465,13 +462,11 @@ public class RGPhaseView extends JPanel implements Observer{
 			}
 			add(textArea);
 			textArea.setEditable(false);
-
-			// owned country Title
-			JLabel lblOwnedCountries = new JLabel("Owned Countries");
+			
+			JLabel lblOwnedCountries = new JLabel("From:");
 			lblOwnedCountries.setBounds(46, 119, 100, 14);
 			add(lblOwnedCountries);
 
-			// Drop down box (Array list) of the countries held by the player
 			ArrayList<String> currentPlayerCountries = ((RGGame) game).getCurrentPlayerCountries(currentPlayerName);
 			JComboBox comboBox = new JComboBox();
 			comboBox.setBounds(169, 117, 166, 20);
@@ -479,27 +474,24 @@ public class RGPhaseView extends JPanel implements Observer{
 				comboBox.addItem(currentPlayerCountries.get(k));
 			}
 			add(comboBox);
-			String country = comboBox.getSelectedItem().toString(); // "country" is the current selected Item, it will be used to
-																// populate the no.of army available
-			lblNewLabel_1.setText(((RGGame) game).getArmies(country)); // setting the army in the field in real time passing country as
-															// its parameter
-
-			ArrayList<String> listcountry = new ArrayList<String>();
-
-			// Adjacent countries of the player X. changes according to first drop down box.
-
+			
+			JLabel lblAvaiableArmy = new JLabel("Avaiable army:");
+			lblAvaiableArmy.setBounds(46, 152, 86, 14);
+			add(lblAvaiableArmy);
+			
+			String country = comboBox.getSelectedItem().toString(); 
+			JLabel lblNewLabel_1 = new JLabel();
+			lblNewLabel_1.setText(((RGGame) game).getArmies(country)); 
+			lblNewLabel_1.setEnabled(false); 
+			lblNewLabel_1.setBounds(169, 152, 117, 23); 
+			add(lblNewLabel_1);
+			
+			JLabel lblConnectedCountriesOf = new JLabel("To:");
+			lblConnectedCountriesOf.setBounds(46, 190, 115, 14);
+			add(lblConnectedCountriesOf);
+			
 			JComboBox comboBox_1 = new JComboBox();
-			comboBox_1.setBounds(169, 217, 163, 20);
-			add(comboBox_1);
-
-			// listcountry is an ArrayList that has all the adjacent player's countries of that player
-			listcountry = ((RGGame) game).getCurrentPlayerAdjacentCountries(currentPlayerName, country);
-			// Adding each of the Arraylist's items in the Combobox
-			for (int k = 0; k < listcountry.size(); k++) {
-				comboBox_1.addItem(listcountry.get(k));
-			}
-
-			// Item listener for the drop down box changes of country (ComboBox)
+			comboBox_1.setBounds(169, 190, 163, 20);
 			comboBox.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent arg0) {
 					String country = comboBox.getSelectedItem().toString();// "country" is the current selected Item, it will be
@@ -515,22 +507,32 @@ public class RGPhaseView extends JPanel implements Observer{
 
 			});
 
-			// number of army the player is going to move, must be ("No. of Army < available army")
+			ArrayList<String> listcountry = new ArrayList<String>();
+			listcountry = ((RGGame) game).getCurrentPlayerAdjacentCountries(currentPlayerName, country);
+			for (int k = 0; k < listcountry.size(); k++) {
+				comboBox_1.addItem(listcountry.get(k));
+			}
+			add(comboBox_1);
+
+			JLabel lblNoOfArmy = new JLabel("Army to move:");
+			lblNoOfArmy.setBounds(46, 233, 115, 14);
+			add(lblNoOfArmy);
+
+			// number of army the player is going to move. Must be ("No. of Army < available army")
 			JTextField textField = new JTextField();
-			textField.setBounds(169, 267, 166, 20);
+			textField.setBounds(169, 233, 166, 20);
 			add(textField);
 			textField.setColumns(10);
 			textField.setText("0");
 
-
-			JButton btnFinish = new JButton("Finish");
+			JButton btnFinish = new JButton("Go!");
 			btnFinish.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent arg0) {
 					int armiesToMove = Integer.parseInt(textField.getText());
 					int armiesAvailable = Integer.parseInt(lblNewLabel_1.getText());
 					if (armiesToMove >= armiesAvailable || armiesToMove < 0) 
 					{
-						JOptionPane.showMessageDialog(null, "No. of Army can not be greater or equal than avaiable army, or less or equal than 0", "Alert Message", JOptionPane.WARNING_MESSAGE);
+						JOptionPane.showMessageDialog(null, "No. of army can not be greater or equal than avaiable army, or less or equal than 0", "Alert Message", JOptionPane.WARNING_MESSAGE);
 					}
 					else
 					{
@@ -544,9 +546,23 @@ public class RGPhaseView extends JPanel implements Observer{
 						
 				}
 			});
-			btnFinish.setBounds(169, 311, 89, 23);
+			btnFinish.setBounds(144, 270, 89, 23);
 			add(btnFinish);
-
+			
+			JLabel lblActions = new JLabel("Actions:");
+			lblActions.setBounds(46, 300, 106, 23);
+			add(lblActions);
+			
+			JScrollPane scrollPane = new JScrollPane();
+			scrollPane.setBounds(46, 322, 290, 95);
+			add(scrollPane);
+			
+			String actionsFortificationPhase=players.getActionsPerformed(currentPlayerName, "fortification");
+			JTextArea textArea_1 = new JTextArea();
+			textArea_1.setFont(new Font("Monospaced", Font.PLAIN, 10));
+			textArea_1.setText("");
+			textArea_1.setText(actionsFortificationPhase);
+			scrollPane.setViewportView(textArea_1);
 		}
 	}
 

@@ -658,6 +658,12 @@ public class RGGame extends Observable{
 			game.setPhase("Attack");
 			cardGiven=false;
 		}
+		
+		//Storing performed actions 
+		StringBuilder actionPerformed=new StringBuilder();
+		actionPerformed.append("*"+armiesToPlace+" army deployed in "+selectedCountry);
+		actionPerformed.append("\n");
+		players.setActionsPerformed(actionPerformed, currentPlayerName, "reinforcement");
 
 		setChanged();
 		notifyObservers(this);
@@ -677,6 +683,14 @@ public class RGGame extends Observable{
 		RGPlayer players=RGPlayer.getPlayers();
 		game.setNumberOfArmies(armiesToMove, countryFrom);
 		game.setNumberOfArmies(-armiesToMove, countryTo);
+		
+		//Storing performed actions 
+		StringBuilder actionPerformed=new StringBuilder();
+		actionPerformed.append("*"+armiesToMove+" army moved from "+countryFrom+" to "+countryTo);
+		actionPerformed.append("\n");
+		String currentPlayerName = players.getPlayerTurn();
+		players.setActionsPerformed(actionPerformed, currentPlayerName, "fortification");
+		
 		players.setNextTurn();
 		game.setPhase("Reinforcement");
 		setChanged();

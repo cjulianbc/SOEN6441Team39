@@ -224,7 +224,7 @@ public class RGPlayer extends Observable {
 		{
 			playerItems.addEdge(vertex.get(k), "Attack Phase:  \n");//Actions performed in Attack Phase
 			playerItems.addEdge(vertex.get(k), "Setup Phase: \n");//Actions performed in Setup Phase
-			playerItems.addEdge(vertex.get(k), "Reinforcemen Phase: \n");//Actions performed in Reinforcement Phase
+			playerItems.addEdge(vertex.get(k), "Reinforcement Phase: \n");//Actions performed in Reinforcement Phase
 			playerItems.addEdge(vertex.get(k), "Fortification Phase: \n");//Actions performed in Fortification Phase
 		}
 	}
@@ -438,6 +438,22 @@ public class RGPlayer extends Observable {
 			edges.set(7, currentActions);
 			playerItems.setEdge(currentPlayerName, edges);
 		}
+		if (phase.contentEquals("reinforcement"))
+		{
+			ArrayList<String> edges = playerItems.getEdges(currentPlayerName);
+			String currentActions=edges.get(9);
+			currentActions=currentActions+actionPerformed;
+			edges.set(9, currentActions);
+			playerItems.setEdge(currentPlayerName, edges);
+		}
+		if (phase.contentEquals("fortification"))
+		{
+			ArrayList<String> edges = playerItems.getEdges(currentPlayerName);
+			String currentActions=edges.get(10);
+			currentActions=currentActions+actionPerformed;
+			edges.set(10, currentActions);
+			playerItems.setEdge(currentPlayerName, edges);
+		}
 	}
 	
 	/**
@@ -456,6 +472,16 @@ public class RGPlayer extends Observable {
 		{
 			ArrayList<String> edges = playerItems.getEdges(currentPlayerName);
 			actionsPerformed=edges.get(7);
+		}
+		else if (phase.contentEquals("reinforcement"))
+		{
+			ArrayList<String> edges = playerItems.getEdges(currentPlayerName);
+			actionsPerformed=edges.get(9);
+		}
+		else if (phase.contentEquals("fortification"))
+		{
+			ArrayList<String> edges = playerItems.getEdges(currentPlayerName);
+			actionsPerformed=edges.get(10);
 		}
 		return actionsPerformed;
 	}
