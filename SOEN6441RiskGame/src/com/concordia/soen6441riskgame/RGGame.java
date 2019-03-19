@@ -63,6 +63,11 @@ public class RGGame extends Observable{
 	private boolean cardGiven=false;
 	
 	/**
+	 * Created to know if "All Out mode" is set on or off
+	 */
+	private boolean allOutMode=false;
+	
+	/**
 	 * This method is used to assure only one instance (only one game) is created
 	 * 
 	 * 
@@ -733,11 +738,25 @@ public class RGGame extends Observable{
 	{
 		ArrayList<String> countriesDefender = new ArrayList<String>();
 		ArrayList<String> edgesGraph = graph.getEdges(selectedCountry);
-		ArrayList<String> edgesCountryItems;
+		ArrayList<String> edgesCountryItems= new ArrayList<String>();
 		String currentCountry;
 		for (int k = 0; k < edgesGraph.size(); k++) 
 		{
 			currentCountry=edgesGraph.get(k);
+			System.out.println("currentino: ");
+			System.out.println(currentCountry);
+			//printing the player's turns
+			ArrayList<String> verti = graph.getVertex();
+			for(int j=0;j<verti.size();j++)
+			{
+				System.out.print(verti.get(j)+" -> ");
+				ArrayList<String> edgi = graph.getEdges(verti.get(j));
+				for(int l=0;l<edgi.size();l++)
+				{
+					System.out.print(edgi.get(l)+" -> ");
+				}
+				System.out.println("");
+			}
 			edgesCountryItems = countryItems.getEdges(currentCountry);
 			
 			if (!edgesCountryItems.get(3).contentEquals(currentPlayerName)) 
@@ -803,6 +822,50 @@ public class RGGame extends Observable{
 	}
 	
 	/**
+	 * This method is used to play a battle according to the mode chosen by the player:
+	 * 
+	 * 1) One battle mode.
+	 * 2) All out mode.
+	 * 
+	 * 
+	 * @param selectedCountryAttacker Attacking country
+	 * @param selectedCountryDefender Attacked country.
+	 * @param selectedDiceAttacker Number of dice to attack.
+	 * @param selectedDiceDefender Number of dice to defend.
+	 * 
+	 */
+	void attackPhaseModeDecision(String selectedCountryAttacker,String selectedCountryDefender,String selectedDiceAttacker,String selectedDiceDefender,String currentPlayerName)
+	{
+		if(game.allOutMode==false)
+		{
+			game.attackPhase(selectedCountryAttacker,selectedCountryDefender,selectedDiceAttacker,selectedDiceDefender,currentPlayerName);
+		}
+		else if(game.allOutMode==true)
+		{
+			//while All Out Mode is on and there is enough army available to attack
+			while (game.allOutMode==true && Integer.valueOf(game.getArmies(selectedCountryAttacker))>1)
+			{
+				game.attackPhase(selectedCountryAttacker,selectedCountryDefender,selectedDiceAttacker,selectedDiceDefender,currentPlayerName);
+			}
+			if(Integer.valueOf(game.getArmies(selectedCountryAttacker))==1) 
+			{
+				RGPlayer players=RGPlayer.getPlayers();
+				StringBuilder actionPerformed=new StringBuilder();
+				actionPerformed.append("Not enough army to attack");
+				actionPerformed.append("\n");
+				
+				//No more army to attack. Setting all out mode off
+				game.allOutMode=false;
+				
+				//Storing performed actions 
+				players.setActionsPerformed(actionPerformed, currentPlayerName, "attack");
+			}
+		}
+		setChanged();
+		notifyObservers(this);
+	}
+	
+	/**
 	 * This method is used to process the actions taken by a player during the Attack Phase:
 	 * 
 	 * 
@@ -810,126 +873,122 @@ public class RGGame extends Observable{
 	 * @param selectedCountryDefender Attacked country.
 	 * @param selectedDiceAttacker Number of dice to attack.
 	 * @param selectedDiceDefender Number of dice to defend.
-	 * @return Message that contains information about the winner and the loser
 	 * 
 	 */
 	void attackPhase(String selectedCountryAttacker,String selectedCountryDefender,String selectedDiceAttacker,String selectedDiceDefender,String currentPlayerName)
 	{
-		 StringBuilder actionPerformed=new StringBuilder();
-		 int randomNumberOneToSix;
-		 ArrayList<Integer> setAttackerDiceNumbers = new ArrayList<Integer>();
-		 ArrayList<Integer> setDefenderDiceNumbers = new ArrayList<Integer>();
-		 RGPlayer players=RGPlayer.getPlayers();
-		 
-		 //getting stored actions for Attack Phase
-		 actionPerformed.append(players.getActionsPerformed(currentPlayerName, "attack"));
-		 
-		 //Tossing dice for attacker
-		 actionPerformed.append("-Dice results for attacker (");
-		 for (int k = 0; k < Integer.valueOf(selectedDiceAttacker); k++)
-		 {
-			 randomNumberOneToSix = new Random().nextInt(6);
-			 randomNumberOneToSix++;
-			 setAttackerDiceNumbers.add(randomNumberOneToSix);
-			 actionPerformed.append("["+randomNumberOneToSix+"]");
-		 }
-		 actionPerformed.append(")");
-		 actionPerformed.append("\n");
-		 
+		RGPlayer players=RGPlayer.getPlayers();
+		StringBuilder actionPerformed=new StringBuilder();
+		int randomNumberOneToSix;
+		ArrayList<Integer> setAttackerDiceNumbers = new ArrayList<Integer>();
+		ArrayList<Integer> setDefenderDiceNumbers = new ArrayList<Integer>();
+			 
+		//Tossing dice for attacker
+		actionPerformed.append("*Dice results for attacker (");
+		for (int k = 0; k < Integer.valueOf(selectedDiceAttacker); k++)
+		{
+			randomNumberOneToSix = new Random().nextInt(6);
+			randomNumberOneToSix++;
+			setAttackerDiceNumbers.add(randomNumberOneToSix);
+			actionPerformed.append("["+randomNumberOneToSix+"]");
+		}
+		actionPerformed.append(")");
+		actionPerformed.append("\n");
+
 		//Tossing dice for defender
-		 actionPerformed.append("-Dice results for defender (");
-		 for (int k = 0; k < Integer.valueOf(selectedDiceDefender); k++)
-		 {
-			 randomNumberOneToSix = new Random().nextInt(6);
-			 randomNumberOneToSix++;
-			 setDefenderDiceNumbers.add(randomNumberOneToSix);
-			 actionPerformed.append("["+randomNumberOneToSix+"]");
-		 }
-		 actionPerformed.append(")");
-		 actionPerformed.append("\n");
-		 
-		 System.out.println(setAttackerDiceNumbers);
-		 System.out.println(setDefenderDiceNumbers);
-		 
-		 //Battle begins
-		 int highestDiceAttacker;
-		 int highestDiceDefender;
-		 while(!setAttackerDiceNumbers.isEmpty() && !setDefenderDiceNumbers.isEmpty())
-		 {
-			 highestDiceAttacker=Collections.max(setAttackerDiceNumbers);
-			 highestDiceDefender=Collections.max(setDefenderDiceNumbers);
-			 if(highestDiceAttacker>highestDiceDefender)
-			 {
-				 actionPerformed.append("-Attacker wins (Attacker:"+highestDiceAttacker+" vs Defender:"+highestDiceDefender+")");
-				 actionPerformed.append("\n");
-				 game.setNumberOfArmies(-1, selectedCountryDefender);
-			 }
-			 else if(highestDiceAttacker<=highestDiceDefender)
-			 {
-				 actionPerformed.append("-Defender wins (Attacker:"+highestDiceAttacker+" vs Defender:"+highestDiceDefender+")");
-				 actionPerformed.append("\n");
-				 game.setNumberOfArmies(-1, selectedCountryAttacker);
-			 }
-			 int highestDiceAttackerIndex = setAttackerDiceNumbers.indexOf(highestDiceAttacker);
-			 setAttackerDiceNumbers.remove(highestDiceAttackerIndex);
-			 int highestDiceDefenderIndex = setDefenderDiceNumbers.indexOf(highestDiceDefender);
-			 setDefenderDiceNumbers.remove(highestDiceDefenderIndex);
-		 }
-		 
-		 //Country captured?
-		 int numberOfCountries=Integer.valueOf(game.getArmies(selectedCountryDefender));
-		 if(numberOfCountries==0)//country was captured
-		 {
-			 //setting owner and moving armies (Risk rule: "Move at least as many armies as the number of dice winner rolled in the last battle")
-			 ArrayList<String> edges = countryItems.getEdges(selectedCountryDefender);
-			 edges.set(3, currentPlayerName);
-			 countryItems.setEdge(selectedCountryDefender, edges);
-			 game.setNumberOfArmies((Integer.valueOf(selectedDiceAttacker))*(-1), selectedCountryAttacker);
-			 game.setNumberOfArmies(Integer.valueOf(selectedDiceAttacker), selectedCountryDefender);
-			 actionPerformed.append("-"+selectedDiceAttacker+" army already moved to your new captured territory");
-			 actionPerformed.append("\n");
-			 
-			 //informing who won and who lost
-			 actionPerformed.append("-"+selectedCountryDefender+" was captured by "+currentPlayerName+" from "+selectedCountryAttacker);
-			 actionPerformed.append("\n");
-			 
-			 //attacker won a card
-			 if(cardGiven==false)
-			 {
-				 ArrayList<String> vertex = cardItems.getVertex();
-				 int randomCard = new Random().nextInt(vertex.size());
-				 edges = cardItems.getEdges(vertex.get(randomCard));
-				 
-				 while(!edges.get(1).contentEquals(""))
-				 {
-					 randomCard = new Random().nextInt(vertex.size());
-					 edges = cardItems.getEdges(vertex.get(randomCard));
-				 }
-				 edges.set(1, currentPlayerName);
-				 cardItems.setEdge(vertex.get(randomCard), edges);
-				 if(edges.get(0).contentEquals("0")) 
-				 {
-					 actionPerformed.append("-"+currentPlayerName+" won an Infantry ("+vertex.get(randomCard)+") card");
-					 actionPerformed.append("\n");
-				 }
-				 if(edges.get(0).contentEquals("1")) 
-				 {
-					 actionPerformed.append("-"+currentPlayerName+" won a Cavalry ("+vertex.get(randomCard)+") card");
-					 actionPerformed.append("\n");
-				 }
-				 if(edges.get(0).contentEquals("2")) 
-				 {
-					 actionPerformed.append("-"+currentPlayerName+" won an Artillery ("+vertex.get(randomCard)+") card");
-					 actionPerformed.append("\n");
-				 }
-				 if(edges.get(0).contentEquals("3")) 
-				 {
-					 actionPerformed.append("-"+currentPlayerName+" won a Wild card :)");
-					 actionPerformed.append("\n");
-				 }
-				 cardGiven=true;
-			 }
-			 
+		actionPerformed.append("Dice results for defender (");
+		for (int k = 0; k < Integer.valueOf(selectedDiceDefender); k++)
+		{
+			randomNumberOneToSix = new Random().nextInt(6);
+			randomNumberOneToSix++;
+			setDefenderDiceNumbers.add(randomNumberOneToSix);
+			actionPerformed.append("["+randomNumberOneToSix+"]");
+		}
+		actionPerformed.append(")");
+		actionPerformed.append("\n");
+
+		//Battle begins
+		int highestDiceAttacker;
+		int highestDiceDefender;
+		while(!setAttackerDiceNumbers.isEmpty() && !setDefenderDiceNumbers.isEmpty())
+		{
+			highestDiceAttacker=Collections.max(setAttackerDiceNumbers);
+			highestDiceDefender=Collections.max(setDefenderDiceNumbers);
+			if(highestDiceAttacker>highestDiceDefender)
+			{
+				actionPerformed.append("Attacker wins (Attacker:"+highestDiceAttacker+" vs Defender:"+highestDiceDefender+")");
+				actionPerformed.append("\n");
+				game.setNumberOfArmies(-1, selectedCountryDefender);
+			}
+			else if(highestDiceAttacker<=highestDiceDefender)
+			{
+				actionPerformed.append("Defender wins (Attacker:"+highestDiceAttacker+" vs Defender:"+highestDiceDefender+")");
+				actionPerformed.append("\n");
+				game.setNumberOfArmies(-1, selectedCountryAttacker);
+			}
+			int highestDiceAttackerIndex = setAttackerDiceNumbers.indexOf(highestDiceAttacker);
+			setAttackerDiceNumbers.remove(highestDiceAttackerIndex);
+			int highestDiceDefenderIndex = setDefenderDiceNumbers.indexOf(highestDiceDefender);
+			setDefenderDiceNumbers.remove(highestDiceDefenderIndex);
+		}
+
+		//Country captured?
+		int numberOfCountries=Integer.valueOf(game.getArmies(selectedCountryDefender));
+		if(numberOfCountries==0)//country was captured
+		{
+			//territory captured. Setting all out mode off
+			game.allOutMode=false;
+
+			//setting owner and moving armies (Risk rule: "Move at least as many armies as the number of dice winner rolled in the last battle")
+			ArrayList<String> edges = countryItems.getEdges(selectedCountryDefender);
+			edges.set(3, currentPlayerName);
+			countryItems.setEdge(selectedCountryDefender, edges);
+			game.setNumberOfArmies((Integer.valueOf(selectedDiceAttacker))*(-1), selectedCountryAttacker);
+			game.setNumberOfArmies(Integer.valueOf(selectedDiceAttacker), selectedCountryDefender);
+			actionPerformed.append(selectedDiceAttacker+" army already moved to your new captured territory");
+			actionPerformed.append("\n");
+
+			//informing who won and who lost
+			actionPerformed.append(selectedCountryDefender+" was captured by "+currentPlayerName+" from "+selectedCountryAttacker);
+			actionPerformed.append("\n");
+
+			//attacker won a card
+			if(cardGiven==false)
+			{
+				ArrayList<String> vertex = cardItems.getVertex();
+				int randomCard = new Random().nextInt(vertex.size());
+				edges = cardItems.getEdges(vertex.get(randomCard));
+
+				while(!edges.get(1).contentEquals(""))
+				{
+					randomCard = new Random().nextInt(vertex.size());
+					edges = cardItems.getEdges(vertex.get(randomCard));
+				}
+				edges.set(1, currentPlayerName);
+				cardItems.setEdge(vertex.get(randomCard), edges);
+				if(edges.get(0).contentEquals("0")) 
+				{
+					actionPerformed.append(currentPlayerName+" won an Infantry ("+vertex.get(randomCard)+") card");
+					actionPerformed.append("\n");
+				}
+				if(edges.get(0).contentEquals("1")) 
+				{
+					actionPerformed.append(currentPlayerName+" won a Cavalry ("+vertex.get(randomCard)+") card");
+					actionPerformed.append("\n");
+				}
+				if(edges.get(0).contentEquals("2")) 
+				{
+					actionPerformed.append(currentPlayerName+" won an Artillery ("+vertex.get(randomCard)+") card");
+					actionPerformed.append("\n");
+				}
+				if(edges.get(0).contentEquals("3")) 
+				{
+					actionPerformed.append(currentPlayerName+" won a Wild card :)");
+					actionPerformed.append("\n");
+				}
+				cardGiven=true;
+			}
+
 			//printing cards data structure
 			ArrayList<String> verti = cardItems.getVertex();
 			for (int j = 0; j < verti.size(); j++) {
@@ -940,7 +999,7 @@ public class RGGame extends Observable{
 				}
 				System.out.println("");
 			}
-			
+
 			//current player controls all territories?
 			ArrayList<String> vertex = countryItems.getVertex();
 			int totalCountriesOwned=0;
@@ -950,22 +1009,19 @@ public class RGGame extends Observable{
 				if(edges.get(3).contentEquals(currentPlayerName))
 					totalCountriesOwned++;//counting countries owned by current player
 			}
-		 	if(totalCountriesOwned==Integer.valueOf(vertex.size()))
-		 	{
-		 		actionPerformed.append("-This is the end. You won!");
+			if(totalCountriesOwned==Integer.valueOf(vertex.size()))
+			{
+				actionPerformed.append("***This is the end. You won!***");
 				actionPerformed.append("\n");
 				game.attackStatus="end";
-		 	}
-		 	else
-		 		game.attackStatus="move";
-			
-		 }
-		  
-		 //Storing performed actions 
-		 players.setActionsPerformed(actionPerformed, currentPlayerName, "attack");
-		 setChanged();
-		 notifyObservers(this);
+			}
+			else
+				game.attackStatus="move";
 
+		}
+		
+		//Storing performed actions 
+		players.setActionsPerformed(actionPerformed, currentPlayerName, "attack");  
 	}
 	
 	/**
@@ -1032,13 +1088,12 @@ public class RGGame extends Observable{
 	{	
 		StringBuilder actionPerformed=new StringBuilder();
 		RGPlayer players=RGPlayer.getPlayers();
-		actionPerformed.append(players.getActionsPerformed(currentPlayerName, "attack"));
 		game.setNumberOfArmies(-Integer.valueOf(armyToDeploy), selectedCountryAttacker);
 		game.setNumberOfArmies(Integer.valueOf(armyToDeploy), selectedCountryDefender);
 		game.setAttackStatus("");
 
 		//Storing performed actions 
-		actionPerformed.append("-"+armyToDeploy+" army deployed from "+selectedCountryAttacker+" to "+selectedCountryDefender);
+		actionPerformed.append("*"+armyToDeploy+" army deployed from "+selectedCountryAttacker+" to "+selectedCountryDefender);
 		actionPerformed.append("\n");
 		players.setActionsPerformed(actionPerformed, currentPlayerName, "attack");
 		
@@ -1058,8 +1113,7 @@ public class RGGame extends Observable{
 		//Storing performed actions 
 		StringBuilder actionPerformed=new StringBuilder();
 		RGPlayer players=RGPlayer.getPlayers();
-		actionPerformed.append(players.getActionsPerformed(currentPlayerName, "attack"));
-		actionPerformed.append("-No more available territories to attack");
+		actionPerformed.append("*No more available territories to attack");
 		actionPerformed.append("\n");
 		players.setActionsPerformed(actionPerformed, currentPlayerName, "attack");
 		
@@ -1068,4 +1122,27 @@ public class RGGame extends Observable{
 		notifyObservers(this);
 	}
 	
+	/**
+	 * This method is used to set the All Out mode. On=true, Off=false
+	 *
+	 *
+	 *@param mode All Out mode on=true or off=false
+	 * 
+	 */
+	void setAllOutModeForAttackPhase(boolean mode)
+	{
+		game.allOutMode=mode;
+	}
+	
+	/**
+	 * This method is used to know if All Out mode is set "on" or "off"
+	 *
+	 * 
+	 * @return All Out mode on=true or off=false
+	 * 
+	 */
+	boolean getAllOutModeForAttackPhase()
+	{
+		return game.allOutMode;
+	}
 }

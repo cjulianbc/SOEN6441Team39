@@ -268,7 +268,7 @@ public class RGPhaseView extends JPanel implements Observer{
 			comboBox.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
 					ArrayList<String> countriesDefender = new ArrayList<String>();
-					String selectedCountry=comboBox.getSelectedItem().toString();
+					String selectedCountry=(String) comboBox.getSelectedItem();
 					System.out.println(selectedCountry);
 					countriesDefender=((RGGame) game).getCountriesDefender(selectedCountry,currentPlayerName);
 					
@@ -277,7 +277,7 @@ public class RGPhaseView extends JPanel implements Observer{
 							if(comboBox_1.getItemCount()!=0)
 							{
 								ArrayList<String> diceDefender = new ArrayList<String>();
-								String selectedCountryDefender=comboBox_1.getSelectedItem().toString();
+								String selectedCountryDefender=(String) comboBox_1.getSelectedItem();
 								diceDefender=((RGGame) game).getDiceDefender(selectedCountryDefender);
 								
 								JLabel label = new JLabel("Dice:");
@@ -327,16 +327,33 @@ public class RGPhaseView extends JPanel implements Observer{
 			add(comboBox_2);
 			add(comboBox_3);
 			
-			JButton btnPlace = new JButton("All Out!");
+			JButton btnAllOut = new JButton("All Out!");
 			JButton btnEnd = new JButton("End");
 			JButton btnOneBattle = new JButton("One Battle");
-			btnPlace.setFont(new Font("Tahoma", Font.PLAIN, 9));
-			btnPlace.addActionListener(new ActionListener() {
+			btnAllOut.setFont(new Font("Tahoma", Font.PLAIN, 9));
+			btnAllOut.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
+					((RGGame) game).setAllOutModeForAttackPhase(true);
+					String selectedCountryAttacker=comboBox.getSelectedItem().toString();
+					String selectedCountryDefender=comboBox_1.getSelectedItem().toString();
+					String selectedDiceAttacker=comboBox_2.getSelectedItem().toString();
+					String selectedDiceDefender=comboBox_3.getSelectedItem().toString();	
+					((RGGame) game).attackPhaseModeDecision(selectedCountryAttacker,selectedCountryDefender,selectedDiceAttacker,selectedDiceDefender,currentPlayerName);
+					if (((RGGame) game).getAttackStatus().contentEquals("end")) 
+					{
+						btnAllOut.disable();
+						btnOneBattle.disable();
+						btnEnd.disable();	
+					}
+					else if (((RGGame) game).getAttackStatus().contentEquals("move") && !((RGGame) game).getArmies(selectedCountryAttacker).contentEquals("1")) 
+					{
+						RGCapturedTerritoryFrame frame = new RGCapturedTerritoryFrame(selectedCountryAttacker,selectedCountryDefender,currentPlayerName);
+						frame.setVisible(true);
+					}
 				}
 			});
-			btnPlace.setBounds(46, 293, 73, 23);
-			add(btnPlace);
+			btnAllOut.setBounds(46, 293, 73, 23);
+			add(btnAllOut);
 			
 			btnOneBattle.setFont(new Font("Tahoma", Font.PLAIN, 9));
 			btnOneBattle.addActionListener(new ActionListener() {
@@ -345,14 +362,14 @@ public class RGPhaseView extends JPanel implements Observer{
 					String selectedCountryDefender=comboBox_1.getSelectedItem().toString();
 					String selectedDiceAttacker=comboBox_2.getSelectedItem().toString();
 					String selectedDiceDefender=comboBox_3.getSelectedItem().toString();
-					((RGGame) game).attackPhase(selectedCountryAttacker,selectedCountryDefender,selectedDiceAttacker,selectedDiceDefender,currentPlayerName);
+					((RGGame) game).attackPhaseModeDecision(selectedCountryAttacker,selectedCountryDefender,selectedDiceAttacker,selectedDiceDefender,currentPlayerName);
 					if (((RGGame) game).getAttackStatus().contentEquals("end")) 
 					{
-						btnPlace.disable();
+						btnAllOut.disable();
 						btnOneBattle.disable();
 						btnEnd.disable();	
 					}
-					else if (((RGGame) game).getAttackStatus().contentEquals("move")) 
+					else if (((RGGame) game).getAttackStatus().contentEquals("move") && !((RGGame) game).getArmies(selectedCountryAttacker).contentEquals("1")) 
 					{
 						RGCapturedTerritoryFrame frame = new RGCapturedTerritoryFrame(selectedCountryAttacker,selectedCountryDefender,currentPlayerName);
 						frame.setVisible(true);
@@ -382,16 +399,15 @@ public class RGPhaseView extends JPanel implements Observer{
 			String actionsAttackPhase=players.getActionsPerformed(currentPlayerName, "attack");
 			JTextArea textArea = new JTextArea();
 			textArea.setFont(new Font("Monospaced", Font.PLAIN, 10));
-			//textArea.setBounds(33, 352, 290, 102);
+			textArea.setText("");
 			textArea.setText(actionsAttackPhase);
 			scrollPane.setViewportView(textArea);
-			//add(textArea);
 			
-			//No more territories to attack?
+			//no more territories to attack?
 			if(countriesAttacker.size()==0 && !((RGGame) game).getAttackStatus().contentEquals("move"))
 			{
 				((RGGame) game).attackPhaseNoAttackers(currentPlayerName);
-			}
+			}	
 			
 		}
 		
