@@ -11,14 +11,13 @@ import java.util.Observer;
 
 import javax.swing.JButton;
 import javax.swing.JComboBox;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
-import javax.swing.border.EmptyBorder;
+import javax.swing.border.LineBorder;
 
 public class RGPhaseView extends JPanel implements Observer{
 	
@@ -32,24 +31,24 @@ public class RGPhaseView extends JPanel implements Observer{
 		String phase=((RGGame)game).getPhase();
 		RGPlayer players=RGPlayer.getPlayers();
 		setLayout(null);
-		setPreferredSize(new Dimension(400,452));
-		
+		setPreferredSize(new Dimension(375,445));
+		setBorder(new LineBorder(new Color(0, 0, 0), 1, true));
 		
 		if(phase.contentEquals("Setup"))
 		{
 			JLabel lblSetupPhase = new JLabel("SETUP PHASE");
-			lblSetupPhase.setBounds(148, 41, 117, 33);
+			lblSetupPhase.setBounds(148, 11, 117, 33);
 			add(lblSetupPhase);
 			
 			String currentPlayerName=players.getPlayerTurn();//getting current turn
 			JLabel lblPlayer=new JLabel();
 			lblPlayer.setText("Current: "+currentPlayerName);
-			lblPlayer.setBounds(65, 107, 113, 23);
+			lblPlayer.setBounds(65, 57, 113, 23);
 			add(lblPlayer);
 			
 			String color=players.getPlayerColor(currentPlayerName);//getting the color of the player
 			JTextArea textArea = new JTextArea();
-			textArea.setBounds(188, 97, 34, 33);
+			textArea.setBounds(188, 47, 34, 33);
 			switch (color) {
 			case "green":
 				textArea.setBackground(Color.green);
@@ -76,22 +75,22 @@ public class RGPhaseView extends JPanel implements Observer{
 			textArea.setEditable(false);
 			
 			JLabel lblArmiesToPlace = new JLabel("Armies to place:");
-			lblArmiesToPlace.setBounds(65, 149, 117, 23);
+			lblArmiesToPlace.setBounds(65, 99, 117, 23);
 			add(lblArmiesToPlace);
 			
 			String currentArmies=players.getCurrentArmies(currentPlayerName);//getting armies available to place 
 			JTextArea textArea_1 = new JTextArea(currentArmies);
-			textArea_1.setBounds(188, 139, 34, 33);
+			textArea_1.setBounds(188, 89, 34, 33);
 			add(textArea_1);
 			textArea_1.setEditable(false);
 			
 			JLabel lblCountry = new JLabel("Country:");
-			lblCountry.setBounds(65, 191, 106, 23);
+			lblCountry.setBounds(65, 141, 106, 23);
 			add(lblCountry);
 			
 			ArrayList<String> currentPlayerCountries=((RGGame) game).getCurrentPlayerCountries(currentPlayerName);
 			JComboBox comboBox = new JComboBox();
-			comboBox.setBounds(65, 214, 157, 23);
+			comboBox.setBounds(65, 164, 157, 23);
 			for(int k=0;k<currentPlayerCountries.size();k++)//adding all the countries owned by the player to the combo
 			{
 				comboBox.addItem(currentPlayerCountries.get(k));
@@ -105,24 +104,24 @@ public class RGPhaseView extends JPanel implements Observer{
 					((RGGame) game).setupPhase(selectedCountry, currentPlayerName);
 				}
 			});
-			btnPlace.setBounds(232, 214, 73, 23);
+			btnPlace.setBounds(232, 164, 73, 23);
 			add(btnPlace);
 		}
 		
 		if(phase.contentEquals("Reinforcement"))
 		{
 			JLabel lblSetupPhase = new JLabel("REINFORCEMENT PHASE");
-			lblSetupPhase.setBounds(119, 40, 179, 33);
+			lblSetupPhase.setBounds(119, 10, 179, 33);
 			add(lblSetupPhase);
 			
 			String currentPlayerName=players.getPlayerTurn();//getting current turn
 			JLabel lblPlayer = new JLabel("Current: "+currentPlayerName);
-			lblPlayer.setBounds(46, 107, 113, 23);
+			lblPlayer.setBounds(46, 77, 113, 23);
 			add(lblPlayer);
 			
 			String color=players.getPlayerColor(currentPlayerName);//getting the color of the player
 			JTextArea textArea = new JTextArea();
-			textArea.setBounds(169, 97, 34, 33);
+			textArea.setBounds(169, 67, 34, 33);
 			switch (color) {
 			case "green":
 				textArea.setBackground(Color.green);
@@ -150,7 +149,7 @@ public class RGPhaseView extends JPanel implements Observer{
 			
 			
 			JLabel lblArmiesToPlace = new JLabel("Armies to place:");
-			lblArmiesToPlace.setBounds(46, 149, 117, 23);
+			lblArmiesToPlace.setBounds(46, 119, 117, 23);
 			add(lblArmiesToPlace);
 			
 			
@@ -163,16 +162,16 @@ public class RGPhaseView extends JPanel implements Observer{
 			}
 				
 			JTextArea totalArmiesAvailable = new JTextArea(numberOfArmiesForReinforcement);
-			totalArmiesAvailable.setBounds(169, 141, 34, 33);
+			totalArmiesAvailable.setBounds(169, 111, 34, 33);
 			add(totalArmiesAvailable);
 			totalArmiesAvailable.setEditable(false);
 			
 			JLabel lblCountry = new JLabel("Country:");
-			lblCountry.setBounds(46, 191, 106, 23);
+			lblCountry.setBounds(46, 161, 106, 23);
 			add(lblCountry);
 			
 			JComboBox comboBox = new JComboBox();
-			comboBox.setBounds(46, 214, 157, 23);
+			comboBox.setBounds(46, 184, 157, 23);
 			ArrayList<String> currentPlayerCountries=((RGGame) game).getCurrentPlayerCountries(currentPlayerName);
 			for(int k=0;k<currentPlayerCountries.size();k++)//adding all the countries owned by the player to the combo
 			{
@@ -181,11 +180,11 @@ public class RGPhaseView extends JPanel implements Observer{
 			add(comboBox);
 			
 			JLabel lblArmies = new JLabel("Armies:");
-			lblArmies.setBounds(225, 211, 106, 23);
+			lblArmies.setBounds(225, 181, 106, 23);
 			add(lblArmies);
 			
 			JTextArea armiesToPlace = new JTextArea("0");
-			armiesToPlace.setBounds(283, 204, 34, 33);
+			armiesToPlace.setBounds(283, 174, 34, 33);
 			add(armiesToPlace);
 			
 			JButton btnPlace = new JButton("Place");
@@ -201,24 +200,24 @@ public class RGPhaseView extends JPanel implements Observer{
 				}
 					
 			});
-			btnPlace.setBounds(46, 248, 73, 23);
+			btnPlace.setBounds(46, 218, 73, 23);
 			add(btnPlace);
 		}
 		
 		if(phase.contentEquals("Attack"))
 		{
 			JLabel lblSetupPhase = new JLabel("ATTACK PHASE");
-			lblSetupPhase.setBounds(134, 40, 141, 33);
+			lblSetupPhase.setBounds(134, 10, 141, 33);
 			add(lblSetupPhase);
 			
 			String currentPlayerName=players.getPlayerTurn();//getting current turn
 			JLabel lblCurrent = new JLabel("Current: "+currentPlayerName);
-			lblCurrent.setBounds(87, 95, 113, 23);
+			lblCurrent.setBounds(87, 65, 113, 23);
 			add(lblCurrent);
 			
 			String color=players.getPlayerColor(currentPlayerName);//getting the color of the player
 			JTextArea textArea_1 = new JTextArea();
-			textArea_1.setBounds(205, 84, 34, 33);
+			textArea_1.setBounds(205, 54, 34, 33);
 			switch (color) {
 			case "green":
 				textArea_1.setBackground(Color.green);
@@ -244,18 +243,18 @@ public class RGPhaseView extends JPanel implements Observer{
 			add(textArea_1);
 			
 			JLabel lblPlayer = new JLabel("Attacker");
-			lblPlayer.setBounds(76, 138, 113, 23);
+			lblPlayer.setBounds(76, 108, 113, 23);
 			add(lblPlayer);
 			
 			JLabel lblCountry = new JLabel("From:");
-			lblCountry.setBounds(33, 172, 106, 23);
+			lblCountry.setBounds(33, 142, 106, 23);
 			
 			JLabel lblDefender = new JLabel("Defender");
-			lblDefender.setBounds(233, 138, 113, 23);
+			lblDefender.setBounds(233, 108, 113, 23);
 			add(lblDefender);
 			
 			JLabel lblTo = new JLabel("To:");
-			lblTo.setBounds(196, 172, 106, 23);
+			lblTo.setBounds(196, 142, 106, 23);
 			add(lblTo);
 			add(lblCountry);
 			
@@ -269,7 +268,6 @@ public class RGPhaseView extends JPanel implements Observer{
 				public void actionPerformed(ActionEvent e) {
 					ArrayList<String> countriesDefender = new ArrayList<String>();
 					String selectedCountry=(String) comboBox.getSelectedItem();
-					System.out.println(selectedCountry);
 					countriesDefender=((RGGame) game).getCountriesDefender(selectedCountry,currentPlayerName);
 					
 					comboBox_1.addActionListener(new ActionListener() {
@@ -281,7 +279,7 @@ public class RGPhaseView extends JPanel implements Observer{
 								diceDefender=((RGGame) game).getDiceDefender(selectedCountryDefender);
 								
 								JLabel label = new JLabel("Dice:");
-								label.setBounds(196, 227, 106, 23);
+								label.setBounds(196, 197, 106, 23);
 								add(label);
 								
 								comboBox_3.removeAllItems(); 
@@ -304,7 +302,7 @@ public class RGPhaseView extends JPanel implements Observer{
 					diceAttacker=((RGGame) game).getDiceAttacker(selectedCountry);
 					
 					JLabel lblDice = new JLabel("Dice:");
-					lblDice.setBounds(33, 227, 106, 23);
+					lblDice.setBounds(33, 197, 106, 23);
 					add(lblDice);
 					
 					comboBox_2.removeAllItems(); 
@@ -314,10 +312,10 @@ public class RGPhaseView extends JPanel implements Observer{
 					}
 				}
 			});
-			comboBox.setBounds(33, 193, 127, 23);
-			comboBox_1.setBounds(194, 193, 127, 23);
-			comboBox_2.setBounds(33, 248, 127, 23);
-			comboBox_3.setBounds(194, 248, 127, 23);
+			comboBox.setBounds(33, 163, 127, 23);
+			comboBox_1.setBounds(194, 163, 127, 23);
+			comboBox_2.setBounds(33, 218, 127, 23);
+			comboBox_3.setBounds(194, 218, 127, 23);
 			for(int k=0;k<countriesAttacker.size();k++)//adding all the countries where to attack from (minimum two army in each country)
 			{
 				comboBox.addItem(countriesAttacker.get(k));
@@ -352,7 +350,7 @@ public class RGPhaseView extends JPanel implements Observer{
 					}
 				}
 			});
-			btnAllOut.setBounds(46, 293, 73, 23);
+			btnAllOut.setBounds(46, 263, 73, 23);
 			add(btnAllOut);
 			
 			btnOneBattle.setFont(new Font("Tahoma", Font.PLAIN, 9));
@@ -376,7 +374,7 @@ public class RGPhaseView extends JPanel implements Observer{
 					}
 				}
 			});
-			btnOneBattle.setBounds(134, 293, 85, 23);
+			btnOneBattle.setBounds(134, 263, 85, 23);
 			add(btnOneBattle);
 			
 			btnEnd.setFont(new Font("Tahoma", Font.PLAIN, 9));
@@ -385,15 +383,15 @@ public class RGPhaseView extends JPanel implements Observer{
 					((RGGame) game).attackPhaseNoMovements();
 				}
 			});
-			btnEnd.setBounds(233, 293, 73, 23);
+			btnEnd.setBounds(233, 263, 73, 23);
 			add(btnEnd);
 			
 			JLabel lblActions = new JLabel("Actions:");
-			lblActions.setBounds(33, 330, 106, 23);
+			lblActions.setBounds(33, 300, 106, 23);
 			add(lblActions);
 			
 			JScrollPane scrollPane = new JScrollPane();
-			scrollPane.setBounds(33, 352, 290, 95);
+			scrollPane.setBounds(33, 322, 290, 95);
 			add(scrollPane);
 			
 			String actionsAttackPhase=players.getActionsPerformed(currentPlayerName, "attack");
@@ -416,33 +414,33 @@ public class RGPhaseView extends JPanel implements Observer{
 			// print the number of armies available in a country
 			JLabel lblNewLabel_1 = new JLabel(); // @ print No.of armies
 			lblNewLabel_1.setEnabled(false); // makes editable or not
-			lblNewLabel_1.setBounds(169, 197, 117, 23); // 46, 191,
+			lblNewLabel_1.setBounds(169, 167, 117, 23); // 46, 191,
 			add(lblNewLabel_1);
 
 			JLabel lblAvaiableArmy = new JLabel("Avaiable Army");
-			lblAvaiableArmy.setBounds(46, 197, 86, 14);
+			lblAvaiableArmy.setBounds(46, 167, 86, 14);
 			add(lblAvaiableArmy);
 
 			JLabel lblConnectedCountriesOf = new JLabel("Connected Countries of the selected player");
-			lblConnectedCountriesOf.setBounds(46, 245, 115, 14);
+			lblConnectedCountriesOf.setBounds(46, 215, 115, 14);
 			add(lblConnectedCountriesOf);
 
 			JLabel lblNoOfArmy = new JLabel("No. of Army Moving");
-			lblNoOfArmy.setBounds(46, 293, 115, 14);
+			lblNoOfArmy.setBounds(46, 263, 115, 14);
 			add(lblNoOfArmy);
 
 			JLabel lblSetupPhase = new JLabel("FORTIFICATION PHASE");
-			lblSetupPhase.setBounds(119, 40, 179, 33);
+			lblSetupPhase.setBounds(119, 10, 179, 33);
 			add(lblSetupPhase);
 
 			String currentPlayerName = players.getPlayerTurn();
 			JLabel lblPlayer = new JLabel("Current: " + currentPlayerName);
-			lblPlayer.setBounds(46, 107, 113, 23);
+			lblPlayer.setBounds(46, 77, 113, 23);
 			add(lblPlayer);
 
 			String color = players.getPlayerColor(currentPlayerName);
 			JTextArea textArea = new JTextArea();
-			textArea.setBounds(169, 97, 34, 33);
+			textArea.setBounds(169, 67, 34, 33);
 			switch (color) {
 			case "green":
 				textArea.setBackground(Color.green);
@@ -470,13 +468,13 @@ public class RGPhaseView extends JPanel implements Observer{
 
 			// owned country Title
 			JLabel lblOwnedCountries = new JLabel("Owned Countries");
-			lblOwnedCountries.setBounds(46, 149, 100, 14);
+			lblOwnedCountries.setBounds(46, 119, 100, 14);
 			add(lblOwnedCountries);
 
 			// Drop down box (Array list) of the countries held by the player
 			ArrayList<String> currentPlayerCountries = ((RGGame) game).getCurrentPlayerCountries(currentPlayerName);
 			JComboBox comboBox = new JComboBox();
-			comboBox.setBounds(169, 147, 166, 20);
+			comboBox.setBounds(169, 117, 166, 20);
 			for (int k = 0; k < currentPlayerCountries.size(); k++) {
 				comboBox.addItem(currentPlayerCountries.get(k));
 			}
@@ -491,7 +489,7 @@ public class RGPhaseView extends JPanel implements Observer{
 			// Adjacent countries of the player X. changes according to first drop down box.
 
 			JComboBox comboBox_1 = new JComboBox();
-			comboBox_1.setBounds(169, 247, 163, 20);
+			comboBox_1.setBounds(169, 217, 163, 20);
 			add(comboBox_1);
 
 			// listcountry is an ArrayList that has all the adjacent player's countries of that player
@@ -519,7 +517,7 @@ public class RGPhaseView extends JPanel implements Observer{
 
 			// number of army the player is going to move, must be ("No. of Army < available army")
 			JTextField textField = new JTextField();
-			textField.setBounds(169, 297, 166, 20);
+			textField.setBounds(169, 267, 166, 20);
 			add(textField);
 			textField.setColumns(10);
 			textField.setText("0");
@@ -546,7 +544,7 @@ public class RGPhaseView extends JPanel implements Observer{
 						
 				}
 			});
-			btnFinish.setBounds(169, 341, 89, 23);
+			btnFinish.setBounds(169, 311, 89, 23);
 			add(btnFinish);
 
 		}

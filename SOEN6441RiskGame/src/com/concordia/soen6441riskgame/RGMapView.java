@@ -1,24 +1,19 @@
 package com.concordia.soen6441riskgame;
 
-import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.awt.event.MouseMotionAdapter;
 import java.util.ArrayList;
 import java.util.Observable;
 import java.util.Observer;
 
 import javax.swing.ImageIcon;
-import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
 import javax.swing.SwingConstants;
-
 import java.awt.image.BufferedImage; //This class will read the incoming BMP image
 import javax.imageio.ImageIO; //This class will convert BMP to PNG
 import java.io.File; //to read input and write output images
@@ -27,26 +22,19 @@ import java.io.IOException;
 
 public class RGMapView extends JPanel implements Observer{
 	
-	RGMapView()
-	{
-		//JButton btnHola = new JButton("holandas");
-		//add(btnHola);
-	}
 	
 	@Override
 	public void update(Observable game, Object arg)
 	{
 		String xCoord;
 		String yCoord;
-		String xCoordEnd;
-		String yCoordEnd;
 		String armies;
 		String owner;
 		String color;
 		
 		removeAll();
 		setLayout(null);
-		setPreferredSize(new Dimension(900,640));
+		setPreferredSize(new Dimension(900,720));
 		
 		//Getting name of the file where image is stored
 		RGFile file=RGFile.getGameFile();
@@ -107,13 +95,11 @@ public class RGMapView extends JPanel implements Observer{
 			});
 			txtArea.setFont(new Font("Arial", 0, 13));
 			txtArea.setText(armies);
-			//txtArea.setOpaque(false);
 			txtArea.setBounds(Integer.valueOf(xCoord)-5, Integer.valueOf(yCoord)-7, 15, 15);	
 			
 			
 			txtArea_1.setFont(new Font("Arial", 0, 10));
 			txtArea_1.setText(vertex.get(k));
-			//txtArea_1.setOpaque(false);
 			txtArea_1.setBounds(Integer.valueOf(xCoord), Integer.valueOf(yCoord)+15, 90, 13);
 			
 			switch (color) {
@@ -143,14 +129,6 @@ public class RGMapView extends JPanel implements Observer{
 			lblNewLabel.add(txtArea_1);
 			txtArea_1.setEditable(false);
 			txtArea_1.setVisible(false);
-			
-			/*ArrayList<String> edges = ((RGGame)game).getEdges(vertex.get(k));
-			for(int j=0;j<edges.size();j++)//drawing all the lines (adjacencies) for each country
-			{
-				xCoordEnd=((RGGame)game).getXCoord(edges.get(j));
-				yCoordEnd=((RGGame)game).getYCoord(edges.get(j));
-				g.drawLine(Integer.valueOf(xCoord), Integer.valueOf(yCoord),Integer.valueOf(xCoordEnd), Integer.valueOf(yCoordEnd));
-			}*/
 		}
 	}
 

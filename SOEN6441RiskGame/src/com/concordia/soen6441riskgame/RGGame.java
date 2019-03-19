@@ -1,14 +1,11 @@
 package com.concordia.soen6441riskgame;
 
-import java.awt.Color;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.Observable;
 import java.util.Random;
 import java.util.Scanner;
-
-import javax.swing.JOptionPane;
 
 /**
  * Class to store and control the information of a game. Only one game is
@@ -398,7 +395,6 @@ public class RGGame extends Observable{
 		edges.set(4, finalNumberOfArmiesToAdd);
 		countryItems.setEdge(vertex, edges);
 		edges = countryItems.getEdges(vertex);
-		System.out.println(edges);
 	}
 
 	/**
@@ -465,8 +461,6 @@ public class RGGame extends Observable{
 			edges.remove(0);
 			if (currentPlayerCountries.containsAll(edges)) 
 			{
-				System.out.println(vertex.get(k));
-				System.out.println(numberOfArmiesDueContinentsAux);
 				numberOfArmiesDueContinents = numberOfArmiesDueContinents + numberOfArmiesDueContinentsAux;
 			}
 		}
@@ -743,20 +737,6 @@ public class RGGame extends Observable{
 		for (int k = 0; k < edgesGraph.size(); k++) 
 		{
 			currentCountry=edgesGraph.get(k);
-			System.out.println("currentino: ");
-			System.out.println(currentCountry);
-			//printing the player's turns
-			ArrayList<String> verti = graph.getVertex();
-			for(int j=0;j<verti.size();j++)
-			{
-				System.out.print(verti.get(j)+" -> ");
-				ArrayList<String> edgi = graph.getEdges(verti.get(j));
-				for(int l=0;l<edgi.size();l++)
-				{
-					System.out.print(edgi.get(l)+" -> ");
-				}
-				System.out.println("");
-			}
 			edgesCountryItems = countryItems.getEdges(currentCountry);
 			
 			if (!edgesCountryItems.get(3).contentEquals(currentPlayerName)) 
@@ -1005,7 +985,7 @@ public class RGGame extends Observable{
 			int totalCountriesOwned=0;
 			for (int k = 0; k < vertex.size(); k++) 
 			{
-				edges = countryItems.getEdges(vertex.get(k));// continentItems
+				edges = countryItems.getEdges(vertex.get(k));
 				if(edges.get(3).contentEquals(currentPlayerName))
 					totalCountriesOwned++;//counting countries owned by current player
 			}
@@ -1145,4 +1125,79 @@ public class RGGame extends Observable{
 	{
 		return game.allOutMode;
 	}
+	
+	/**
+	 * This method is used to obtain the percentage of the map controlled by every player
+	 * 
+	 * 
+	 * @param currentPlayerName Name of the player.
+	 * @return Percentage.
+	 * 
+	 */
+	int percentageMapControlledByPlayer(String currentPlayerName)
+	{
+		int percentageControlled=0;
+		ArrayList<String> vertex = countryItems.getVertex();
+		for (int k = 0; k < vertex.size(); k++) 
+		{
+			ArrayList<String> edges = countryItems.getEdges(vertex.get(k));
+			if(edges.get(3).contentEquals(currentPlayerName))
+			{
+				percentageControlled++;
+			}
+		}
+		percentageControlled=(percentageControlled*100)/vertex.size();
+		return percentageControlled;
+	}
+	
+	/**
+	 * This method is used to obtain the continents controlled by a given player.
+	 * 
+	 * 
+	 * @param currentPlayerName Name of the player.
+	 * @return List of continents owned by a given player.
+	 * 
+	 */
+	StringBuilder getContinentsOwnedByPlayer(String currentPlayerName)
+	{
+		ArrayList<String> currentPlayerCountries;
+		StringBuilder continentsOwned=new StringBuilder();
+		currentPlayerCountries=game.getCurrentPlayerCountries(currentPlayerName);
+		ArrayList<String> vertex = continentItems.getVertex();
+		for (int k = 0; k < vertex.size(); k++) 
+		{
+			ArrayList<String> edges = continentItems.getEdges(vertex.get(k));
+			edges.remove(0);
+			if (currentPlayerCountries.containsAll(edges)) 
+			{
+				continentsOwned.append(vertex.get(k));
+				continentsOwned.append("\n");
+			}
+		}
+		return continentsOwned;
+	}
+	
+	/**
+	 * This method is used to obtain the total number of army given player.
+	 * 
+	 * 
+	 * @param currentPlayerName Name of the player.
+	 * @return Total number of army given a player.
+	 * 
+	 */
+	String getTotalNumberOfArmies(String currentPlayerName)
+	{
+		int totalNumberOfArmies=0;
+		ArrayList<String> vertex = countryItems.getVertex();
+		for (int k = 0; k < vertex.size(); k++) 
+		{
+			ArrayList<String> edges = countryItems.getEdges(vertex.get(k));
+			if (edges.get(3).contentEquals(currentPlayerName)) 
+			{
+				totalNumberOfArmies=totalNumberOfArmies+Integer.valueOf(edges.get(4));
+			}
+		}
+		return String.valueOf(totalNumberOfArmies);
+	}
+
 }

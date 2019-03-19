@@ -18,6 +18,8 @@ import java.awt.event.ActionEvent;
 import java.awt.Font;
 import java.awt.event.ItemListener;
 import java.awt.event.ItemEvent;
+import java.awt.Component;
+import javax.swing.border.LineBorder;
 
 public class Prueba extends JFrame {
 
@@ -44,68 +46,41 @@ public class Prueba extends JFrame {
 	 */
 	public Prueba() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 211, 338);
+		setBounds(100, 100, 367, 217);
 		right = new JPanel();
-		right.setBorder(new EmptyBorder(5, 5, 5, 5));
+		right.setBorder(new LineBorder(new Color(0, 0, 0), 1, true));
 		setContentPane(right);
 		right.setLayout(null);
 		
-		JLabel lblSetupPhase = new JLabel("ATTACK PHASE");
-		lblSetupPhase.setBounds(65, 35, 141, 33);
+		JLabel lblSetupPhase = new JLabel("WORLD DOMINATION VIEW");
+		lblSetupPhase.setBounds(111, 11, 205, 33);
 		right.add(lblSetupPhase);
 		
-		JLabel lblCurrent = new JLabel("Current:");
-		lblCurrent.setBounds(35, 91, 113, 23);
-		right.add(lblCurrent);
+		JLabel lblMapCntrol = new JLabel("Map Control");
+		lblMapCntrol.setBounds(44, 55, 103, 33);
+		right.add(lblMapCntrol);
 		
-		JScrollPane scrollPane = new JScrollPane();
-		scrollPane.setBounds(0, 0, 2, 2);
-		right.add(scrollPane);
+		JLabel label = new JLabel("0");
+		label.setFont(new Font("Tahoma", Font.PLAIN, 17));
+		label.setBounds(202, 55, 50, 33);
+		right.add(label);
 		
-		JTextArea textArea_1 = new JTextArea();
-		textArea_1.setBounds(140, 81, 34, 33);
-		right.add(textArea_1);
+		JLabel lblContinentsControlled = new JLabel("Continents Controlled");
+		lblContinentsControlled.setBounds(44, 76, 152, 33);
+		right.add(lblContinentsControlled);
 		
-		JLabel lblDoYouWnat = new JLabel("Do you wnat to move more army to");
-		lblDoYouWnat.setFont(new Font("Tahoma", Font.PLAIN, 10));
-		lblDoYouWnat.setBounds(21, 125, 196, 23);
-		right.add(lblDoYouWnat);
+		JLabel lblArmyOwned = new JLabel("Army Owned");
+		lblArmyOwned.setAlignmentX(Component.RIGHT_ALIGNMENT);
+		lblArmyOwned.setBounds(44, 136, 115, 33);
+		right.add(lblArmyOwned);
 		
-		JLabel lblYourNewConquered = new JLabel("your new conquered territory?");
-		lblYourNewConquered.setFont(new Font("Tahoma", Font.PLAIN, 10));
-		lblYourNewConquered.setBounds(21, 139, 196, 23);
-		right.add(lblYourNewConquered);
-		
-		JLabel lblAvailable = new JLabel("Available:");
-		lblAvailable.setBounds(35, 180, 113, 23);
-		right.add(lblAvailable);
+		JLabel label_4 = new JLabel("0");
+		label_4.setFont(new Font("Tahoma", Font.PLAIN, 17));
+		label_4.setBounds(202, 133, 50, 33);
+		right.add(label_4);
 		
 		JTextArea textArea = new JTextArea();
-		textArea.setBounds(140, 170, 34, 33);
+		textArea.setBounds(202, 87, 125, 46);
 		right.add(textArea);
-		
-		JLabel lblArmyToMove = new JLabel("Army to move:");
-		lblArmyToMove.setBounds(35, 219, 113, 23);
-		right.add(lblArmyToMove);
-		
-		JTextArea textArea_2 = new JTextArea();
-		textArea_2.setBounds(140, 209, 34, 33);
-		right.add(textArea_2);
-		
-		JButton btnMove = new JButton("Move");
-		btnMove.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-			}
-		});
-		btnMove.setBounds(21, 267, 59, 23);
-		right.add(btnMove);
-		
-		JButton btnNo = new JButton("No");
-		btnNo.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-			}
-		});
-		btnNo.setBounds(128, 267, 59, 23);
-		right.add(btnNo);
 	}
 }

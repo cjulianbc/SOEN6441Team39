@@ -281,7 +281,6 @@ public class RGPlayer extends Observable {
 		edges.set(2, finalNumberOfArmiesToAdd);//the value 'number of armies for Setup Phase' is in the second position of the players' data structure
 		playerItems.setEdge(vertex, edges);
 		edges = playerItems.getEdges(vertex);
-		System.out.println(edges);
 	}
 	
 	/**
@@ -339,7 +338,6 @@ public class RGPlayer extends Observable {
 	void initializeTurn()
 	{
 		ArrayList<String> vertex = playerItems.getVertex();
-		System.out.println(vertex);
 		for(int k=0;k<vertex.size();k++)
 		{
 			ArrayList<String> edges = playerItems.getEdges(vertex.get(k));
