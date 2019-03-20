@@ -71,6 +71,7 @@ public class RGFile {
 			file=fileChooser.getSelectedFile();
 			fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
 			imageFilePath=fileChooser.getCurrentDirectory().getPath();
+			fileChooser.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
 		}
 	}
 	
