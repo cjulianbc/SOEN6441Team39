@@ -12,6 +12,7 @@ import java.util.Observer;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.SwingConstants;
 import java.awt.image.BufferedImage; //This class will read the incoming BMP image
@@ -34,7 +35,7 @@ public class RGMapView extends JPanel implements Observer{
 		
 		removeAll();
 		setLayout(null);
-		setPreferredSize(new Dimension(900,720));
+		setPreferredSize(new Dimension(900,650));
 		
 		//getting name of the file where image is stored
 		RGFile file=RGFile.getGameFile();
@@ -68,12 +69,18 @@ public class RGMapView extends JPanel implements Observer{
 		} 
 		
 		//Creating map image background		
+		JScrollPane scrollPane = new JScrollPane();
+		scrollPane.setBounds(0, 0, 900, 650);
+		add(scrollPane);
+		
+		
 		JLabel lblNewLabel = new JLabel();
 		lblNewLabel.setVerticalTextPosition(SwingConstants.TOP);
 		lblNewLabel.setVerticalAlignment(SwingConstants.TOP);
 	    lblNewLabel.setIcon(new ImageIcon(mapImagePath+"\\MapTeam39.png"));
-	    lblNewLabel.setBounds(0, 0, 900, 640);
-	    add(lblNewLabel);
+	    //lblNewLabel.setBounds(0, 0, 900, 640);
+	    scrollPane.setViewportView(lblNewLabel);
+	    //add(lblNewLabel);
 	    lblNewLabel.setLayout(null);
 		
 	    ArrayList<String> vertex = ((RGGame)game).getVertex(); //getting the set of countries of the Risk® map

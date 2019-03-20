@@ -2,6 +2,7 @@ package com.concordia.soen6441riskgame;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
 import javax.swing.JLabel;
@@ -49,7 +50,7 @@ public class RGGameFrame extends JFrame {
 	
 		//creating Map View panel. It is the left panel on the screen
 		JPanel mapViewPanel = new JPanel();
-		mapViewPanel.setBounds(0, 0, 900, 720);
+		mapViewPanel.setBounds(0, 0, 900, 660);
 		contentPane.add(mapViewPanel);
 		mapViewPanel.setVisible(true);
 		mapViewPanel.add(mapView);
