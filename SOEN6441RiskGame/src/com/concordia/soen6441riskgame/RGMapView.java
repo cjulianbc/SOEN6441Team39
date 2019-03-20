@@ -36,7 +36,7 @@ public class RGMapView extends JPanel implements Observer{
 		setLayout(null);
 		setPreferredSize(new Dimension(900,720));
 		
-		//Getting name of the file where image is stored
+		//getting name of the file where image is stored
 		RGFile file=RGFile.getGameFile();
 		StringBuilder content=new StringBuilder();
 		try {
@@ -46,27 +46,32 @@ public class RGMapView extends JPanel implements Observer{
 			e.printStackTrace();
 		}
 		
-		//Converting BMP image to PNG image
+		//getting
+		
+		//converting BMP image to PNG image
+		String mapImagePath=file.getImageFilePath();
+		System.out.println(mapImagePath);
+		System.out.println(content);
 		BufferedImage input_image = null; 
 		try {
-			input_image = ImageIO.read(new File(String.valueOf("C:\\Users\\cesar\\Documents\\"+content)));
+			input_image = ImageIO.read(new File(mapImagePath+"\\"+content));
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		} //read bmp into input_image object
-		File outputfile = new File("C:\\Users\\cesar\\Documents\\Map.png"); //create new outputfile object
+		} 
+		File outputfile = new File(mapImagePath+"\\MapTeam39.png");
 		try {
 			ImageIO.write(input_image, "PNG", outputfile);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		} //write PNG output to file 
+		} 
 		
 		//Creating map image background		
 		JLabel lblNewLabel = new JLabel();
 		lblNewLabel.setVerticalTextPosition(SwingConstants.TOP);
 		lblNewLabel.setVerticalAlignment(SwingConstants.TOP);
-	    lblNewLabel.setIcon(new ImageIcon("C:\\Users\\cesar\\Documents\\Map.png"));
+	    lblNewLabel.setIcon(new ImageIcon(mapImagePath+"\\MapTeam39.png"));
 	    lblNewLabel.setBounds(0, 0, 900, 640);
 	    add(lblNewLabel);
 	    lblNewLabel.setLayout(null);

@@ -41,6 +41,11 @@ public class RGFile {
 	private static RGFile gameFile=new RGFile();
 	
 	/**
+	 * Created to the store the path of the map image file.
+	 */
+	private String imageFilePath;
+	
+	/**
 	 * This method is used to assure only one instance (only one file) is created.
 	 * 
 	 * 
@@ -64,9 +69,23 @@ public class RGFile {
 		if(fileChooser.showOpenDialog(null)==JFileChooser.APPROVE_OPTION)
 		{	
 			file=fileChooser.getSelectedFile();
+			fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+			imageFilePath=fileChooser.getCurrentDirectory().getPath();
 		}
 	}
-
+	
+	/**
+	 * This method is used to return the path of the map image file.
+	 * 
+	 * 
+	 * @return Path of the map image file.
+	 * 
+	 */
+	String getImageFilePath()
+	{
+		return imageFilePath;
+	}
+	
 	/**
 	 * This method is used to extract the content of a tag from a file.
 	 * Possible tags are [Continents] and [Territories].
@@ -107,6 +126,36 @@ public class RGFile {
 					}
 				}
 				break;
+			}
+		}
+		buffer.close();
+		return content;
+	}
+	
+	/**
+	 * This method is used to extract the name of the image in the tag [Map].
+	 * 
+	 * 
+	 * @param label Name of the tag.
+	 * @return The content of the tag.
+	 * 
+	 */
+	StringBuilder getContentImage(String label) throws FileNotFoundException
+	{
+		StringBuilder content=new StringBuilder();
+		Scanner buffer=new Scanner(file);
+		String actualLine;
+		while(buffer.hasNext())//file is not empty
+		{
+			actualLine=buffer.nextLine();
+			if(actualLine.equals(label))//searching tag
+			{
+				actualLine=buffer.nextLine();
+				actualLine=buffer.nextLine();
+				String searchChar = "=";
+				int index = actualLine.indexOf(searchChar);	
+				actualLine = actualLine.substring(index + 1, actualLine.length());
+				content.append(actualLine);
 			}
 		}
 		buffer.close();

@@ -48,7 +48,7 @@ public class RGPlayersFrame extends JFrame {
 	 */
 	public RGPlayersFrame() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 404, 245);
+		setBounds(400, 200, 404, 245);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);

@@ -86,14 +86,14 @@ public class RGMapEditorFrame extends JFrame {
 	 */
 	public RGMapEditorFrame() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 619, 554);
+		setBounds(300, 50, 619, 634);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		
 		JLabel lblContinents = new JLabel("CONTINENTS: (Name of the continent = Control value)");
-		lblContinents.setBounds(34, 49, 353, 23);
+		lblContinents.setBounds(31, 131, 353, 23);
 		contentPane.add(lblContinents);
 		
 		JLabel lblMapEditor = new JLabel("MAP EDITOR");
@@ -101,29 +101,30 @@ public class RGMapEditorFrame extends JFrame {
 		contentPane.add(lblMapEditor);
 		
 		JLabel lblCountries = new JLabel("COUNTRIES: (Name of the country, Map coord X, Map coord Y, Continent, Adjacent countries)");
-		lblCountries.setBounds(34, 255, 618, 23);
+		lblCountries.setBounds(31, 317, 618, 23);
 		contentPane.add(lblCountries);
 		
 		JLabel lblExampleCountry = new JLabel("Example: (Alaska,70,126,North America,Northwest Territory,Alberta,Kamchatka)");
-		lblExampleCountry.setBounds(34, 400, 569, 14);
+		lblExampleCountry.setBounds(31, 462, 569, 14);
 		contentPane.add(lblExampleCountry);
 		
 		JScrollPane scrollPane = new JScrollPane();
-		scrollPane.setBounds(34, 67, 323, 127);
+		scrollPane.setBounds(31, 149, 323, 127);
 		contentPane.add(scrollPane);
 		
+		JTextArea textArea_2 = new JTextArea();
 		JTextArea textArea = new JTextArea();
 		scrollPane.setViewportView(textArea);
 		
 		JScrollPane scrollPane_1 = new JScrollPane();
-		scrollPane_1.setBounds(34, 274, 534, 127);
+		scrollPane_1.setBounds(31, 336, 534, 127);
 		contentPane.add(scrollPane_1);
 		
 		JTextArea textArea_1 = new JTextArea();
 		scrollPane_1.setViewportView(textArea_1);
 		
 		JButton btnNewButton = new JButton("Save Map");
-		btnNewButton.setBounds(34, 450, 89, 23);
+		btnNewButton.setBounds(31, 512, 89, 23);
 		
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -137,8 +138,15 @@ public class RGMapEditorFrame extends JFrame {
 					{	
 						File filename=fileChooser.getSelectedFile();
 						BufferedWriter outFile = new BufferedWriter(new FileWriter(filename));
+						outFile.write("[Map]"); 
+						outFile.newLine();
+						outFile.write("author=ConcordiaSOEN6441Team39");
+						outFile.newLine();
+						outFile.write("image=");
+						textArea_2.write(outFile);
+						outFile.newLine();
+						outFile.newLine();
 						outFile.write("[Continents]"); 
-						
 						outFile.newLine();
 						textArea.write(outFile);
 						outFile.newLine();
@@ -157,7 +165,7 @@ public class RGMapEditorFrame extends JFrame {
 		contentPane.add(btnNewButton);
 		
 		JLabel lblExampleContinent = new JLabel("Example: (North America=5) ");
-		lblExampleContinent.setBounds(34, 194, 212, 14);
+		lblExampleContinent.setBounds(31, 276, 212, 14);
 		contentPane.add(lblExampleContinent);
 		
 		JButton btnValidate = new JButton("Validate");
@@ -166,8 +174,19 @@ public class RGMapEditorFrame extends JFrame {
 				file.validateMap(textArea.getText(),textArea_1.getText());
 			}
 		});
-		btnValidate.setBounds(132, 449, 97, 25);
+		btnValidate.setBounds(129, 511, 97, 25);
 		contentPane.add(btnValidate);
+		
+		JLabel lblMapImageimage = new JLabel("MAP IMAGE: (Name of the image)");
+		lblMapImageimage.setBounds(31, 43, 353, 23);
+		contentPane.add(lblMapImageimage);
+		
+		textArea_2.setBounds(31, 62, 321, 29);
+		contentPane.add(textArea_2);
+		
+		JLabel lblExampleimageworldbmp = new JLabel("Example: (world.bmp) ");
+		lblExampleimageworldbmp.setBounds(31, 91, 212, 14);
+		contentPane.add(lblExampleimageworldbmp);
 		
 		JMenuBar menuBar = new JMenuBar();
 		setJMenuBar(menuBar);
@@ -184,6 +203,8 @@ public class RGMapEditorFrame extends JFrame {
 					textArea.setText(String.valueOf(content));
 					content=file.getContent("[Territories]");
 					textArea_1.setText(String.valueOf(content));
+					content=file.getContentImage("[Map]");
+					textArea_2.setText(String.valueOf(content));
 					
 				} catch (FileNotFoundException e1) {
 					// TODO Auto-generated catch block
