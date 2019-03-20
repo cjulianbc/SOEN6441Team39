@@ -536,10 +536,15 @@ public class RGPhaseView extends JPanel implements Observer{
 					}
 					else
 					{
-						String countryTo=comboBox.getSelectedItem().toString();
-						String countryFrom=comboBox_1.getSelectedItem().toString();
-						if (armiesToMove!=0)
-							((RGGame) game).fortificationPhase(countryFrom, countryTo, armiesToMove);
+						if(comboBox_1.getItemCount()!=0)
+						{
+							String countryTo=comboBox.getSelectedItem().toString();
+							String countryFrom=comboBox_1.getSelectedItem().toString();
+							if (armiesToMove!=0)
+								((RGGame) game).fortificationPhase(countryFrom, countryTo, armiesToMove);
+							else
+								((RGGame) game).fortificationPhaseNoMovements();
+						}
 						else
 							((RGGame) game).fortificationPhaseNoMovements();
 					}
