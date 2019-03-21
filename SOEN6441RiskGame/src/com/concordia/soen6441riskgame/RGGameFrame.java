@@ -17,8 +17,8 @@ import java.awt.event.MouseAdapter;
  * Class that creates a frame with three panels: 
  * 
  * 1) On the left panel, players can see the Risk map.
- * 2) On the right-north panel, players can see the Phase View where can interact with the application.
- * 3) On the right-south panel, players can see the World DOmination View.
+ * 2) On the right-north panel, players can see the Phase View where are able to interact with the application.
+ * 3) On the right-south panel, players can see the World Domination View.
  * 
  * 
  * @author Julian Beltran
@@ -28,17 +28,17 @@ import java.awt.event.MouseAdapter;
  */
 public class RGGameFrame extends JFrame {
 
-	private JPanel contentPane;
-	private RGMapView mapView=new RGMapView();
-	private RGPhaseView phaseView=new RGPhaseView();
-	private RGDominationView dominationView=new RGDominationView();
-
 	/**
 	 * This constructor creates the main frame (window) and the three panels (left, right-north, and right-south).
 	 * 
      *   
 	 */
 	public RGGameFrame() {
+		JPanel contentPane;
+		RGMapView mapView=new RGMapView();
+		RGPhaseView phaseView=new RGPhaseView();
+		RGDominationView dominationView=new RGDominationView();
+		
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setExtendedState(getExtendedState() | JFrame.MAXIMIZED_BOTH);
 		setBounds(0, 0, 1280, 720);

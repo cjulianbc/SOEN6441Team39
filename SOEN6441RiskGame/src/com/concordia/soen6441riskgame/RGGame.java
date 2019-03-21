@@ -45,12 +45,15 @@ public class RGGame extends Observable{
 	private static RGGame game=new RGGame();
 	
 	/**
-	 * Created to store the current game (only one game is possible).
+	 * Created to store the current phase that is being played.
 	 */
 	private String phase="";
 	
 	/**
-	 * Created to store the status of the Attack Phase for a given player.
+	 * Created to store the status of the Attack Phase for a given player. Possible values:
+	 * 1) empty: Nothing to do.
+	 * 2) "end": End of the game.
+	 * 3) "move": Used to show a frame to move army when a territory is captured. 
 	 */
 	private String attackStatus="";
 	
@@ -65,7 +68,7 @@ public class RGGame extends Observable{
 	private boolean allOutMode=false;
 	
 	/**
-	 * This method is used to assure only one instance (only one game) is created
+	 * This method is used to assure only that one instance of the game (only one game) is created.
 	 * 
 	 * 
 	 * @return Current game.
@@ -81,6 +84,8 @@ public class RGGame extends Observable{
 	/**
 	 * This method is used to set the current phase of the game.
 	 * 
+	 * 
+	 * @param phase Current phase.
 	 * 
 	 */
 	void setPhase(String phase)
@@ -469,6 +474,7 @@ public class RGGame extends Observable{
 	}
 
 	/**
+	 * For fortification phase: This method is used to obtain the territories to where a player can move army.
 	 * 
 	 * 
 	 * @param player Name of the player.
@@ -508,6 +514,7 @@ public class RGGame extends Observable{
 	}
 
 	/**
+	 * This method is used to obtain the owner of a country.
 	 * 
 	 * 
 	 * @param country Name of the country.
@@ -518,17 +525,14 @@ public class RGGame extends Observable{
 		String playerName = "";
 		ArrayList<String> vertex = countryItems.getVertex();
 		for (int k = 0; k < vertex.size(); k++) {
-
 			if (vertex.get(k).equals(country)) {
-				ArrayList<String> edges = countryItems.getEdges(vertex.get(k));// continentItems
+				ArrayList<String> edges = countryItems.getEdges(vertex.get(k));
 				playerName = edges.get(3);
 				break;
 
 			}
 		}
-
 		return playerName;
-
 	}
 	
 	/**
@@ -545,7 +549,7 @@ public class RGGame extends Observable{
 		RGPlayer players=RGPlayer.getPlayers();
 		players.allocateArmies(game);//allocating available armies for every player to place in Setup Phase
 		players.initializeCards();//allocating zero cards for each player
-		initializeSetOfCards();
+		initializeSetOfCards();//creating the set of cards in the cardItems' data structure
 		players.initializeArmiesForReinforcementPhase();//allocating zero armies for every player
 		players.initializePerformedActionsForEachPhase();//creating positions in players' data structure to store actions performed by players during play time
 		setChanged();
@@ -553,7 +557,7 @@ public class RGGame extends Observable{
 	}
 	
 	/**
-	 * This method is used to create the set of cards in the cardItems' data structure. A random type is assigned for every country in position 0. 
+	 * This method is used to create the set of cards in the cardItems' data structure. A random card type is assigned for every country in position 0. 
 	 * 
 	 * Types: 
 	 * 1) Infantry represented by number (0).
@@ -715,6 +719,7 @@ public class RGGame extends Observable{
 	 * This method is used to obtain the list of countries a given player can use to attack.
 	 * 
 	 * 
+	 * @param currentPlayerName Name of the player.
 	 * @return List of countries a given player can use to attack.
 	 * 
 	 */
@@ -736,9 +741,11 @@ public class RGGame extends Observable{
 	}
 	
 	/**
-	 * This method is used to obtain the list of countries a given player can attack.
+	 * This method is used to obtain the list of countries to where a given player can attack.
 	 * 
 	 * 
+	 * @param selectedCountry Country from where a player wants to attack.
+	 * @param currentPlayerName Name of the player.
 	 * @return List of countries a given player can attack.
 	 * 
 	 */
@@ -762,9 +769,10 @@ public class RGGame extends Observable{
 	}
 	
 	/**
-	 * This method is used to obtain the list with the number of dice a player can use to attack.
+	 * This method is used to obtain a list with the number of dice a player can use to attack.
 	 * 
 	 * 
+	 * @param selectedCountry Country from where a player wants to attack.
 	 * @return List with the number of dice a player can use to attack.
 	 * 
 	 */
@@ -792,10 +800,11 @@ public class RGGame extends Observable{
 	}
 	
 	/**
-	 * This method is used to obtain the list with the number of dice a player can use to attack.
+	 * This method is used to obtain a list with the number of dice a player can use to defend.
 	 * 
 	 * 
-	 * @return List with the number of dice a player can use to attack.
+	 * @param selectedCountry Defending country.
+	 * @return List with the number of dice a player can use to defend.
 	 * 
 	 */
 	ArrayList<String> getDiceDefender(String selectedCountry)
@@ -826,6 +835,7 @@ public class RGGame extends Observable{
 	 * @param selectedCountryDefender Attacked country.
 	 * @param selectedDiceAttacker Number of dice to attack.
 	 * @param selectedDiceDefender Number of dice to defend.
+	 * @param currentPlayerName Name of the player.
 	 * 
 	 */
 	void attackPhaseModeDecision(String selectedCountryAttacker,String selectedCountryDefender,String selectedDiceAttacker,String selectedDiceDefender,String currentPlayerName)
@@ -867,6 +877,7 @@ public class RGGame extends Observable{
 	 * @param selectedCountryDefender Attacked country.
 	 * @param selectedDiceAttacker Number of dice to attack.
 	 * @param selectedDiceDefender Number of dice to defend.
+	 * @param currentPlayerName Name of the player.
 	 * 
 	 */
 	void attackPhase(String selectedCountryAttacker,String selectedCountryDefender,String selectedDiceAttacker,String selectedDiceDefender,String currentPlayerName)
@@ -1031,8 +1042,11 @@ public class RGGame extends Observable{
 	}
 	
 	/**
-	 * This method is used to know if a player captured a territory and then show up a frame to let players move army to the new captured
-	 * territory.
+	 * This method is used to get the attack status. Possible values:
+	 * 
+	 * 1) empty: Nothing to do.
+	 * 2) "end": End of the game.
+	 * 3) "move": Used to show a frame to move army when a territory is captured. 
 	 * 
 	 * 
 	 * @return Status.
@@ -1044,11 +1058,13 @@ public class RGGame extends Observable{
 	}
 	
 	/**
-	 * This method is used to set the status "move" to know if a player has captured a territory. The word "move" is used to show up a frame to let 
-	 * players move army to the new captured territory.
+	 * This method is used to set the attack status. Possible values:
 	 * 
+	 * 1) empty: Nothing to do.
+	 * 2) "end": End of the game.
+	 * 3) "move": Used to show a frame to move army when a territory is captured. 
 	 * 
-	 * @param Status.
+	 * @param status Status.
 	 * 
 	 */
 	void setAttackStatus(String status)
@@ -1096,7 +1112,7 @@ public class RGGame extends Observable{
 	}
 	
 	/**
-	 * This method is used to move to the next phase due to there are no more available territories to attack.
+	 * This method is used to move to the next phase automatically due to there are no more available territories to attack.
 	 * 
 	 * 
 	 * @param currentPlayerName Name of the player.
@@ -1145,7 +1161,7 @@ public class RGGame extends Observable{
 	 * 
 	 * 
 	 * @param currentPlayerName Name of the player.
-	 * @return Percentage.
+	 * @return Percentage controlled.
 	 * 
 	 */
 	int percentageMapControlledByPlayer(String currentPlayerName)
@@ -1192,7 +1208,7 @@ public class RGGame extends Observable{
 	}
 	
 	/**
-	 * This method is used to obtain the total number of army given player.
+	 * This method is used to obtain the total number of army a player owns.
 	 * 
 	 * 
 	 * @param currentPlayerName Name of the player.

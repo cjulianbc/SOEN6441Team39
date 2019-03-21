@@ -6,8 +6,8 @@ import java.util.Map;
 
 
 /**
- * Class that implements a collection of lists not only to represent a graph but also to handle the information of continents, the game, and the players. 
- * From this perspective, same methods can be used to manipulate the information of any data structure.
+ * Class that implements a collection of lists not only to represent a graph but also to handle the information of continents, cards, 
+ * counties, the game, and the players. From this perspective, same methods can be used to manipulate the information of any data structure.
  * 
  * 
  * @author Julian Beltran
@@ -31,6 +31,7 @@ import java.util.Map;
 	 * 2) Countries Data Structure: Key=Name of the country.
 	 * 3) Continents Data Structure: Key=Name of the continent.
 	 * 4) Players Data Structure: Key=Name of the player.
+	 * 5) Cards Data Structure: Key=Name of the country.
 	 * 
      *    
      * @param vertex Name of the key.
@@ -48,10 +49,11 @@ import java.util.Map;
 	 * 
 	 * Data Structures:
 	 * 1) Map Data Structure: Values=[Set of adjacent countries].
-	 * 2) Countries Data Structure: Values=[X Coordinate, Y Coordinate, Continent, Owner, Armies].
-	 * 3) Continents Data Structure: Values=[bonus army number, Continent's counties].
-	 * 4) Players Data Structure: Values=[Turn, Color, Armies to place in setup phase].
-	 * 
+	 * 2) Countries Data Structure: Values=[X coordinate, Y coordinate, continent, owner, number of armies placed in the country].
+	 * 3) Continents Data Structure: Values=[bonus army number, country 1, country 2, ... , country n].
+	 * 4) Players Data Structure: Values=[turn, color, armies to place in setup phase, number of cards type 1, number of cards type 2, number of cards type 3,
+	 * 									  number of armies left for reinforcement phase, list of actions performed for attack phase, list of actions performed 
+	 * 									  for setup phase, list of actions performed for reinforcement phase, list of actions performed for fortification phase]
      *    
      * @param vertex1 Name of the key.
      * @param vertex2 New value to add.

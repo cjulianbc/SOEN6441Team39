@@ -27,12 +27,13 @@ import javax.swing.border.EmptyBorder;
  * 1) Map Editor: This menu contains the options: Open and Exit.
  * 2) Game: This menu contains the option: Play
  * 
- * The starting frame let the user to create a map from scratch. If the user wants to edit a map, he/she can open an existing map, and the map information
- * will show on the two textAreas. One textArea for the continents, and the other for the countries and their adjacent countries.
+ * The starting frame let the user to create a map from scratch. If the user wants to edit a map, he/she can open an existing map and the map information
+ * will be shown on three textAreas. One text area for the name of the map image file, another for the continents, and the other for the countries 
+ * and their adjacent countries.
  * 
  * A map can be saved (button "Save Map") and validated (button "Validate"). Before saving, a map is validated.
  * 
- * The option Play will open the Players' frame
+ * The option Play will open the Players' frame.
  * 
  * 
  * @author Julian Beltran

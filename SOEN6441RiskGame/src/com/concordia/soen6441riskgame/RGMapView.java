@@ -21,9 +21,26 @@ import java.io.File; //to read input and write output images
 import java.io.FileNotFoundException;
 import java.io.IOException;
 
+/**
+ * Class that creates a panel to show the "Map View" with the image of the map and the number of army placed in every country. This is the left panel of the
+ * main frame. 
+ * 
+ * 
+ * @author Julian Beltran
+ * @version 1.0
+ * @since   1.0
+ *
+ */
 public class RGMapView extends JPanel implements Observer{
 	
-	
+	/**
+	 * This method is called when something has changed in the game (class RGGame). A panel is created to show the "Map View" with the image of the map and 
+	 * the number of army placed in every country. 
+     *   
+     * @param game Current game (the observable object).
+     * @param arg A different object passed as argument. It does no have any use in this application. 
+     *   
+	 */
 	@Override
 	public void update(Observable game, Object arg)
 	{
@@ -46,8 +63,6 @@ public class RGMapView extends JPanel implements Observer{
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
-		//getting
 		
 		//converting BMP image to PNG image
 		String mapImagePath=file.getImageFilePath();

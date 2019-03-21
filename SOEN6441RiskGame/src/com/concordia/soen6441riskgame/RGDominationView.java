@@ -13,8 +13,33 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.border.LineBorder;
 
+/**
+ * Class that creates a panel to show the "Players World Domination View" with the following information:
+ * 
+ * 1) The percentage of the map controlled by every player.
+ * 2) The continents controlled by every player.
+ * 3) The total number of armies owned by every player.
+ * 
+ * This is the right south panel of the main frame. 
+ * 
+ * @author Julian Beltran
+ * @version 1.0
+ * @since   1.0
+ *
+ */
 public class RGDominationView extends JPanel implements Observer{
 	
+	/**
+	 * This method is called when something has changed in the game (class RGGame). This method creates a frame with the following information:  
+     *   
+     * 1) The percentage of the map controlled by every player.
+     * 2) The continents controlled by every player.
+     * 3) The total number of armies owned by every player.
+     *   
+     * @param game Current game (the observable object).
+     * @param arg A different object passed as argument. It does no have any use in this application. 
+     *   
+	 */
 	@Override
 	public void update(Observable game, Object arg)
 	{

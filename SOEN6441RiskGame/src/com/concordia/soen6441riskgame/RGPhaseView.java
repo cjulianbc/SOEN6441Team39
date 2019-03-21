@@ -19,8 +19,34 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.border.LineBorder;
 
+/**
+ * Class that creates a panel to show the "Phase View" with the following information:
+ * 
+ * 1) Name of the game phase currently being played. 
+ * 2) Current name of the player.
+ * 3) Information about actions that are taking place during current phase.
+ * 
+ * This is the right north panel of the main frame. 
+ * 
+ * 
+ * @author Julian Beltran
+ * @version 1.0
+ * @since   1.0
+ *
+ */
 public class RGPhaseView extends JPanel implements Observer{
 	
+	/**
+	 * This method is called when something has changed in the game (class RGGame). This method creates a frame with the following information:  
+     *   
+     * 1) Name of the game phase currently being played. 
+     * 2) Current name of the player.
+     * 3) Information about actions that are taking place during current phase.
+     *   
+     * @param game Current game (the observable object).
+     * @param arg A different object passed as argument. It does no have any use in this application. 
+     *   
+	 */
 	@Override
 	public void update(Observable game, Object arg)
 	{
@@ -298,7 +324,7 @@ public class RGPhaseView extends JPanel implements Observer{
 								add(label);
 								
 								comboBox_3.removeAllItems(); 
-								for(int k=0;k<diceDefender.size();k++)//adding all the countries available to attack
+								for(int k=0;k<diceDefender.size();k++)//adding the number of dice for the defender
 								{
 									comboBox_3.addItem(diceDefender.get(k));
 								}
@@ -321,7 +347,7 @@ public class RGPhaseView extends JPanel implements Observer{
 					add(lblDice);
 					
 					comboBox_2.removeAllItems(); 
-					for(int k=0;k<diceAttacker.size();k++)//adding all the countries available to attack
+					for(int k=0;k<diceAttacker.size();k++)//adding the number of dice for the attacker
 					{
 						comboBox_2.addItem(diceAttacker.get(k));
 					}
@@ -331,7 +357,7 @@ public class RGPhaseView extends JPanel implements Observer{
 			comboBox_1.setBounds(194, 163, 127, 23);
 			comboBox_2.setBounds(33, 218, 127, 23);
 			comboBox_3.setBounds(194, 218, 127, 23);
-			for(int k=0;k<countriesAttacker.size();k++)//adding all the countries where to attack from (minimum two army in each country)
+			for(int k=0;k<countriesAttacker.size();k++)//adding all the countries from where to attack (minimum two army in each country)
 			{
 				comboBox.addItem(countriesAttacker.get(k));
 			}
@@ -346,18 +372,21 @@ public class RGPhaseView extends JPanel implements Observer{
 			btnAllOut.setFont(new Font("Tahoma", Font.PLAIN, 9));
 			btnAllOut.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
+					//All Out mode
 					((RGGame) game).setAllOutModeForAttackPhase(true);
 					String selectedCountryAttacker=comboBox.getSelectedItem().toString();
 					String selectedCountryDefender=comboBox_1.getSelectedItem().toString();
 					String selectedDiceAttacker=comboBox_2.getSelectedItem().toString();
 					String selectedDiceDefender=comboBox_3.getSelectedItem().toString();	
 					((RGGame) game).attackPhaseModeDecision(selectedCountryAttacker,selectedCountryDefender,selectedDiceAttacker,selectedDiceDefender,currentPlayerName);
+					//end of the game 
 					if (((RGGame) game).getAttackStatus().contentEquals("end")) 
 					{
 						btnAllOut.disable();
 						btnOneBattle.disable();
 						btnEnd.disable();	
 					}
+					//moving army to the captured country?
 					else if (((RGGame) game).getAttackStatus().contentEquals("move") && !((RGGame) game).getArmies(selectedCountryAttacker).contentEquals("1")) 
 					{
 						RGCapturedTerritoryFrame frame = new RGCapturedTerritoryFrame(selectedCountryAttacker,selectedCountryDefender,currentPlayerName);
@@ -371,17 +400,20 @@ public class RGPhaseView extends JPanel implements Observer{
 			btnOneBattle.setFont(new Font("Tahoma", Font.PLAIN, 9));
 			btnOneBattle.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
+					//One battle mode
 					String selectedCountryAttacker=comboBox.getSelectedItem().toString();
 					String selectedCountryDefender=comboBox_1.getSelectedItem().toString();
 					String selectedDiceAttacker=comboBox_2.getSelectedItem().toString();
 					String selectedDiceDefender=comboBox_3.getSelectedItem().toString();
 					((RGGame) game).attackPhaseModeDecision(selectedCountryAttacker,selectedCountryDefender,selectedDiceAttacker,selectedDiceDefender,currentPlayerName);
+					//end of the game 
 					if (((RGGame) game).getAttackStatus().contentEquals("end")) 
 					{
 						btnAllOut.disable();
 						btnOneBattle.disable();
 						btnEnd.disable();	
 					}
+					//moving army to the captured country?
 					else if (((RGGame) game).getAttackStatus().contentEquals("move") && !((RGGame) game).getArmies(selectedCountryAttacker).contentEquals("1")) 
 					{
 						RGCapturedTerritoryFrame frame = new RGCapturedTerritoryFrame(selectedCountryAttacker,selectedCountryDefender,currentPlayerName);
@@ -416,7 +448,7 @@ public class RGPhaseView extends JPanel implements Observer{
 			textArea.setText(actionsAttackPhase);
 			scrollPane.setViewportView(textArea);
 			
-			//no more territories to attack?
+			//no more territories to attack? moving to next phase automatically
 			if(countriesAttacker.size()==0 && !((RGGame) game).getAttackStatus().contentEquals("move"))
 			{
 				((RGGame) game).attackPhaseNoAttackers(currentPlayerName);
@@ -494,10 +526,8 @@ public class RGPhaseView extends JPanel implements Observer{
 			comboBox_1.setBounds(169, 190, 163, 20);
 			comboBox.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent arg0) {
-					String country = comboBox.getSelectedItem().toString();// "country" is the current selected Item, it will be
-																	// used to populate the no.of army available
-					lblNewLabel_1.setText(((RGGame) game).getArmies(country)); // setting the army in the field in real time passing
-																	// country as its parameter
+					String country = comboBox.getSelectedItem().toString();// "country" is the current selected Item, it will be used to populate the no.of army available
+					lblNewLabel_1.setText(((RGGame) game).getArmies(country)); // setting the army in the field in real time passing country as its parameter
 					ArrayList<String> listcountrytwo = ((RGGame) game).getCurrentPlayerAdjacentCountries(currentPlayerName, country);
 					comboBox_1.removeAllItems(); // Clearing all the items from the current comboBox_1 for the new items.
 					for (int k = 0; k < listcountrytwo.size(); k++) {

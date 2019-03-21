@@ -18,7 +18,7 @@ import javax.swing.JTextArea;
 import javax.swing.border.EmptyBorder;
 
 /**
- * Class that creates a frame that shows up on the screen when a player captures a territory or country in Attack Phase. In this frame, players 
+ * Class that creates a frame that is shown when a player captures a territory in Attack Phase. In this frame, players 
  * are able to move army to the new captured territory.
  * 
  * 
@@ -34,8 +34,12 @@ public class RGCapturedTerritoryFrame extends JFrame {
 	RGGame game=RGGame.getGame();
 
 	/**
-	 * This constructor set the frame and add all the objects a player needs to move army from the attacking territory to the captured territory.
+	 * This constructor builds a frame where the player can move army from the attacking territory to the captured territory.
      *   
+     *   
+     * @param selectedCountryAttacker Attacking territory.
+     * @param selectedCountryDefender Captured territory.
+     * @param currentPlayerName Name of the player
      *   
 	 */
 	public RGCapturedTerritoryFrame(String selectedCountryAttacker, String selectedCountryDefender, String currentPlayerName) {

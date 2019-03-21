@@ -11,10 +11,9 @@ import javax.swing.JOptionPane;
 
 /**
  * Class to manage the file where a Risk map is stored. The map format implemented for 
- * this application is similar to the Conquest game (http://www.windowsgames.co.uk/conquest.html). 
+ * this application is similar to the one in Conquest game (http://www.windowsgames.co.uk/conquest.html). 
  * 
- * The Conquest format has three tags: [Map], [Continents], and [Territories]. This application only uses 
- * the tags [Continents] and [Territories].
+ * The map format has three tags: [Map], [Continents], and [Territories].
  *
  * 
  * @author Julian Beltran, Aamrean, Abhishek.
@@ -26,30 +25,25 @@ import javax.swing.JOptionPane;
 public class RGFile {
 	
 	/**
-	 * Created to store the file where a Risk map is stored.
+	 * Created to load the file where where the initial values of the game are stored.
 	 */
 	private File file;
 	
 	/**
-	 * Created to show the window where the user can open or save a file.
-	 */
-	private JFileChooser fileChooser=new JFileChooser();
-	
-	/**
-	 * Created to store the file where the map is stored.
+	 * Created to store all the information about the file where the initial values of the game are stored.
 	 */
 	private static RGFile gameFile=new RGFile();
 	
 	/**
-	 * Created to the store the path of the map image file.
+	 * Created to the store the path where the image file of the map is located.
 	 */
 	private String imageFilePath;
 	
 	/**
-	 * This method is used to assure only one instance (only one file) is created.
+	 * This method is used to assure that only one instance (only one file) is created.
 	 * 
 	 * 
-	 * @return File where map is stored.
+	 * @return Information about the file of the current game.
 	 * 
 	 */
 	static RGFile getGameFile()
@@ -60,12 +54,13 @@ public class RGFile {
 	}
 	
 	/**
-	 * This method is used to create a 'File' object in order to access the 
-	 * content of a file (Risk map).
+	 * This method is used to open the file that contains all the information of the Risk game.
+	 * 
 	 * 
 	 */
 	void openFile()
 	{
+		JFileChooser fileChooser=new JFileChooser();
 		if(fileChooser.showOpenDialog(null)==JFileChooser.APPROVE_OPTION)
 		{	
 			file=fileChooser.getSelectedFile();
@@ -88,7 +83,7 @@ public class RGFile {
 	}
 	
 	/**
-	 * This method is used to extract the content of a tag from a file.
+	 * This method is used to extract the content of a tag from the game file.
 	 * Possible tags are [Continents] and [Territories].
 	 * 
 	 * 
@@ -357,10 +352,10 @@ public class RGFile {
 	}
 	
 	/**
-	 * This method is used to extract the name of file where the image of the map is stored.
+	 * This method is used to extract the name of the file where the image of the map is stored.
 	 * 
 	 * 
-	 * @return Name of file where the image of the map is stored.
+	 * @return Name of the file where the image of the map is stored.
 	 * 
 	 */
 	StringBuilder getMapImageFileName(String label) throws FileNotFoundException
