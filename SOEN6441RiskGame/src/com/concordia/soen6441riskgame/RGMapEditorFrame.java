@@ -203,7 +203,7 @@ public class RGMapEditorFrame extends JFrame {
 					textArea.setText(String.valueOf(content));
 					content=file.getContent("[Territories]");
 					textArea_1.setText(String.valueOf(content));
-					content=file.getContentImage("[Map]");
+					content=file.getMapImageFileName("[Map]");
 					textArea_2.setText(String.valueOf(content));
 					
 				} catch (FileNotFoundException e1) {

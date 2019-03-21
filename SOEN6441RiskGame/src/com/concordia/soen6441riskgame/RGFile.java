@@ -107,7 +107,7 @@ public class RGFile {
 			actualLine=buffer.nextLine();
 			if(actualLine.equals(label))//searching tag
 			{
-				while(buffer.hasNext())//tag is not empty
+				while(buffer.hasNext())//tag is not empty?
 				{
 					actualLine=buffer.nextLine();
 					if(!actualLine.equals(""))
@@ -127,36 +127,6 @@ public class RGFile {
 					}
 				}
 				break;
-			}
-		}
-		buffer.close();
-		return content;
-	}
-	
-	/**
-	 * This method is used to extract the name of the image in the tag [Map].
-	 * 
-	 * 
-	 * @param label Name of the tag.
-	 * @return The content of the tag.
-	 * 
-	 */
-	StringBuilder getContentImage(String label) throws FileNotFoundException
-	{
-		StringBuilder content=new StringBuilder();
-		Scanner buffer=new Scanner(file);
-		String actualLine;
-		while(buffer.hasNext())//file is not empty
-		{
-			actualLine=buffer.nextLine();
-			if(actualLine.equals(label))//searching tag
-			{
-				actualLine=buffer.nextLine();
-				actualLine=buffer.nextLine();
-				String searchChar = "=";
-				int index = actualLine.indexOf(searchChar);	
-				actualLine = actualLine.substring(index + 1, actualLine.length());
-				content.append(actualLine);
 			}
 		}
 		buffer.close();
@@ -404,10 +374,16 @@ public class RGFile {
 			actualLine=buffer.nextLine();
 			if(actualLine.equals(label))//searching tag
 			{
-				actualLine=buffer.nextLine();
-				actualLine=buffer.nextLine();
-				actualLine=actualLine.substring(actualLine.lastIndexOf("=") + 1);
-				content.append(actualLine);
+				while(buffer.hasNext())//tag is not empty?
+				{
+					actualLine=buffer.nextLine();
+					if(actualLine.contains("image="))
+					{
+						actualLine=actualLine.substring(actualLine.lastIndexOf("=") + 1);
+						content.append(actualLine);
+						break;
+					}
+				}
 				break;
 			}
 		}
