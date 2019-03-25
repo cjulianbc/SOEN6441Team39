@@ -553,6 +553,7 @@ public class RGGame extends Observable{
 		initializeSetOfCards();//creating the set of cards in the cardItems' data structure
 		players.initializeArmiesForReinforcementPhase();//allocating zero armies for every player
 		players.initializePerformedActionsForEachPhase();//creating positions in players' data structure to store actions performed by players during play time
+		players.initializeCardUsedCount();//setting count for card used as 0
 		setChanged();
 		notifyObservers(this);
 	}

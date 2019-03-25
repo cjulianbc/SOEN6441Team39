@@ -485,4 +485,17 @@ public class RGPlayer extends Observable {
 		}
 		return actionsPerformed;
 	}
+	
+	/**
+	 * This method is used to create position 11 in players' data structure to store the number of times the cards are used by the player 
+	 * 
+     *   
+	 */	
+	void initializeCardUsedCount() {
+		ArrayList<String> vertex = playerItems.getVertex();
+		for(int k=0;k<vertex.size();k++)//for each player
+		{
+		playerItems.addEdge(vertex.get(k), "0");
+		}
+	}
 }
