@@ -498,4 +498,30 @@ public class RGPlayer extends Observable {
 		playerItems.addEdge(vertex.get(k), "0");
 		}
 	}
+	
+	/**
+	 * This method is used to set the total of armies after use of cards for a given player. 
+	 * 
+	 * 
+	 * @param currentPlayerName Name of the player.
+	 * @param army number of army received from reinforcement phase.
+	 */	
+	int setNumberOfArmiesForUsedCard(String currentPlayerName,int army)
+	{
+		RGGame game=RGGame.getGame();
+		int newArmy=0;
+		System.out.println(army);
+		ArrayList<String> edges = playerItems.getEdges(currentPlayerName);
+		if(Integer.parseInt(edges.get(11))<=4) {
+		newArmy=Integer.parseInt(edges.get(11))*2+4+army;
+		}
+		else
+			newArmy=(Integer.parseInt(edges.get(11))-3)*5+army;
+		edges.set(6, String.valueOf(newArmy));
+		int count=Integer.parseInt(edges.get(11))+1;
+		edges.set(11, String.valueOf(count));
+		playerItems.setEdge(currentPlayerName, edges);
+		
+		return newArmy;
+	}
 }
