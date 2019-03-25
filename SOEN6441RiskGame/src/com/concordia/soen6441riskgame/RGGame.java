@@ -3,6 +3,7 @@ package com.concordia.soen6441riskgame;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Observable;
 import java.util.Random;
 import java.util.Scanner;
@@ -1248,6 +1249,30 @@ public class RGGame extends Observable{
 			}
 		}
 		return playerCards;
+	}
+	
+	/**
+	 * This method is used to validated the selected cards.
+	 * 
+	 * 
+	 * @param selectedCards List of selected cards.
+	 * @return true or false based on criteria.
+	 * 
+	 */
+	boolean validateCards (List<String> selectedCards) {
+		boolean flag=false;
+		
+		int count=Collections.frequency(selectedCards, "Wild");
+		if(count==1) {
+			flag= true;
+		}
+		if((selectedCards.get(0)!=selectedCards.get(1) && selectedCards.get(1)!=selectedCards.get(2) && selectedCards.get(0)!=selectedCards.get(2)) 
+				|| (selectedCards.get(0)==selectedCards.get(1) && selectedCards.get(1)==selectedCards.get(2))) {
+			flag=true;
+		}
+		
+		
+		return flag;
 	}
 	
 
