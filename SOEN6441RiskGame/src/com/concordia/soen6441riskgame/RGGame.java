@@ -1275,5 +1275,55 @@ public class RGGame extends Observable{
 		return flag;
 	}
 	
+	/**
+	 * This method is used to remove the cards that have been used.
+	 * 
+	 * 
+	 * @param selectedCards List of selected cards.
+	 * @param currentPlayerName Name of the player.
+	 * 
+	 */
+	void removePlayerCards(String currentPlayerName, List<String> selectedCards) {
+		//ArrayList<String> playerCards=new ArrayList<String>();
+		ArrayList<String> vertex=cardItems.getVertex();
+		for (String card : selectedCards) {
+			System.out.println(card);
+		for (int k = 0; k < vertex.size(); k++) {
+			ArrayList<String> edges = cardItems.getEdges(vertex.get(k));
+			if(edges.get(1).contentEquals(currentPlayerName)) {
+				{
+					
+					if(card.equals("Infantry") && edges.get(0).equals("0")) {
+						System.out.println(edges.get(0)+" "+edges.get(1));
+						edges.set(1, "");
+						cardItems.setEdge(vertex.get(k), edges);
+						break;
+					}
+					else if(card.equals("Cavalry") && edges.get(0).equals("1")) {
+						System.out.println(edges.get(0)+" "+edges.get(1));
+						edges.set(1, "");
+						cardItems.setEdge(vertex.get(k), edges);
+						break;
+					}
+					else if(card.equals("Artillery") && edges.get(0).equals("2")) {
+						System.out.println(edges.get(0)+" "+edges.get(1));
+						edges.set(1, "");
+						cardItems.setEdge(vertex.get(k), edges);
+						break;
+					}
+					else if(card.equals("Wild") && edges.get(0).equals("3")) {
+						System.out.println(edges.get(0)+" "+edges.get(1));
+						edges.set(1, "");
+						cardItems.setEdge(vertex.get(k), edges);
+						break;
+					}
+					
+				}
+			}
+		}
+		}
+		
+	}
+	
 
 }
