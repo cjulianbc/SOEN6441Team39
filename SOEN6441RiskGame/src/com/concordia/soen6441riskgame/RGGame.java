@@ -12,7 +12,7 @@ import java.util.Scanner;
  * possible during runtime
  * 
  * 
- * @author Julian Beltran, Amit
+ * @author Julian Beltran, Amit, Abhishek, Aamrean
  * @version 1.0
  * @since 1.0
  *
@@ -1229,5 +1229,26 @@ public class RGGame extends Observable{
 		}
 		return String.valueOf(totalNumberOfArmies);
 	}
+	
+	/**
+	 * This method is used to obtain the total number of cards for a given player.
+	 * 
+	 * 
+	 * @param currentPlayerName Name of the player.
+	 * @return ArrayList of cards given a player.
+	 * 
+	 */
+	ArrayList<String> getPlayerCards(String currentPlayerName){
+		ArrayList<String> playerCards=new ArrayList<String>();
+		ArrayList<String> vertex=cardItems.getVertex();
+		for (int k = 0; k < vertex.size(); k++) {
+			ArrayList<String> edges = cardItems.getEdges(vertex.get(k));
+			if(edges.get(1).contentEquals(currentPlayerName)) {
+				playerCards.add(edges.get(0));
+			}
+		}
+		return playerCards;
+	}
+	
 
 }
