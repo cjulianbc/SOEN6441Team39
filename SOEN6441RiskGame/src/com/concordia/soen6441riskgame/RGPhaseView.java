@@ -29,7 +29,7 @@ import javax.swing.border.LineBorder;
  * This is the right north panel of the main frame. 
  * 
  * 
- * @author Julian Beltran
+ * @author Julian Beltran, Abhishek, Aamrean
  * @version 1.0
  * @since   1.0
  *
@@ -216,18 +216,42 @@ public class RGPhaseView extends JPanel implements Observer{
 			JButton btnPlace = new JButton("Place");
 			btnPlace.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
-					if(Integer.valueOf(armiesToPlace.getText())<=Integer.valueOf(totalArmiesAvailable.getText()) && Integer.valueOf(armiesToPlace.getText())>0)//player can place between one and the max number of armies available for Reinforcement Phase 
-					{
-						String selectedCountry=comboBox.getSelectedItem().toString();
-						((RGGame) game).reinforcementPhase(selectedCountry, currentPlayerName, armiesToPlace.getText());
-					}
-					else
-						JOptionPane.showMessageDialog(null, "Invalid number of armies", "Alert Message", JOptionPane.WARNING_MESSAGE);
-				}
+					if(((RGGame) game).getPlayerCards(currentPlayerName).size()<5) {
+						
+						if(Integer.valueOf(armiesToPlace.getText())<=Integer.valueOf(totalArmiesAvailable.getText()) && Integer.valueOf(armiesToPlace.getText())>0)//player can place between one and the max number of armies available for Reinforcement Phase 
+						{
+							String selectedCountry=comboBox.getSelectedItem().toString();
+							((RGGame) game).reinforcementPhase(selectedCountry, currentPlayerName, armiesToPlace.getText());
+						}
+						else
+							JOptionPane.showMessageDialog(null, "Invalid number of armies", "Alert Message", JOptionPane.WARNING_MESSAGE);
+						}
+						
+						else 
+							JOptionPane.showMessageDialog(null, "Use available cards first", "Alert Message", JOptionPane.WARNING_MESSAGE);
+						
+						}
 					
 			});
 			btnPlace.setBounds(46, 218, 73, 23);
 			add(btnPlace);
+			
+			JButton btnUseCards = new JButton("Use Cards");
+			btnUseCards.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					if(((RGGame) game).getPlayerCards(currentPlayerName).size()!=0){
+						RGCardsFrame frame = new RGCardsFrame(totalArmiesAvailable,currentPlayerName);
+						frame.setVisible(true);
+			}
+					else {
+						JOptionPane.showMessageDialog(null, "No Cards available", "Alert Message", JOptionPane.WARNING_MESSAGE);
+					}
+					
+				}
+					
+			});
+			btnUseCards.setBounds(130, 218, 100, 23);
+			add(btnUseCards);
 			
 			JLabel lblActions = new JLabel("Actions:");
 			lblActions.setBounds(33, 300, 106, 23);
