@@ -1326,6 +1326,14 @@ public class RGGame extends Observable{
 		}
 		
 	}
+	
+	/**
+	 * This method is used to obtain countryItems' data structure where the current game is stored. 
+	 * 
+	 *
+	 * @return countryItems' data structure
+	 * 
+	 */
 	RGGraph getCountryItems() {
         return this.countryItems;
     }

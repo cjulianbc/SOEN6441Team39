@@ -38,8 +38,11 @@ public class RGCardsFrame extends JFrame {
 	RGGame game=RGGame.getGame();
 
 	/**
-	 * This constructor sets the frame and shows all the available cards for the player .
+	 * This constructor sets the frame and shows all the available cards for the player
      *   
+     *   
+     * @param totalArmiesAvailable Number of army available before trading cards.
+     * @param currentPlayerName Name of the player.
      *   
 	 */
 	public RGCardsFrame(JTextArea totalArmiesAvailable, String currentPlayerName) {
@@ -53,25 +56,21 @@ public class RGCardsFrame extends JFrame {
 		DefaultListModel model = new DefaultListModel();
 		JList list = new JList(model);
 		
-		
 		JScrollPane scrollPane = new JScrollPane(list);
 		scrollPane.setBounds(81, 100, 197, 118);
 		selectCardsPanel.add(scrollPane);
 		
-		
 		ArrayList<String> playerCards=((RGGame) game).getPlayerCards(currentPlayerName);
-			for(int i=0;i<playerCards.size();i++) {
-				if(playerCards.get(i).equals("0"))
-					model.add(i, "Infantry");
-				else if(playerCards.get(i).equals("1"))
-					model.add(i, "Cavalry");
-				else if(playerCards.get(i).equals("2"))
-					model.add(i, "Artillery");
-				else
-					model.add(i, "Wild");
-				
-			}
-		
+		for(int i=0;i<playerCards.size();i++) {
+			if(playerCards.get(i).equals("0"))
+				model.add(i, "Infantry");
+			else if(playerCards.get(i).equals("1"))
+				model.add(i, "Cavalry");
+			else if(playerCards.get(i).equals("2"))
+				model.add(i, "Artillery");
+			else
+				model.add(i, "Wild");
+		}
 		
 		JLabel lblSetupPhase = new JLabel("Reinforcement Phase");
 		lblSetupPhase.setBounds(91, 13, 150, 33);
@@ -126,28 +125,26 @@ public class RGCardsFrame extends JFrame {
 				else {
 					if(((RGGame) game).validateCards(selectedCards)) {
 						int oldArmy=Integer.parseInt(totalArmiesAvailable.getText());
-						
+
 						int newArmy=players.setNumberOfArmiesForUsedCard(currentPlayerName, oldArmy);
 						totalArmiesAvailable.setText(String.valueOf(newArmy));
-						
+
 						((RGGame) game).removePlayerCards(currentPlayerName, selectedCards);
-						
+
 						ArrayList<String> playerCards=((RGGame) game).getPlayerCards(currentPlayerName);
 						System.out.println(playerCards.size());
 						model.clear();
-							for(int i=0;i<playerCards.size();i++) {
-								if(playerCards.get(i).equals("0"))
-									model.add(i, "Infantry");
-								else if(playerCards.get(i).equals("1"))
-									model.add(i, "Cavalry");
-								else if(playerCards.get(i).equals("2"))
-									model.add(i, "Artillery");
-								else
-									model.add(i, "Wild");
-								
-							}
-						
-						
+						for(int i=0;i<playerCards.size();i++) {
+							if(playerCards.get(i).equals("0"))
+								model.add(i, "Infantry");
+							else if(playerCards.get(i).equals("1"))
+								model.add(i, "Cavalry");
+							else if(playerCards.get(i).equals("2"))
+								model.add(i, "Artillery");
+							else
+								model.add(i, "Wild");
+
+						}
 					}
 				}
 			}
@@ -162,10 +159,5 @@ public class RGCardsFrame extends JFrame {
 			}
 		});
 		selectCardsPanel.add(btnNo);
-		
-		
-		
-		
-		
 	}
 }

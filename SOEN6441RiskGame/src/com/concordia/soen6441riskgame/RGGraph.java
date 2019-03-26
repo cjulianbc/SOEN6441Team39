@@ -48,12 +48,13 @@ import java.util.Map;
 	 * ArrayList.
 	 * 
 	 * Data Structures:
-	 * 1) Map Data Structure: Values=[Set of adjacent countries].
+	 * 1) Map Data Structure: Values=[set of adjacent countries].
 	 * 2) Countries Data Structure: Values=[X coordinate, Y coordinate, continent, owner, number of armies placed in the country].
 	 * 3) Continents Data Structure: Values=[bonus army number, country 1, country 2, ... , country n].
 	 * 4) Players Data Structure: Values=[turn, color, armies to place in setup phase, number of cards type 1, number of cards type 2, number of cards type 3,
 	 * 									  number of armies left for reinforcement phase, list of actions performed for attack phase, list of actions performed 
 	 * 									  for setup phase, list of actions performed for reinforcement phase, list of actions performed for fortification phase]
+     * 5) Cards Data Structure: Values=[type of card, owner of the card].   
      *    
      * @param vertex1 Name of the key.
      * @param vertex2 New value to add.
