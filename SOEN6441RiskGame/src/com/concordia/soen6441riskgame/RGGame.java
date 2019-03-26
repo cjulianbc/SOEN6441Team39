@@ -339,9 +339,9 @@ public class RGGame extends Observable{
 	}
 
 	/**
-	 * This method is used to obtain a set of countries of the complete Risk® map.
+	 * This method is used to obtain a set of countries of the complete Riskï¿½ map.
 	 * 
-	 * @return Set of countries of the complete Risk® map.
+	 * @return Set of countries of the complete Riskï¿½ map.
 	 * 
 	 */
 	ArrayList<String> getVertex() {
@@ -1043,6 +1043,7 @@ public class RGGame extends Observable{
 		notifyObservers(this);
 	}
 	
+	
 	/**
 	 * This method is used to get the attack status. Possible values:
 	 * 
@@ -1325,6 +1326,9 @@ public class RGGame extends Observable{
 		}
 		
 	}
+	RGGraph getCountryItems() {
+        return this.countryItems;
+    }
 	
 
 }
