@@ -8,6 +8,20 @@ import java.util.ArrayList;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+/**
+ * 
+ * This is a test class containing cases to validate the game validation of a
+ * correct startup phase; calculation of number of reinforcement armies; various
+ * test for the attack phase, and end of game; validation of a correct
+ * fortification phase.
+ * 
+ *
+ * 
+ * @author Amit, Nesar
+ * @version 1.1
+ * @since 1.1
+ *
+ */
 class RGGameTest {
 	RGGame game = RGGame.getGame();
 
