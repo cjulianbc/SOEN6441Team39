@@ -66,8 +66,6 @@ public class RGMapView extends JPanel implements Observer{
 		
 		//converting BMP image to PNG image
 		String mapImagePath=file.getImageFilePath();
-		System.out.println(mapImagePath);
-		System.out.println(content);
 		BufferedImage input_image = null; 
 		try {
 			input_image = ImageIO.read(new File(mapImagePath+"\\"+content));

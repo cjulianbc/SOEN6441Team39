@@ -403,18 +403,16 @@ public class RGPhaseView extends JPanel implements Observer{
 					String selectedDiceAttacker=comboBox_2.getSelectedItem().toString();
 					String selectedDiceDefender=comboBox_3.getSelectedItem().toString();	
 					((RGGame) game).attackPhaseModeDecision(selectedCountryAttacker,selectedCountryDefender,selectedDiceAttacker,selectedDiceDefender,currentPlayerName);
-					//end of the game 
-					if (((RGGame) game).getAttackStatus().contentEquals("end")) 
-					{
-						btnAllOut.disable();
-						btnOneBattle.disable();
-						btnEnd.disable();	
-					}
+				
 					//moving army to the captured country?
-					else if (((RGGame) game).getAttackStatus().contentEquals("move") && !((RGGame) game).getArmies(selectedCountryAttacker).contentEquals("1")) 
+					if (((RGGame) game).getAttackStatus().contentEquals("move")) 
 					{
-						RGCapturedTerritoryFrame frame = new RGCapturedTerritoryFrame(selectedCountryAttacker,selectedCountryDefender,currentPlayerName);
-						frame.setVisible(true);
+						if(!((RGGame) game).getArmies(selectedCountryAttacker).contentEquals("1")) {
+							RGCapturedTerritoryFrame frame = new RGCapturedTerritoryFrame(selectedCountryAttacker,selectedCountryDefender,currentPlayerName);
+							frame.setVisible(true);
+						}
+						else if(((RGGame) game).getArmies(selectedCountryAttacker).contentEquals("1"))
+							((RGGame) game).capturedTerritoriesNoMovements();
 					}
 				}
 			});
@@ -430,18 +428,16 @@ public class RGPhaseView extends JPanel implements Observer{
 					String selectedDiceAttacker=comboBox_2.getSelectedItem().toString();
 					String selectedDiceDefender=comboBox_3.getSelectedItem().toString();
 					((RGGame) game).attackPhaseModeDecision(selectedCountryAttacker,selectedCountryDefender,selectedDiceAttacker,selectedDiceDefender,currentPlayerName);
-					//end of the game 
-					if (((RGGame) game).getAttackStatus().contentEquals("end")) 
-					{
-						btnAllOut.disable();
-						btnOneBattle.disable();
-						btnEnd.disable();	
-					}
+
 					//moving army to the captured country?
-					else if (((RGGame) game).getAttackStatus().contentEquals("move") && !((RGGame) game).getArmies(selectedCountryAttacker).contentEquals("1")) 
+					if (((RGGame) game).getAttackStatus().contentEquals("move")) 
 					{
-						RGCapturedTerritoryFrame frame = new RGCapturedTerritoryFrame(selectedCountryAttacker,selectedCountryDefender,currentPlayerName);
-						frame.setVisible(true);
+						if(!((RGGame) game).getArmies(selectedCountryAttacker).contentEquals("1")) {
+							RGCapturedTerritoryFrame frame = new RGCapturedTerritoryFrame(selectedCountryAttacker,selectedCountryDefender,currentPlayerName);
+							frame.setVisible(true);
+						}
+						else if(((RGGame) game).getArmies(selectedCountryAttacker).contentEquals("1"))
+							((RGGame) game).capturedTerritoriesNoMovements();
 					}
 				}
 			});
@@ -472,11 +468,19 @@ public class RGPhaseView extends JPanel implements Observer{
 			textArea.setText(actionsAttackPhase);
 			scrollPane.setViewportView(textArea);
 			
-			//no more territories to attack? moving to next phase automatically
-			if(countriesAttacker.size()==0 && !((RGGame) game).getAttackStatus().contentEquals("move"))
+			//no more territories to attack? moving to next phase automatically. But, this is the end of the game?
+			if(countriesAttacker.size()==0 && !((RGGame) game).getAttackStatus().contentEquals("move") && !((RGGame) game).getAttackStatus().contentEquals("end"))
 			{
 				((RGGame) game).attackPhaseNoAttackers(currentPlayerName);
 			}	
+			
+			//end of the game 
+			else if (((RGGame) game).getAttackStatus().contentEquals("end")) 
+			{
+				btnAllOut.setEnabled(false);
+				btnOneBattle.setEnabled(false);
+				btnEnd.setEnabled(false);
+			}
 			
 		}
 		

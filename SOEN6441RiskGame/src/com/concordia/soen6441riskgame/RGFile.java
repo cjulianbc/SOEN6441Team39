@@ -270,6 +270,7 @@ public class RGFile {
 				if(!countriesList.contains(country)) 
 				{
 					System.out.println("The country in the adjacency list is not created");
+					System.out.println(country);
 					JOptionPane.showMessageDialog(null, "The country in the adjacency list is not created", "Alert Message", JOptionPane.WARNING_MESSAGE);
 					return false;
 				}

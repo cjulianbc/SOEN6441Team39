@@ -851,9 +851,23 @@ public class RGGame extends Observable{
 			//while All Out Mode is on and there is enough army available to attack
 			while (game.allOutMode==true && Integer.valueOf(game.getArmies(selectedCountryAttacker))>1)
 			{
+				//setting max number of dice
+				String numberOfArmies=game.getArmies(selectedCountryAttacker);
+				if(Integer.valueOf(numberOfArmies)>=4)
+					selectedDiceAttacker="3";
+				else if(Integer.valueOf(numberOfArmies)==3)
+					selectedDiceAttacker="2";
+				else if(Integer.valueOf(numberOfArmies)==2)
+					selectedDiceAttacker="1";
+				numberOfArmies=game.getArmies(selectedCountryDefender);
+				if(Integer.valueOf(numberOfArmies)>=2)
+					selectedDiceDefender="2";
+				else if(Integer.valueOf(numberOfArmies)==1)
+					selectedDiceDefender="1";
+				//let's play	
 				game.attackPhase(selectedCountryAttacker,selectedCountryDefender,selectedDiceAttacker,selectedDiceDefender,currentPlayerName);
 			}
-			if(Integer.valueOf(game.getArmies(selectedCountryAttacker))==1) 
+			if(Integer.valueOf(game.getArmies(selectedCountryAttacker))==1 && !attackStatus.contentEquals("move")) 
 			{
 				RGPlayer players=RGPlayer.getPlayers();
 				StringBuilder actionPerformed=new StringBuilder();
@@ -943,6 +957,8 @@ public class RGGame extends Observable{
 		int numberOfCountries=Integer.valueOf(game.getArmies(selectedCountryDefender));
 		if(numberOfCountries==0)//country was captured
 		{
+			String loserPlayerName=game.getOwner(selectedCountryDefender);
+			
 			//territory captured. Setting all out mode off
 			game.allOutMode=false;
 
@@ -1006,10 +1022,26 @@ public class RGGame extends Observable{
 				}
 				System.out.println("");
 			}
-
-			//current player controls all territories?
+			
+			//does loser have more territories?
 			ArrayList<String> vertex = countryItems.getVertex();
 			int totalCountriesOwned=0;
+			for (int k = 0; k < vertex.size(); k++) 
+			{
+				edges = countryItems.getEdges(vertex.get(k));
+				if(edges.get(3).contentEquals(loserPlayerName))
+					totalCountriesOwned++;//counting countries owned by loser
+			}
+			if(totalCountriesOwned==0)
+			{
+				players.deletePlayer(loserPlayerName);
+				actionPerformed.append("Bye bye "+loserPlayerName);
+				actionPerformed.append("\n");
+			}
+
+			//current player controls all territories?
+			vertex = countryItems.getVertex();
+			totalCountriesOwned=0;
 			for (int k = 0; k < vertex.size(); k++) 
 			{
 				edges = countryItems.getEdges(vertex.get(k));
@@ -1024,7 +1056,6 @@ public class RGGame extends Observable{
 			}
 			else
 				game.attackStatus="move";
-
 		}
 		
 		//Storing performed actions 

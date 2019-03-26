@@ -524,4 +524,15 @@ public class RGPlayer extends Observable {
 		
 		return newArmy;
 	}
+	
+	/**
+	 * This method is used to delete a player when he/she does not own more territories. 
+	 * 
+	 * 
+	 * @param loserPlayerName Name of the loser.
+	 */	
+	void deletePlayer(String loserPlayerName)
+	{
+		playerItems.deleteVertex(loserPlayerName);
+	}
 }

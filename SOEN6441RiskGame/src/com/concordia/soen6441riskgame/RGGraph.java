@@ -44,6 +44,26 @@ import java.util.Map;
 	}
 	
 	/**
+	 * This method is used to delete a key of the HashMap.
+	 * 
+	 *  * Data Structures:
+	 * 
+	 * 1) Map Data Structure: Key=Name of the country.
+	 * 2) Countries Data Structure: Key=Name of the country.
+	 * 3) Continents Data Structure: Key=Name of the continent.
+	 * 4) Players Data Structure: Key=Name of the player.
+	 * 5) Cards Data Structure: Key=Name of the country.
+	 * 
+	 * 
+     * @param vertex Name of the key.
+     *   
+	 */
+	void deleteVertex(String vertex) 
+	{
+		adjVertices.remove(vertex);
+	}
+	
+	/**
 	 * This method is used to create one value for a given key. The data structure can have more than one value. For that reason, the value of the key is an
 	 * ArrayList.
 	 * 
