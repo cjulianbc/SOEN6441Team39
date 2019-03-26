@@ -505,6 +505,7 @@ public class RGPlayer extends Observable {
 	 * 
 	 * @param currentPlayerName Name of the player.
 	 * @param army number of army received from reinforcement phase.
+	 * @return New number of armies after exchanging cards.
 	 */	
 	int setNumberOfArmiesForUsedCard(String currentPlayerName,int army)
 	{

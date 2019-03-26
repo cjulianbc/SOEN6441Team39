@@ -468,13 +468,13 @@ public class RGPhaseView extends JPanel implements Observer{
 			textArea.setText(actionsAttackPhase);
 			scrollPane.setViewportView(textArea);
 			
-			//no more territories to attack? moving to next phase automatically. But, this is the end of the game?
+			//no more territories to attack? moving to next phase automatically.
 			if(countriesAttacker.size()==0 && !((RGGame) game).getAttackStatus().contentEquals("move") && !((RGGame) game).getAttackStatus().contentEquals("end"))
 			{
 				((RGGame) game).attackPhaseNoAttackers(currentPlayerName);
 			}	
 			
-			//end of the game 
+			//end of the game? 
 			else if (((RGGame) game).getAttackStatus().contentEquals("end")) 
 			{
 				btnAllOut.setEnabled(false);

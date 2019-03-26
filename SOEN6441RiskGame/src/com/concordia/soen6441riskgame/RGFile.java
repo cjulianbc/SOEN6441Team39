@@ -356,6 +356,7 @@ public class RGFile {
 	 * This method is used to extract the name of the file where the image of the map is stored.
 	 * 
 	 * 
+	 * @param label Tag: [Map]
 	 * @return Name of the file where the image of the map is stored.
 	 * 
 	 */
