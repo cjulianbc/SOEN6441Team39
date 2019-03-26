@@ -1,7 +1,7 @@
 package com.concordia.soen6441riskgame;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.fail;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.ArrayList;
 
@@ -27,26 +27,53 @@ class RGGameTest {
 		content.append("Sri Lanka,330,457,Indian Sub-Continent,India");
 		content.append("\n");
 		content.append("Maldives,273,493,Indian Sub-Continent,India");
+
+		content.append("\n");
+		content.append("Indonesia,620,461,Oceania,Singapore,East Malaysia,Philippines");
+		content.append("\n");
+		content.append("East Malaysia,572,452,Oceania,Brunei,Vietnam,West Malaysia,Indonesia,Philippines");
+		content.append("\n");
+		content.append("Brunei,589,437,Oceania,Vietnam,East Malaysia");
+		content.append("\n");
+		content.append("Philippines,627,360,Oceania,China,East Malaysia,Indonesia");
+
 		game.createGraph(content);
 		RGGraph countryItems = game.getCountryItems();
+
+		StringBuilder continent = new StringBuilder();
+		continent.append("Indian Sub-Continent=2");
+		continent.append("\n");
+		continent.append("Oceania=4");
+
+		countryItems.addEdge("Indonesia", "C");
+		countryItems.addEdge("Indonesia", "1");
+
 		countryItems.addEdge("India", "A");
 		countryItems.addEdge("India", "1");
 
 		countryItems.addEdge("Nepal", "B");
 		countryItems.addEdge("Nepal", "1");
 
-		countryItems.addEdge("Bhuntan", "C");
+		countryItems.addEdge("East Malaysia", "C");
+		countryItems.addEdge("East Malaysia", "1");
+
+		countryItems.addEdge("Bhuntan", "A");
 		countryItems.addEdge("Bhuntan", "1");
 
-		countryItems.addEdge("Bangladesh", "A");
+		countryItems.addEdge("Bangladesh", "B");
 		countryItems.addEdge("Bangladesh", "1");
 
-		countryItems.addEdge("Sri Lanka", "B");
+		countryItems.addEdge("Brunei", "C");
+		countryItems.addEdge("Brunei", "1");
+
+		countryItems.addEdge("Sri Lanka", "A");
 		countryItems.addEdge("Sri Lanka", "1");
 
-		countryItems.addEdge("Maldives", "C");
+		countryItems.addEdge("Maldives", "B");
 		countryItems.addEdge("Maldives", "1");
-        
+
+		countryItems.addEdge("Philippines", "C");
+		countryItems.addEdge("Philippines", "1");
 
 	}
 
@@ -63,7 +90,7 @@ class RGGameTest {
 	@Test
 	void testGetOwner() {
 		// fail("Not yet implemented");
-		assertEquals(game.getOwner("Bangladesh"), "A");
+		assertEquals(game.getOwner("Bangladesh"), "B");
 	}
 
 	@Test
@@ -74,39 +101,32 @@ class RGGameTest {
 
 	@Test
 	void testGetVertex() {
-		// fail("Not yet implemented");
 		ArrayList<String> vert = game.getVertex();
-		// System.out.print("---------------------------- " + vert.get(0));
-		assertEquals(vert.get(0), "Bangladesh");
+		assertEquals(vert.get(1), "Bangladesh");
 	}
 
 	@Test
 	void testGetEdges() {
-		// fail("Not yet implemented");
 		ArrayList<String> edg = game.getEdges("India");
-		// System.out.print("---------------------------- " + edg.get(0));
 		assertEquals(edg.get(0), "Pakistan");
 	}
 
 	@Test
 	void testGetCurrentPlayerCountries() {
 		ArrayList<String> playercountries = game.getCurrentPlayerCountries("A");
-
-		assertEquals(playercountries.get(0), "Bangladesh");
-		// fail("Not yet implemented");
+		// System.out.print("---------------------------- " + playercountries.get(0));
+		assertEquals(playercountries.get(0), "Bhuntan");
 	}
 
 	@Test
 	void testSetNumberOfArmies() {
 		game.setNumberOfArmies(2, "India");
 		assertEquals(game.getArmies("India"), "3");
-		// fail("Not yet implemented");
 	}
 
 	@Test
 	void testGetCurrentPlayerNumberOfCountries() {
-		// fail("Not yet implemented");
-		assertEquals(game.getCurrentPlayerNumberOfCountries("B"), 2);
+		assertEquals(game.getCurrentPlayerNumberOfCountries("B"), 3);
 	}
 
 	@Test
@@ -116,39 +136,39 @@ class RGGameTest {
 
 	@Test
 	void testGetNumberOfArmiesDueContinents() {
-		fail("Not yet implemented");
+		// fail("Not yet implemented");
+		int currentPlayerNumberOfCountries = game.getCurrentPlayerNumberOfCountries("C");
+		assertEquals(currentPlayerNumberOfCountries, 4);
 	}
 
 	@Test
 	void testGetCurrentPlayerAdjacentCountries() {
-		// fail("Not yet implemented");
 		ArrayList<String> adjPath = game.getCurrentPlayerAdjacentCountries("A", "India");
-		assertEquals(adjPath.get(0), "Bangladesh");
+		assertEquals(adjPath.get(0), "Bhuntan");
 	}
 
-	@Test
-	void testGetPlayersName() {
-		fail("Not yet implemented");
-	}
+	// @Test
+	// void testGetPlayersName() {
+	// fail("Not yet implemented");
+	// }
 
 	// @Test
 	// void testFortificationPhase() {
 	// fail("Not yet implemented");
 	// }
 
-	@Test
-	void testGetCountriesAttacker() {
-		fail("Not yet implemented");
-	}
 
 	@Test
-	void testSetAttackStatus() {
-		fail("Not yet implemented");
+	void testGetAttackStatus() {
+		// fail("Not yet implemented");
+		// System.out.print("---------------------------- " + game.getAttackStatus());
+		assertEquals(game.getAttackStatus(), "");
 	}
 
 	@Test
 	void testSetAllOutModeForAttackPhase() {
-		fail("Not yet implemented");
+		game.setAllOutModeForAttackPhase(true);
+		assertTrue(game.getAllOutModeForAttackPhase());
 	}
 
 }
