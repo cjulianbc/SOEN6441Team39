@@ -181,8 +181,8 @@ class RGGameTest {
 
 	@Test
 	void testGetAttackStatus() {
-		// fail("Not yet implemented");
-		// System.out.print("---------------------------- " + game.getAttackStatus());
+		
+		
 		assertEquals(game.getAttackStatus(), "");
 	}
 
@@ -203,7 +203,7 @@ class RGGameTest {
 	
 	@Test
 	void testvalidateCards() {
-		//List selectedCards=new List();
+		
 		List<String> selectedCards=Arrays.asList("Artilery","Infantry","Wild");
 		assertTrue(game.validateCards(selectedCards));
 	}
