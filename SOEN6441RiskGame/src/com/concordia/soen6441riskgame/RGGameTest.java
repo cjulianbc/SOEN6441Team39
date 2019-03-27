@@ -141,7 +141,8 @@ class RGGameTest {
 	@Test
 	void testSetNumberOfArmies() {
 		game.setNumberOfArmies(2, "India");
-		assertEquals(game.getArmies("India"), "3");
+		
+		assertEquals(game.getArmies("India"), "9");
 	}
 
 	@Test
