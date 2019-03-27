@@ -4,6 +4,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -63,7 +65,7 @@ class RGGameTest {
 		countryItems.addEdge("Indonesia", "1");
 
 		countryItems.addEdge("India", "A");
-		countryItems.addEdge("India", "1");
+		countryItems.addEdge("India", "7");
 
 		countryItems.addEdge("Nepal", "B");
 		countryItems.addEdge("Nepal", "1");
@@ -88,6 +90,10 @@ class RGGameTest {
 
 		countryItems.addEdge("Philippines", "C");
 		countryItems.addEdge("Philippines", "1");
+		
+		RGPlayer player=RGPlayer.getPlayers();
+		 player.setPlayers("a,b,c");
+		 game.initializeGame();
 
 	}
 
@@ -183,6 +189,30 @@ class RGGameTest {
 	void testSetAllOutModeForAttackPhase() {
 		game.setAllOutModeForAttackPhase(true);
 		assertTrue(game.getAllOutModeForAttackPhase());
+	}
+	
+	@Test
+	void testGetPlayersName() {
+		
+		assertEquals(game.getPlayersName("India"),"A");
+		
+		
+	}
+
+	
+	@Test
+	void testvalidateCards() {
+		//List selectedCards=new List();
+		List<String> selectedCards=Arrays.asList("Artilery","Infantry","Wild");
+		assertTrue(game.validateCards(selectedCards));
+	}
+	
+	@Test
+	void testFortificationPhase() {
+		
+		game.fortificationPhase("Bangladesh", "India", 2);
+		 
+		assertEquals(game.getCountryItems().getEdges("Bangladesh").get(4),"3");
 	}
 
 }
