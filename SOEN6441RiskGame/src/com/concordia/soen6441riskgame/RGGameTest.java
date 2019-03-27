@@ -182,8 +182,8 @@ class RGGameTest {
 	@Test
 	void testGetAttackStatus() {
 		
-		
-		assertEquals(game.getAttackStatus(), "");
+		game.setAttackStatus("end");
+		assertEquals(game.getAttackStatus(), "end");
 	}
 
 	@Test
