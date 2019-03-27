@@ -216,4 +216,9 @@ class RGGameTest {
 		assertEquals(game.getCountryItems().getEdges("Bangladesh").get(4),"3");
 	}
 
+	@Test
+	public void testPercentageMapControlledByPlayer() {
+
+		assertEquals(game.percentageMapControlledByPlayer("C"), 40);
+	}
 }
