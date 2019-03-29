@@ -1,34 +1,20 @@
 package com.concordia.soen6441riskgame;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.Assert.*;
+
+import org.junit.Before;
+import org.junit.Test;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+public class RGGameTest {
 
-/**
- * 
- * This is a test class containing cases to validate the game validation of a
- * correct startup phase; calculation of number of reinforcement armies; various
- * test for the attack phase, and end of game; validation of a correct
- * fortification phase.
- * 
- *
- * 
- * @author Amit, Nesar
- * @version 1.1
- * @since 1.1
- *
- */
-class RGGameTest {
 	RGGame game = RGGame.getGame();
 
-	@BeforeEach
-	void setUp() throws Exception {
+	@Before
+	public void setUp() throws Exception {
 		
 		StringBuilder content = new StringBuilder();
 		content.append(
@@ -98,72 +84,72 @@ class RGGameTest {
 	}
 
 	@Test
-	void testGetXCoord() {
+	public void testGetXCoord() {
 		assertEquals(game.getXCoord("India"), "314");
 	}
 
 	@Test
-	void testGetYCoord() {
+	public void testGetYCoord() {
 		assertEquals(game.getXCoord("Bangladesh"), "394");
 	}
 
 	@Test
-	void testGetOwner() {
+	public void testGetOwner() {
 		// fail("Not yet implemented");
 		assertEquals(game.getOwner("Bangladesh"), "B");
 	}
 
 	@Test
-	void testGetArmies() {
+	public void testGetArmies() {
 		assertEquals(game.getArmies("Bangladesh"), "1");
 		// fail("Not yet implemented");
 	}
 
 	@Test
-	void testGetVertex() {
+	public void testGetVertex() {
 		ArrayList<String> vert = game.getVertex();
 		assertEquals(vert.get(1), "Bangladesh");
 	}
 
 	@Test
-	void testGetEdges() {
+	public void testGetEdges() {
 		ArrayList<String> edg = game.getEdges("India");
 		assertEquals(edg.get(0), "Pakistan");
 	}
 
 	@Test
-	void testGetCurrentPlayerCountries() {
+	public void testGetCurrentPlayerCountries() {
 		ArrayList<String> playercountries = game.getCurrentPlayerCountries("A");
 		// System.out.print("---------------------------- " + playercountries.get(0));
 		assertEquals(playercountries.get(0), "Bhuntan");
 	}
 
 	@Test
-	void testSetNumberOfArmies() {
+	public void testSetNumberOfArmies() {
 		game.setNumberOfArmies(2, "India");
 		
 		assertEquals(game.getArmies("India"), "9");
 	}
 
 	@Test
-	void testGetCurrentPlayerNumberOfCountries() {
+	public void testGetCurrentPlayerNumberOfCountries() {
 		assertEquals(game.getCurrentPlayerNumberOfCountries("B"), 3);
 	}
 
 	@Test
-	void testGetNumberOfArmiesDueTerritories() {
+	public void testGetNumberOfArmiesDueTerritories() {
 		assertEquals(game.getNumberOfArmiesDueTerritories(10), 3);
 	}
 
 	@Test
-	void testGetNumberOfArmiesDueContinents() {
+	public void testGetNumberOfArmiesDueContinents() {
 		// fail("Not yet implemented");
 		int currentPlayerNumberOfCountries = game.getCurrentPlayerNumberOfCountries("C");
 		assertEquals(currentPlayerNumberOfCountries, 4);
 	}
 
 	@Test
-	void testGetCurrentPlayerAdjacentCountries() {
+	public void testGetCurrentPlayerAdjacentCountries() {
 		ArrayList<String> adjPath = game.getCurrentPlayerAdjacentCountries("A", "India");
 		assertEquals(adjPath.get(0), "Bhuntan");
 	}
@@ -180,20 +166,20 @@ class RGGameTest {
 
 
 	@Test
-	void testGetAttackStatus() {
+	public void testGetAttackStatus() {
 		
 		game.setAttackStatus("end");
 		assertEquals(game.getAttackStatus(), "end");
 	}
 
 	@Test
-	void testSetAllOutModeForAttackPhase() {
+	public void testSetAllOutModeForAttackPhase() {
 		game.setAllOutModeForAttackPhase(true);
 		assertTrue(game.getAllOutModeForAttackPhase());
 	}
 	
 	@Test
-	void testGetPlayersName() {
+	public void testGetPlayersName() {
 		
 		assertEquals(game.getPlayersName("India"),"A");
 		
@@ -202,23 +188,24 @@ class RGGameTest {
 
 	
 	@Test
-	void testvalidateCards() {
+	public void testvalidateCards() {
 		
 		List<String> selectedCards=Arrays.asList("Artilery","Infantry","Wild");
 		assertTrue(game.validateCards(selectedCards));
 	}
 	
 	@Test
-	void testFortificationPhase() {
+	public void testFortificationPhase() {
 		
 		game.fortificationPhase("Bangladesh", "India", 2);
 		 
 		assertEquals(game.getCountryItems().getEdges("Bangladesh").get(4),"3");
 	}
-
+	
 	@Test
-	public void testPercentageMapControlledByPlayer() {
+    public void testPercentageMapControlledByPlayer() {
+        assertEquals(game.percentageMapControlledByPlayer("C"), 40);
+    }
 
-		assertEquals(game.percentageMapControlledByPlayer("C"), 40);
-	}
 }
+

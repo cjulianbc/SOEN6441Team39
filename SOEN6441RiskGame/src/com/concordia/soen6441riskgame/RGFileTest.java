@@ -1,34 +1,33 @@
 package com.concordia.soen6441riskgame;
 
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.Assert.*;
 
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import org.junit.Before;
+import org.junit.Test;
 
 /**
- * 
- * This is a test class containing cases to validate the game map and a
- * reinforcement method
- * 
- *
- * 
- * @author Aamrean, Abhishek, Amit.
- * @version 1.0
- * @since 1.0
- *
- */
-class RGFileTest {
+* 
+* This is a test class containing cases to validate the game map and a
+* reinforcement method
+* 
+*
+* 
+* @author Aamrean, Abhishek, Amit.
+* @version 1.0
+* @since 1.0
+*
+*/
+public class RGFileTest {
 	String continents, countries;
 	RGFile file;
 
-	@BeforeEach
-	void setUp() throws Exception {
+	@Before
+	public void setUp() throws Exception {
 		file = new RGFile();
 	}
 
 	@Test
-	void testMapValidate() {
+	public void testMapValidate() {
 		continents = "Asia=2" + "\n" + "North America=7";
 		countries = "India,143,28,Asia,Srilanka,Bangladesh,Pakistan,Nepal,Bhutan,Canada,China\n"
 				+ "Pakistan,27,34,Asia,Afghanistan,China,India\n" + "Srilanka,45,66,Asia,India\n"
@@ -40,7 +39,7 @@ class RGFileTest {
 	}
 
 	@Test
-	void testMapInvalidContinentFormat() {
+	public void testMapInvalidContinentFormat() {
 		continents = "Asia2" + "\n" + "North America=7";
 		countries = "India,143,28,Asia,Srilanka,Bangladesh,Pakistan,Nepal,Bhutan,Canada,China\n"
 				+ "Pakistan,27,34,Asia,Afghanistan,China,India\n" + "Srilanka,45,66,Asia,India\n"
@@ -52,7 +51,7 @@ class RGFileTest {
 	}
 
 	@Test
-	void testMapInvalidContinentCount() {
+	public void testMapInvalidContinentCount() {
 		continents = "Asia=2" + "\n" + "North America=8";
 		countries = "India,143,28,Asia,Srilanka,Bangladesh,Pakistan,Nepal,Bhutan,Canada,China\n"
 				+ "Pakistan,27,34,Asia,Afghanistan,China,India\n" + "Srilanka,45,66,Asia,India\n"
@@ -64,7 +63,7 @@ class RGFileTest {
 	}
 
 	@Test
-	void testMapInvalidContinentName() {
+	public void testMapInvalidContinentName() {
 		continents = "Asia=2" + "\n" + "North America=8";
 		countries = "India,143,28,Asia,Srilanka,Bangladesh,Pakistan,Nepal,Bhutan,Canada,China\n"
 				+ "Pakistan,27,34,Asia,Afghanistan,China,India\n" + "Srilanka,45,66,Asia,India\n"
@@ -76,7 +75,7 @@ class RGFileTest {
 	}
 
 	@Test
-	void testMapInvalidSameCoordinates() {
+	public void testMapInvalidSameCoordinates() {
 		continents = "Asia=2" + "\n" + "North America=8";
 		countries = "India,143,28,Asia,Srilanka,Bangladesh,Pakistan,Nepal,Bhutan,Canada,China\n"
 				+ "Pakistan,27,34,Asia,Afghanistan,China,India\n" + "Srilanka,45,66,Asia,India\n"
@@ -88,7 +87,7 @@ class RGFileTest {
 	}
 
 	@Test
-	void testMapInvalidCoordinateFormat() {
+	public void testMapInvalidCoordinateFormat() {
 		continents = "Asia=2" + "\n" + "North America=8";
 		countries = "India,143,28,Asia,Srilanka,Bangladesh,Pakistan,Nepal,Bhutan,Canada,China\n"
 				+ "Pakistan,27,34,Asia,Afghanistan,China,India\n" + "Srilanka,45,66,Asia,India\n"
@@ -100,7 +99,7 @@ class RGFileTest {
 	}
 
 	@Test
-	void testMapInvalidAdjacenectCountry() {
+	public void testMapInvalidAdjacenectCountry() {
 		continents = "Asia=2" + "\n" + "North America=8";
 		countries = "India,143,28,Asia,Srilanka,Bangladesh,Pakistan,Nepal,Bhutan,Canada,China,Ethiopia\n"
 				+ "Pakistan,27,34,Asia,Afghanistan,China,India\n" + "Srilanka,45,66,Asia,India\n"
@@ -112,7 +111,7 @@ class RGFileTest {
 	}
 
 	@Test
-	void testMapInvalidUniDirectionalConnection() {
+	public void testMapInvalidUniDirectionalConnection() {
 		continents = "Asia=2" + "\n" + "North America=8";
 		countries = "India,143,28,Asia,Srilanka,Bangladesh,Pakistan,Nepal,Bhutan,Canada,China\n"
 				+ "Pakistan,27,34,Asia,Afghanistan,China,India\n" + "Srilanka,45,66,Asia,India\n"
@@ -124,7 +123,7 @@ class RGFileTest {
 	}
 
 	@Test
-	void testMapInvalidDisconnectedGraph() {
+	public void testMapInvalidDisconnectedGraph() {
 		continents = "Asia=2" + "\n" + "North America=8";
 		countries = "India,143,28,Asia,Srilanka,Bangladesh,Pakistan,Nepal,Bhutan,China\n"
 				+ "Pakistan,27,34,Asia,Afghanistan,China,India\n" + "Srilanka,45,66,Asia,India\n"
@@ -137,3 +136,4 @@ class RGFileTest {
 
 
 }
+
