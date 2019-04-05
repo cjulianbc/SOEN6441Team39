@@ -127,14 +127,22 @@ public class RGPhaseView extends JPanel implements Observer{
 			btnPlace.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
 					String selectedCountry=comboBox.getSelectedItem().toString();
-					((RGGame) game).setupPhase(selectedCountry, currentPlayerName);
+					((RGGame) game).setStrategy(currentPlayerName);
+					((RGGame) game).executeSetupStrategy(selectedCountry, currentPlayerName);
+					//((RGGame) game).setupPhase(selectedCountry, currentPlayerName);
 				}
 			});
 			btnPlace.setBounds(232, 164, 73, 23);
 			add(btnPlace);
+			
+			String strategy=players.getPlayerStrategy(currentPlayerName);
+			if(!strategy.contentEquals("human")) {
+				((RGGame) game).setStrategy(currentPlayerName);
+				((RGGame) game).executeSetupStrategy("", currentPlayerName);
+			}
 		}
 		
-		if(phase.contentEquals("Reinforcement"))
+		else if(phase.contentEquals("Reinforcement"))
 		{
 			JLabel lblSetupPhase = new JLabel("REINFORCEMENT PHASE");
 			lblSetupPhase.setBounds(119, 10, 179, 33);
@@ -217,21 +225,23 @@ public class RGPhaseView extends JPanel implements Observer{
 			btnPlace.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
 					if(((RGGame) game).getPlayerCards(currentPlayerName).size()<5) {
-						
+
 						if(Integer.valueOf(armiesToPlace.getText())<=Integer.valueOf(totalArmiesAvailable.getText()) && Integer.valueOf(armiesToPlace.getText())>0)//player can place between one and the max number of armies available for Reinforcement Phase 
 						{
 							String selectedCountry=comboBox.getSelectedItem().toString();
-							((RGGame) game).reinforcementPhase(selectedCountry, currentPlayerName, armiesToPlace.getText());
+							((RGGame) game).setStrategy(currentPlayerName);
+							((RGGame) game).executeReinforcementStrategy(selectedCountry, currentPlayerName, armiesToPlace.getText());
+							//((RGGame) game).reinforcementPhase(selectedCountry, currentPlayerName, armiesToPlace.getText());
 						}
 						else
 							JOptionPane.showMessageDialog(null, "Invalid number of armies", "Alert Message", JOptionPane.WARNING_MESSAGE);
-						}
-						
-						else 
-							JOptionPane.showMessageDialog(null, "Use available cards first", "Alert Message", JOptionPane.WARNING_MESSAGE);
-						
-						}
-					
+					}
+
+					else 
+						JOptionPane.showMessageDialog(null, "Use available cards first", "Alert Message", JOptionPane.WARNING_MESSAGE);
+
+				}
+
 			});
 			btnPlace.setBounds(46, 218, 73, 23);
 			add(btnPlace);
@@ -267,9 +277,24 @@ public class RGPhaseView extends JPanel implements Observer{
 			textArea_1.setText("");
 			textArea_1.setText(actionsReinforcementPhase);
 			scrollPane.setViewportView(textArea_1);
+			
+			String strategy=players.getPlayerStrategy(currentPlayerName);
+			if(!strategy.contentEquals("human")) {
+				String totalArmy=numberOfArmiesForReinforcement;
+				JButton btnGo = new JButton("Go");
+				btnGo.addActionListener(new ActionListener() {
+					public void actionPerformed(ActionEvent e) {
+						((RGGame) game).setStrategy(currentPlayerName);
+						((RGGame) game).executeReinforcementStrategy("", currentPlayerName, totalArmy);
+					}
+
+				});
+				btnGo.setBounds(0, 0, 70, 23);
+				add(btnGo);
+			}
 		}
 		
-		if(phase.contentEquals("Attack"))
+		else if(phase.contentEquals("Attack"))
 		{
 			JLabel lblSetupPhase = new JLabel("ATTACK PHASE");
 			lblSetupPhase.setBounds(134, 10, 141, 33);
@@ -402,7 +427,9 @@ public class RGPhaseView extends JPanel implements Observer{
 					String selectedCountryDefender=comboBox_1.getSelectedItem().toString();
 					String selectedDiceAttacker=comboBox_2.getSelectedItem().toString();
 					String selectedDiceDefender=comboBox_3.getSelectedItem().toString();	
-					((RGGame) game).attackPhaseModeDecision(selectedCountryAttacker,selectedCountryDefender,selectedDiceAttacker,selectedDiceDefender,currentPlayerName);
+					((RGGame) game).setStrategy(currentPlayerName);
+					((RGGame) game).executeAttackPhaseModeDecisionStrategy(selectedCountryAttacker,selectedCountryDefender,selectedDiceAttacker,selectedDiceDefender,currentPlayerName);
+					//((RGGame) game).attackPhaseModeDecision(selectedCountryAttacker,selectedCountryDefender,selectedDiceAttacker,selectedDiceDefender,currentPlayerName);
 				
 					//moving army to the captured country?
 					if (((RGGame) game).getAttackStatus().contentEquals("move")) 
@@ -427,7 +454,9 @@ public class RGPhaseView extends JPanel implements Observer{
 					String selectedCountryDefender=comboBox_1.getSelectedItem().toString();
 					String selectedDiceAttacker=comboBox_2.getSelectedItem().toString();
 					String selectedDiceDefender=comboBox_3.getSelectedItem().toString();
-					((RGGame) game).attackPhaseModeDecision(selectedCountryAttacker,selectedCountryDefender,selectedDiceAttacker,selectedDiceDefender,currentPlayerName);
+					((RGGame) game).setStrategy(currentPlayerName);
+					((RGGame) game).executeAttackPhaseModeDecisionStrategy(selectedCountryAttacker,selectedCountryDefender,selectedDiceAttacker,selectedDiceDefender,currentPlayerName);
+					//((RGGame) game).attackPhaseModeDecision(selectedCountryAttacker,selectedCountryDefender,selectedDiceAttacker,selectedDiceDefender,currentPlayerName);
 
 					//moving army to the captured country?
 					if (((RGGame) game).getAttackStatus().contentEquals("move")) 
@@ -468,6 +497,7 @@ public class RGPhaseView extends JPanel implements Observer{
 			textArea.setText(actionsAttackPhase);
 			scrollPane.setViewportView(textArea);
 			
+			String strategy=players.getPlayerStrategy(currentPlayerName);
 			//no more territories to attack? moving to next phase automatically.
 			if(countriesAttacker.size()==0 && !((RGGame) game).getAttackStatus().contentEquals("move") && !((RGGame) game).getAttackStatus().contentEquals("end"))
 			{
@@ -481,10 +511,16 @@ public class RGPhaseView extends JPanel implements Observer{
 				btnOneBattle.setEnabled(false);
 				btnEnd.setEnabled(false);
 			}
+			//for computer players
+			else if(!strategy.contentEquals("human")) {
+				((RGGame) game).setAllOutModeForAttackPhase(true);
+				((RGGame) game).setStrategy(currentPlayerName);
+				((RGGame) game).executeAttackPhaseModeDecisionStrategy("","","","",currentPlayerName);
+			}
 			
 		}
 		
-		if(phase.contentEquals("Fortification"))
+		else if(phase.contentEquals("Fortification"))
 		{
 			JLabel lblSetupPhase = new JLabel("FORTIFICATION PHASE");
 			lblSetupPhase.setBounds(119, 10, 179, 33);
@@ -596,10 +632,13 @@ public class RGPhaseView extends JPanel implements Observer{
 					{
 						if(comboBox_1.getItemCount()!=0)
 						{
-							String countryTo=comboBox.getSelectedItem().toString();
-							String countryFrom=comboBox_1.getSelectedItem().toString();
-							if (armiesToMove!=0)
-								((RGGame) game).fortificationPhase(countryFrom, countryTo, armiesToMove);
+							String countryTo=comboBox_1.getSelectedItem().toString();
+							String countryFrom=comboBox.getSelectedItem().toString();
+							if (armiesToMove!=0) {
+								((RGGame) game).setStrategy(currentPlayerName);
+								((RGGame) game).executeFortificationPhaseStrategy(countryFrom, countryTo, armiesToMove);
+								//((RGGame) game).fortificationPhase(countryFrom, countryTo, armiesToMove);
+							}
 							else
 								((RGGame) game).fortificationPhaseNoMovements();
 						}
@@ -626,6 +665,13 @@ public class RGPhaseView extends JPanel implements Observer{
 			textArea_1.setText("");
 			textArea_1.setText(actionsFortificationPhase);
 			scrollPane.setViewportView(textArea_1);
+			
+			String strategy=players.getPlayerStrategy(currentPlayerName);
+			if(!strategy.contentEquals("human")) {
+				((RGGame) game).setAllOutModeForAttackPhase(true);
+				((RGGame) game).setStrategy(currentPlayerName);
+				((RGGame) game).executeFortificationPhaseStrategy("", "", 0);
+			}
 		}
 	}
 

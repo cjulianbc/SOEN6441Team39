@@ -3,6 +3,15 @@ package com.concordia.soen6441riskgame;
 import java.util.ArrayList;
 import java.util.Observable;
 
+/**
+ * Class to control the information of the players. Only one player data structure is possible for a game.
+ * 
+ * 
+ * @author Julian Beltran, Abhishek, Aamrean
+ * @version 1.0
+ * @since 1.0
+ *
+ */
 public class RGPlayer extends Observable {
 	
 	/**
@@ -25,7 +34,10 @@ public class RGPlayer extends Observable {
 	 */
 	private static RGPlayer players=new RGPlayer();
 	
-	
+	/**
+	 * Created to store the behaviors of the players
+	 */
+	private RGGraph playerBehaviors=new RGGraph();
 	
 	/**
 	 * This constructor creates a list of six colors to assign them later to every player where it is required.
@@ -89,6 +101,7 @@ public class RGPlayer extends Observable {
 		int index1=0;
 		int index2;
 		String player;
+		String behavior;
 		String searchChar=",";
 		int i=0;
 		
@@ -98,6 +111,11 @@ public class RGPlayer extends Observable {
 			if (index2!=-1) 
 			 { 
 				player=players.substring(index1, index1+index2);//getting the name of a player
+				String[] playerAndBehavior=player.split("=");
+				player=playerAndBehavior[0];
+				behavior=playerAndBehavior[1];
+				playerBehaviors.addVertex(player);
+				playerBehaviors.addEdge(player,behavior);
 				playerItems.addVertex(player);//creating a key (name of the player) of the players' data structure
 				if(i==0)
 					playerItems.addEdge(player, "1");//creating 'Turn' value. First player begins the game
@@ -106,7 +124,7 @@ public class RGPlayer extends Observable {
 				playerItems.addEdge(player, colors.get(i));//creating 'Color' value 
 				setOfPlayers.add(player);
 				players=","+players;
-				players=players.replace(","+player+",", "");//a player is already created; the player has to be deleted from String that contains the names of players separated by commas
+				players=players.replace(","+player+"="+behavior+",", "");//a player is already created; the player has to be deleted from String that contains the names of players separated by commas
 				
 				//printing a player
 				ArrayList<String> edgeList = playerItems.getEdges(player);
@@ -121,6 +139,11 @@ public class RGPlayer extends Observable {
 			 }
 			else//last player of the String that contains the names of players separated by commas
 			{
+				String[] playerAndBehavior=players.split("=");
+				players=playerAndBehavior[0];
+				behavior=playerAndBehavior[1];
+				playerBehaviors.addVertex(players);
+				playerBehaviors.addEdge(players,behavior);
 				playerItems.addVertex(players);//creating a key (name of the player) of the players' data structure
 				if(i==0)
 					playerItems.addEdge(players, "1");
@@ -506,6 +529,7 @@ public class RGPlayer extends Observable {
 	 * @param currentPlayerName Name of the player.
 	 * @param army number of army received from reinforcement phase.
 	 * @return New number of armies after exchanging cards.
+	 * 
 	 */	
 	int setNumberOfArmiesForUsedCard(String currentPlayerName,int army)
 	{
@@ -531,9 +555,22 @@ public class RGPlayer extends Observable {
 	 * 
 	 * 
 	 * @param loserPlayerName Name of the loser.
+	 * 
 	 */	
 	void deletePlayer(String loserPlayerName)
 	{
 		playerItems.deleteVertex(loserPlayerName);
+	}
+	
+	/**
+	 * This method is used to obtain the player strategy.  
+	 * 
+	 * 
+	 * @param currentPlayerName Name of the player.
+	 * 
+	 */	
+	String getPlayerStrategy(String currentPlayerName) {
+		ArrayList <String> strategy=playerBehaviors.getEdges(currentPlayerName);
+		return strategy.get(0);
 	}
 }

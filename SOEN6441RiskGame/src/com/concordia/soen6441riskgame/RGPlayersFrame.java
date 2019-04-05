@@ -48,22 +48,22 @@ public class RGPlayersFrame extends JFrame {
 	 */
 	public RGPlayersFrame() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(400, 200, 404, 245);
+		setBounds(400, 200, 527, 290);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		
 		JTextArea textArea = new JTextArea();
-		textArea.setBounds(71, 90, 263, 29);
+		textArea.setBounds(71, 100, 368, 29);
 		contentPane.add(textArea);
 		
-		JLabel lblNewLabel = new JLabel("Write the names of the players (between 2 and 6):");
-		lblNewLabel.setBounds(71, 69, 297, 22);
+		JLabel lblNewLabel = new JLabel("Write the names of the players and their behaviors.");
+		lblNewLabel.setBounds(71, 67, 297, 22);
 		contentPane.add(lblNewLabel);
 		
-		JLabel lblExampleAmitNesar = new JLabel("Example: Joe,Anna,Bruce ");
-		lblExampleAmitNesar.setBounds(71, 117, 297, 14);
+		JLabel lblExampleAmitNesar = new JLabel("Example: Joe=aggressive,Anna=random, ... ");
+		lblExampleAmitNesar.setBounds(71, 128, 297, 14);
 		contentPane.add(lblExampleAmitNesar);
 		
 		JLabel lblPlayers = new JLabel("PLAYERS");
@@ -84,8 +84,19 @@ public class RGPlayersFrame extends JFrame {
 				
 			}
 		});
-		btnGo.setBounds(148, 142, 89, 23);
+		btnGo.setBounds(213, 208, 89, 23);
 		contentPane.add(btnGo);
+		
+		JLabel lblbetweenAnd = new JLabel("(between 2 and 6 players):");
+		lblbetweenAnd.setBounds(71, 81, 297, 22);
+		contentPane.add(lblbetweenAnd);
+		
+		JLabel lblBehaviorsHumanAggresive = new JLabel("Behaviors: human, aggressive, benevolent,");
+		lblBehaviorsHumanAggresive.setBounds(71, 142, 297, 22);
+		contentPane.add(lblBehaviorsHumanAggresive);
+		
+		JLabel lblRandomCheater = new JLabel("random, cheater.");
+		lblRandomCheater.setBounds(71, 160, 297, 22);
+		contentPane.add(lblRandomCheater);
 	}
-	
 }

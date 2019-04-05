@@ -9,7 +9,7 @@ import java.util.Random;
 import java.util.Scanner;
 
 /**
- * Class to store and control the information of a game. Only one game is
+ * Class to control the game for human players. Only one game is
  * possible during runtime
  * 
  * 
@@ -18,7 +18,7 @@ import java.util.Scanner;
  * @since 1.0
  *
  */
-public class RGGame extends Observable{
+public class RGGame extends Observable implements RGStrategy{
 
 	/**
 	 * Created to store the Graph's data structure.
@@ -67,6 +67,11 @@ public class RGGame extends Observable{
 	 * Created to know if "All Out mode" is set on or off
 	 */
 	private boolean allOutMode=false;
+	
+	/**
+	 * Created to set and execute the strategy of every player
+	 */
+	private RGPlayerStrategy playerStrategy=new RGPlayerStrategy();
 	
 	/**
 	 * This method is used to assure only that one instance of the game (only one game) is created.
@@ -610,11 +615,11 @@ public class RGGame extends Observable{
 	 * @param currentPlayerName Name of the player.
 	 * 
 	 */
-	void setupPhase(String selectedCountry, String currentPlayerName)
+	public void setupPhase(String selectedCountry, String currentPlayerName)
 	{
 		
 		RGPlayer players=RGPlayer.getPlayers();
-		((RGGame) game).setNumberOfArmies(1, selectedCountry);//adding one army to the map
+		game.setNumberOfArmies(1, selectedCountry);//adding one army to the map
 		players.setNumberOfArmiesSetup(-1, currentPlayerName);//subtracting one army from the players' data structure for the Setup Phase
 		players.setNextTurn();//next player has to place an army	
 		
@@ -636,9 +641,6 @@ public class RGGame extends Observable{
 				currentArmies=players.getCurrentArmies(currentPlayerName);//getting armies available to place 
 			}
 		}
-		
-		setChanged();
-		notifyObservers(this);
 	}
 	
 	/**
@@ -650,15 +652,15 @@ public class RGGame extends Observable{
 	 * @param armiesToPlace Number of armies to place in a given country.
 	 * 
 	 */
-	void reinforcementPhase(String selectedCountry, String currentPlayerName, String armiesToPlace)
+	public void reinforcementPhase(String selectedCountry, String currentPlayerName, String armiesToPlace)
 	{
 		
 		RGPlayer players=RGPlayer.getPlayers();
-		String totalArmiesAvailable=players.getNumberOfArmiesForReinforcement(currentPlayerName);
+		String totalArmiesAvailable;
 		game.setNumberOfArmies(Integer.valueOf(armiesToPlace), selectedCountry);//adding armies to the country
 		players.subtractArmiesForReinforcementPhase(currentPlayerName,armiesToPlace);
-		totalArmiesAvailable=players.getNumberOfArmiesForReinforcement(currentPlayerName);
-			
+		
+		totalArmiesAvailable=players.getNumberOfArmiesForReinforcement(currentPlayerName);	
 		if(totalArmiesAvailable.contentEquals("0"))//all armies placed? Go to the next Phase
 		{
 			game.setPhase("Attack");
@@ -670,9 +672,6 @@ public class RGGame extends Observable{
 		actionPerformed.append("*"+armiesToPlace+" army deployed in "+selectedCountry);
 		actionPerformed.append("\n");
 		players.setActionsPerformed(actionPerformed, currentPlayerName, "reinforcement");
-
-		setChanged();
-		notifyObservers(this);
 	}
 	
 	/**
@@ -684,11 +683,11 @@ public class RGGame extends Observable{
 	 * @param armiesToMove Number of armies to move.
 	 * 
 	 */
-	void fortificationPhase(String countryFrom, String countryTo, int armiesToMove)
+	public void fortificationPhase(String countryFrom, String countryTo, int armiesToMove)
 	{
 		RGPlayer players=RGPlayer.getPlayers();
-		game.setNumberOfArmies(armiesToMove, countryFrom);
-		game.setNumberOfArmies(-armiesToMove, countryTo);
+		game.setNumberOfArmies(-armiesToMove, countryFrom);
+		game.setNumberOfArmies(armiesToMove, countryTo);
 		
 		//Storing performed actions 
 		StringBuilder actionPerformed=new StringBuilder();
@@ -699,8 +698,6 @@ public class RGGame extends Observable{
 		
 		players.setNextTurn();
 		game.setPhase("Reinforcement");
-		setChanged();
-		notifyObservers(this);
 	}
 	
 	/**
@@ -708,7 +705,7 @@ public class RGGame extends Observable{
 	 * 
 	 * 
 	 */
-	void fortificationPhaseNoMovements()
+	public void fortificationPhaseNoMovements()
 	{
 		RGPlayer players=RGPlayer.getPlayers();
 		players.setNextTurn();
@@ -840,7 +837,7 @@ public class RGGame extends Observable{
 	 * @param currentPlayerName Name of the player.
 	 * 
 	 */
-	void attackPhaseModeDecision(String selectedCountryAttacker,String selectedCountryDefender,String selectedDiceAttacker,String selectedDiceDefender,String currentPlayerName)
+	public void attackPhaseModeDecision(String selectedCountryAttacker,String selectedCountryDefender,String selectedDiceAttacker,String selectedDiceDefender,String currentPlayerName)
 	{
 		if(game.allOutMode==false)
 		{
@@ -881,8 +878,6 @@ public class RGGame extends Observable{
 				players.setActionsPerformed(actionPerformed, currentPlayerName, "attack");
 			}
 		}
-		setChanged();
-		notifyObservers(this);
 	}
 	
 	/**
@@ -896,7 +891,7 @@ public class RGGame extends Observable{
 	 * @param currentPlayerName Name of the player.
 	 * 
 	 */
-	void attackPhase(String selectedCountryAttacker,String selectedCountryDefender,String selectedDiceAttacker,String selectedDiceDefender,String currentPlayerName)
+	public void attackPhase(String selectedCountryAttacker,String selectedCountryDefender,String selectedDiceAttacker,String selectedDiceDefender,String currentPlayerName)
 	{
 		RGPlayer players=RGPlayer.getPlayers();
 		StringBuilder actionPerformed=new StringBuilder();
@@ -1067,7 +1062,7 @@ public class RGGame extends Observable{
 	 * 
 	 * 
 	 */
-	void attackPhaseNoMovements()
+	public void attackPhaseNoMovements()
 	{
 		game.setPhase("Fortification");
 		setChanged();
@@ -1146,7 +1141,7 @@ public class RGGame extends Observable{
 	}
 	
 	/**
-	 * This method is used to move to the next phase automatically due to there are no more available territories to attack.
+	 * This method is used to move to the next phase automatically because there are no more available territories to attack.
 	 * 
 	 * 
 	 * @param currentPlayerName Name of the player.
@@ -1359,15 +1354,280 @@ public class RGGame extends Observable{
 	}
 	
 	/**
+	 * This method is used to get the list of cards. 
+	 * 
+	 *
+	 * @return List of cards.
+	 * 
+	 */
+	ArrayList<String> getCardItemsVertex() {
+		return cardItems.getVertex();
+    }
+	
+	/**
+	 * This method is used to get the values of a given card in cardItems' data structure 
+	 * 
+	 *
+	 * @return List of cards.
+	 * 
+	 */
+	ArrayList<String> getCardItemsEdges(String nameOfCard) {
+		return cardItems.getEdges(nameOfCard);
+    }
+	
+	/**
+	 * This method is used to set the values of a given card in cardItems' data structure 
+	 * 
+	 *
+	 * @param nameOfCard Name of the card (country).
+	 * @param edges Values for the key (given card).
+	 * 
+	 */
+	void setCardItemsEdge(String nameOfCard, ArrayList<String> edges) {
+		cardItems.setEdge(nameOfCard, edges);
+    }
+	
+	/**
 	 * This method is used to obtain countryItems' data structure where the current game is stored. 
 	 * 
 	 *
-	 * @return countryItems' data structure
+	 * @return countryItems' data structure.
 	 * 
 	 */
 	RGGraph getCountryItems() {
         return this.countryItems;
     }
 	
+	/**
+	 * This method is used to get the list of countries of the map. 
+	 * 
+	 *
+	 * @return List of countries of the map.
+	 * 
+	 */
+	ArrayList<String> getCountryItemsVertex() {
+		return countryItems.getVertex();
+    }
+	
+	/**
+	 * This method is used to get the values of a given key in countryItems' data structure. 
+	 * 
+	 *
+	 * @return Values of the given key (country).
+	 * 
+	 */
+	ArrayList<String> getCountryItemsEdges(String vertex) {
+		return countryItems.getEdges(vertex);
+    }
+	
+	/**
+	 * This method is used to set a value in countryItems' data structure. 
+	 * 
+	 *
+	 * @param vertex Name of a country.
+	 * @param edges Values associated to a country.
+	 * 
+	 */
+	void setCountryItemsEdges(String vertex, ArrayList<String> edges) {
+		countryItems.setEdge(vertex, edges);
+    }
+	
+	/**
+	 * This method is used to obtain a random country.
+	 * 
+	 *
+	 * @return A random country.
+	 * 
+	 */
+	String getRandomCountry(String currentPlayerName) {
+		ArrayList<String> listOfCountries=getCurrentPlayerCountries(currentPlayerName);
+        int randomCountryNumber = new Random().nextInt(listOfCountries.size());
+        return listOfCountries.get(randomCountryNumber);
+    }
+	
+	/**
+	 * This method is used to set the player behavior strategy.  
+	 * 
+	 * 
+	 * @param currentPlayerName Name of the player.
+	 * 
+	 */	
+	void setStrategy(String currentPlayerName) {
+		RGPlayer players=RGPlayer.getPlayers();
+		String strategy=players.getPlayerStrategy(currentPlayerName);
+		if(strategy.contentEquals("human")) {
+			RGGame game=RGGame.getGame();
+			this.playerStrategy.setStrategy(game);
+		}
+		else if(strategy.contentEquals("aggressive")) {
+			RGGameAggressive game=RGGameAggressive.getGame();
+			this.playerStrategy.setStrategy(game);
+		}
+		else if(strategy.contentEquals("benevolent")) {
+			RGGameBenevolent game=RGGameBenevolent.getGame();
+			this.playerStrategy.setStrategy(game);
+		}
+		else if(strategy.contentEquals("random")) {
+			RGGameRandom game=RGGameRandom.getGame();
+			this.playerStrategy.setStrategy(game);
+		}
+		else if(strategy.contentEquals("cheater")) {
+			RGGameCheater game=RGGameCheater.getGame();
+			this.playerStrategy.setStrategy(game);
+		}
+		
+	}
+	
+	/**
+	 * This method is used to execute the player behavior strategy for Setup Phase.  
+	 * 
+	 * 
+	 * @param selectedCountry Selected country
+	 * @param currentPlayerName Name of the player.
+	 * 
+	 */	
+	void executeSetupStrategy(String selectedCountry, String currentPlayerName) {
+		this.playerStrategy.executeSetupPhase(selectedCountry, currentPlayerName);
+		setChanged();
+		notifyObservers(this);
+	}
+	
+	/**
+	 * This method is used to execute the player behavior strategy for Reinforcement Phase.  
+	 * 
+	 * 
+	 * @param selectedCountry Selected country
+	 * @param currentPlayerName Name of the player.
+	 * 
+	 */	
+	void executeReinforcementStrategy(String selectedCountry, String currentPlayerName, String armiesToPlace) {
+		this.playerStrategy.executeReinforcementPhase(selectedCountry, currentPlayerName, armiesToPlace);
+		setChanged();
+		notifyObservers(this);
+	}
+	
+	/**
+	 * This method is used to execute the player behavior strategy for Attack Phase.  
+	 * 
+	 * 
+	 * @param selectedCountry Selected country
+	 * @param currentPlayerName Name of the player.
+	 * 
+	 */	
+	void executeAttackPhaseModeDecisionStrategy(String selectedCountryAttacker,String selectedCountryDefender,String selectedDiceAttacker,String selectedDiceDefender,String currentPlayerName) {
+		this.playerStrategy.executeAttackPhaseModeDecision(selectedCountryAttacker,selectedCountryDefender,selectedDiceAttacker,selectedDiceDefender,currentPlayerName);
+		RGGame game=RGGame.getGame();
+		game.setPhase("Fortification");
+		setChanged();
+		notifyObservers(this);
+	}
+	
+	/**
+	 * This method is used to execute the player behavior strategy for Fortification Phase.  
+	 * 
+	 * 
+	 * @param selectedCountry Selected country
+	 * @param currentPlayerName Name of the player.
+	 * 
+	 */	
+	void executeFortificationPhaseStrategy(String countryFrom, String countryTo, int armiesToMove) {
+		this.playerStrategy.executeFortificationPhase(countryFrom, countryTo, armiesToMove);
+		setChanged();
+		notifyObservers(this);
+	}
+	
+	/**
+	 * This method is used to inform if a card was given or not to a player during Attack Phase.    
+	 * 
+	 * 
+	 * @param status True if a card was already given to a player in Attack Phase. 
+	 * 
+	 */	
+	void setCardGiven(boolean status) {
+		cardGiven=status;
+	}
+	
+	/**
+	 * This method is used to know if a card was given or not to a player during Attack Phase.    
+	 * 
+	 * 
+	 * @return True if a card was already given to a player in Attack Phase. 
+	 * 
+	 */	
+	boolean getCardGiven() {
+		return this.cardGiven;
+	}
+	
+	/**
+	 * This method is used to know what is the country with the largest number of armies.    
+	 * 
+	 * 
+	 * @param currentPlayerName Name of the player.
+	 * 
+	 */	
+	String getMostPopulatedCountry(String currentPlayerName) {
+		ArrayList<String> listOfCountries = countryItems.getVertex();
+		int maxNumberOfArmy=0;
+		String selectedCountry="";
+		for (int k = 0; k < listOfCountries.size(); k++) 
+		{
+			ArrayList<String> edges = countryItems.getEdges(listOfCountries.get(k));
+			if(edges.get(3).contentEquals(currentPlayerName))
+			{
+				if(Integer.valueOf(edges.get(4))>maxNumberOfArmy) {
+					maxNumberOfArmy=Integer.valueOf(edges.get(4));
+					selectedCountry=listOfCountries.get(k);
+				}
+			
+			}
+		}
+		return selectedCountry;
+	}
+	
+	/**
+	 * This method is used to know what is the country with the largest number of armies.    
+	 * 
+	 * 
+	 * @param currentPlayerName Name of the player.
+	 * 
+	 */	
+	String getLeastPopulatedCountry(String currentPlayerName) {
+		ArrayList<String> listOfCountries = countryItems.getVertex();
+		int minNumberOfArmy=1000;
+		String selectedCountry="";
+		for (int k = 0; k < listOfCountries.size(); k++) 
+		{
+			ArrayList<String> edges = countryItems.getEdges(listOfCountries.get(k));
+			if(edges.get(3).contentEquals(currentPlayerName))
+			{
+				if(Integer.valueOf(edges.get(4))<minNumberOfArmy) {
+					minNumberOfArmy=Integer.valueOf(edges.get(4));
+					selectedCountry=listOfCountries.get(k);
+				}
+			
+			}
+		}
+		return selectedCountry;
+	}
+	
+	/**
+	 * This method is used to double the number of armies of a given country.   
+	 * 
+	 * 
+	 * @param currentPlayerName Name of the player.
+	 * 
+	 */	
+	void doubleNumberOfArmies(String currentPlayerName) {
+		ArrayList<String> listOfCountries = countryItems.getVertex();
+		for (int k = 0; k < listOfCountries.size(); k++) 
+		{
+			ArrayList<String> edges = countryItems.getEdges(listOfCountries.get(k));
+			if(edges.get(3).contentEquals(currentPlayerName))
+			{
+				edges.set(4, String.valueOf((Integer.valueOf(edges.get(4)))*2));
+				countryItems.setEdge(listOfCountries.get(k), edges);
+			}
+		}
+	}
 
 }
