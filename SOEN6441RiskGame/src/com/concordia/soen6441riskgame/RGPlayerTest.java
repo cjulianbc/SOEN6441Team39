@@ -1,6 +1,7 @@
 package com.concordia.soen6441riskgame;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -22,6 +23,12 @@ import org.junit.Test;
 public class RGPlayerTest {
     RGPlayer player = RGPlayer.getPlayers();
     RGGame game = RGGame.getGame();
+
+	/**
+	 * SetUp() of RGPlayerTest has build a context for running the test for the
+	 * method from the RGPlayer class. Here a few country, its coordinate, continent
+	 * adjacent country, owner and solder number has setup for the test purpose.
+	 */
     @Before
     public void setUp() throws Exception {
         StringBuilder content = new StringBuilder();
@@ -74,27 +81,57 @@ public class RGPlayerTest {
         player.setPlayers("A,B,C");
         game.initializeGame();
     }
+
+	/**
+	 * testValidateNumberOfPLayers() of RGPlayerTest validate the number of players
+	 * registered by the user. Must be between 2 and 6.
+	 */
     @Test
     public void testValidateNumberOfPLayers() {
         assertTrue(player.validateNumberOfPLayers("A,B,C"));
     }
+
+	/**
+	 * testGetPlayerColor() of RGPlayerTest validate if a player has the expected
+	 * color as it suppose to be.
+	 */
     @Test
     public void testGetPlayerColor() {
         assertEquals(player.getPlayerColor("B"), "magenta");
     }
+
+	/**
+	 * testGetPlayerTurn() of RGPlayerTest validate the turn a player get.
+	 */
     @Test
     public void testGetPlayerTurn() {
         assertEquals(player.getPlayerTurn(), "A");
     }
+
+	/**
+	 * testGetCurrentArmies() of RGPlayerTest validate if a player has the right
+	 * amount of army as it suppose to have by the provided context.
+	 */
     @Test
     public void testGetCurrentArmies() {
     	assertEquals(player.getCurrentArmies("B"), "20");
     }
+
+	/**
+	 * testSetNumberOfArmiesSetup() of RGPlayerTest validate if the right amount of
+	 * army is changed as it suppose to be by the provided context.
+	 */
     @Test
     public void testSetNumberOfArmiesSetup() {
         player.setNumberOfArmiesSetup(3, "C");
         assertEquals(player.getCurrentArmies("C"), "23");
     }
+
+	/**
+	 * testGetNumberOfArmiesForReinforcement() of RGPlayerTest validate if a player
+	 * gets the right amount of army for Reinforcement as it suppose to have by the
+	 * provided context.
+	 */
     @Test
     public void testGetNumberOfArmiesForReinforcement() {
         assertEquals(player.getNumberOfArmiesForReinforcement("B"), "0");

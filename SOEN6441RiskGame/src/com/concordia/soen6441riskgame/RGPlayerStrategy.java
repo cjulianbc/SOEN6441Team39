@@ -79,16 +79,14 @@ public class RGPlayerStrategy {
     }
     
     /**
-   	 * This method is used to execute the Fortification Phase
-   	 * 
-   	 * 
-   	 * @param selectedCountryAttacker Country where attacker wants to attack from.
-   	 * @param selectedCountryDefender Country that is going to be defended.
-   	 * @param selectedDiceAttacker Number of dice for attacker to toss.
-   	 * @param selectedDiceDefender Number of dice for defender to toss.
-   	 * @param currentPlayerName Name of the player.
-   	 * 
-   	 */
+	 * This method is used to execute the Fortification Phase
+	 * 
+	 * 
+	 * @param countryFrom  is the Country name from where the armies to move.
+	 * @param countryTo    is the Country name To where the armies to move.
+	 * @param aemiesToMove is the number of armies going to move.
+	 * 
+	 */
        public void executeFortificationPhase(String countryFrom, String countryTo, int armiesToMove) {
            this.strategy.fortificationPhase(countryFrom, countryTo, armiesToMove);
        }
