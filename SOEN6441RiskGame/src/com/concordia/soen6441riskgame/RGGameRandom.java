@@ -191,7 +191,7 @@ public class RGGameRandom implements RGStrategy{
 		ArrayList<String> countriesDefender = new ArrayList<String>();
 		countriesDefender=game.getCountriesDefender(selectedCountryAttacker,currentPlayerName);
 		randomNumber = new Random().nextInt(countriesDefender.size());
-		selectedCountryDefender=countriesAttacker.get(randomNumber);
+		selectedCountryDefender=countriesDefender.get(randomNumber);
 		
 		randomNumber = new Random().nextInt(10);
 		randomNumber++;
@@ -252,10 +252,12 @@ public class RGGameRandom implements RGStrategy{
 			armiesToMove=Integer.valueOf(game.getArmies(countryFrom))/2;
 		}
 		ArrayList<String> listOfPossibleCountries = game.getCurrentPlayerAdjacentCountries(currentPlayerName, countryFrom);
-		int randomNumber = new Random().nextInt(listOfPossibleCountries.size());
-		countryTo=listOfPossibleCountries.get(randomNumber);
+		if(listOfPossibleCountries.size()!=0) {
+			int randomNumber = new Random().nextInt(listOfPossibleCountries.size());
+			countryTo=listOfPossibleCountries.get(randomNumber);
+		}
 		
-		if (armiesToMove!=0){
+		if (armiesToMove!=0 && listOfPossibleCountries.size()!=0){
 			game.setNumberOfArmies(-armiesToMove, countryFrom);
 			game.setNumberOfArmies(armiesToMove, countryTo);
 			//Storing performed actions 

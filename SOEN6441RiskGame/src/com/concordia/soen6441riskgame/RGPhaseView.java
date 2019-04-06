@@ -498,7 +498,6 @@ public class RGPhaseView extends JPanel implements Observer{
 			scrollPane.setViewportView(textArea);
 			
 			String strategy=players.getPlayerStrategy(currentPlayerName);
-			System.out.print("puelto: "+((RGGame) game).getAttackStatus());
 			//no more territories to attack? moving to next phase automatically.
 			if(countriesAttacker.size()==0 && !((RGGame) game).getAttackStatus().contentEquals("move") && !((RGGame) game).getAttackStatus().contentEquals("end"))
 			{

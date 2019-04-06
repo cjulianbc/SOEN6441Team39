@@ -133,7 +133,7 @@ public class RGGameCheater implements RGStrategy{
 			ArrayList<String> countriesDefender = new ArrayList<String>();
 			countriesDefender=game.getCountriesDefender(selectedCountryAttacker,currentPlayerName);
 			
-			for(int j=0;i<countriesDefender.size();j++) {
+			for(int j=0;j<countriesDefender.size();j++) {
 				selectedCountryDefender=countriesDefender.get(j);
 				String loserPlayerName=game.getOwner(selectedCountryDefender);
 
