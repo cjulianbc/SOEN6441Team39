@@ -1533,7 +1533,9 @@ public class RGGame extends Observable implements RGStrategy{
 	void executeAttackPhaseModeDecisionStrategy(String selectedCountryAttacker,String selectedCountryDefender,String selectedDiceAttacker,String selectedDiceDefender,String currentPlayerName) {
 		this.playerStrategy.executeAttackPhaseModeDecision(selectedCountryAttacker,selectedCountryDefender,selectedDiceAttacker,selectedDiceDefender,currentPlayerName);
 		RGGame game=RGGame.getGame();
-		if(!game.getAttackStatus().contentEquals("end"))
+		RGPlayer players=RGPlayer.getPlayers();
+		String strategy=players.getPlayerStrategy(currentPlayerName);
+		if(!game.getAttackStatus().contentEquals("end") && !strategy.contentEquals("human"))
 			game.setPhase("Fortification");
 		setChanged();
 		notifyObservers(this);
