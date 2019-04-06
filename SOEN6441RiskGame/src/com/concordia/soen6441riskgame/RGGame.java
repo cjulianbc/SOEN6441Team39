@@ -279,14 +279,6 @@ public class RGGame extends Observable implements RGStrategy{
 					numbers.clear();
 				}
 			}
-
-			//printing Countries data structure
-			ArrayList<String> edgeList = countryItems.getEdges(vertex.get(k));
-			System.out.print(vertex.get(k) + "->");
-			for (int j = 0; j < edgeList.size(); j++) {
-				System.out.print(edgeList.get(j) + " -> ");
-			}
-			System.out.println("");
 		}
 	}
 
@@ -740,6 +732,31 @@ public class RGGame extends Observable implements RGStrategy{
 	}
 	
 	/**
+	 * This method is used to obtain the list of countries a given player can use to attack (countries with only one army are included).
+	 * 
+	 * 
+	 * @param currentPlayerName Name of the player.
+	 * @return List of countries a given player can use to attack.
+	 * 
+	 */
+	ArrayList<String> getCountriesAttackerOneArmy(String currentPlayerName)
+	{
+		ArrayList<String> countriesAttacker = new ArrayList<String>();
+		ArrayList<String> vertex = countryItems.getVertex();
+		for (int k = 0; k < vertex.size(); k++) {
+			ArrayList<String> edges = countryItems.getEdges(vertex.get(k));
+			if ((edges.get(3)).contentEquals(currentPlayerName) && (Integer.valueOf(edges.get(4)))>=1) 
+			{
+				ArrayList<String> countriesDefender = new ArrayList<String>();
+				countriesDefender=getCountriesDefender(vertex.get(k),currentPlayerName);
+				if (!countriesDefender.isEmpty())
+					countriesAttacker.add(vertex.get(k));
+			}
+		}
+		return countriesAttacker;
+	}
+	
+	/**
 	 * This method is used to obtain the list of countries to where a given player can attack.
 	 * 
 	 * 
@@ -1007,7 +1024,7 @@ public class RGGame extends Observable implements RGStrategy{
 				cardGiven=true;
 			}
 
-			//printing cards data structure
+			/*printing cards data structure
 			ArrayList<String> verti = cardItems.getVertex();
 			for (int j = 0; j < verti.size(); j++) {
 				System.out.print(verti.get(j) + " -> ");
@@ -1016,7 +1033,7 @@ public class RGGame extends Observable implements RGStrategy{
 					System.out.print(edgi.get(k) + " -> ");
 				}
 				System.out.println("");
-			}
+			}*/
 			
 			//does loser have more territories?
 			ArrayList<String> vertex = countryItems.getVertex();
@@ -1315,40 +1332,39 @@ public class RGGame extends Observable implements RGStrategy{
 		//ArrayList<String> playerCards=new ArrayList<String>();
 		ArrayList<String> vertex=cardItems.getVertex();
 		for (String card : selectedCards) {
-			System.out.println(card);
-		for (int k = 0; k < vertex.size(); k++) {
-			ArrayList<String> edges = cardItems.getEdges(vertex.get(k));
-			if(edges.get(1).contentEquals(currentPlayerName)) {
-				{
-					
-					if(card.equals("Infantry") && edges.get(0).equals("0")) {
-						System.out.println(edges.get(0)+" "+edges.get(1));
-						edges.set(1, "");
-						cardItems.setEdge(vertex.get(k), edges);
-						break;
+			for (int k = 0; k < vertex.size(); k++) {
+				ArrayList<String> edges = cardItems.getEdges(vertex.get(k));
+				if(edges.get(1).contentEquals(currentPlayerName)) {
+					{
+
+						if(card.equals("Infantry") && edges.get(0).equals("0")) {
+							//System.out.println(edges.get(0)+" "+edges.get(1));
+							edges.set(1, "");
+							cardItems.setEdge(vertex.get(k), edges);
+							break;
+						}
+						else if(card.equals("Cavalry") && edges.get(0).equals("1")) {
+							//System.out.println(edges.get(0)+" "+edges.get(1));
+							edges.set(1, "");
+							cardItems.setEdge(vertex.get(k), edges);
+							break;
+						}
+						else if(card.equals("Artillery") && edges.get(0).equals("2")) {
+							//System.out.println(edges.get(0)+" "+edges.get(1));
+							edges.set(1, "");
+							cardItems.setEdge(vertex.get(k), edges);
+							break;
+						}
+						else if(card.equals("Wild") && edges.get(0).equals("3")) {
+							//System.out.println(edges.get(0)+" "+edges.get(1));
+							edges.set(1, "");
+							cardItems.setEdge(vertex.get(k), edges);
+							break;
+						}
+
 					}
-					else if(card.equals("Cavalry") && edges.get(0).equals("1")) {
-						System.out.println(edges.get(0)+" "+edges.get(1));
-						edges.set(1, "");
-						cardItems.setEdge(vertex.get(k), edges);
-						break;
-					}
-					else if(card.equals("Artillery") && edges.get(0).equals("2")) {
-						System.out.println(edges.get(0)+" "+edges.get(1));
-						edges.set(1, "");
-						cardItems.setEdge(vertex.get(k), edges);
-						break;
-					}
-					else if(card.equals("Wild") && edges.get(0).equals("3")) {
-						System.out.println(edges.get(0)+" "+edges.get(1));
-						edges.set(1, "");
-						cardItems.setEdge(vertex.get(k), edges);
-						break;
-					}
-					
 				}
 			}
-		}
 		}
 		
 	}
@@ -1517,7 +1533,8 @@ public class RGGame extends Observable implements RGStrategy{
 	void executeAttackPhaseModeDecisionStrategy(String selectedCountryAttacker,String selectedCountryDefender,String selectedDiceAttacker,String selectedDiceDefender,String currentPlayerName) {
 		this.playerStrategy.executeAttackPhaseModeDecision(selectedCountryAttacker,selectedCountryDefender,selectedDiceAttacker,selectedDiceDefender,currentPlayerName);
 		RGGame game=RGGame.getGame();
-		game.setPhase("Fortification");
+		if(!game.getAttackStatus().contentEquals("end"))
+			game.setPhase("Fortification");
 		setChanged();
 		notifyObservers(this);
 	}
@@ -1565,32 +1582,6 @@ public class RGGame extends Observable implements RGStrategy{
 	 * @param currentPlayerName Name of the player.
 	 * 
 	 */	
-	String getMostPopulatedCountry(String currentPlayerName) {
-		ArrayList<String> listOfCountries = countryItems.getVertex();
-		int maxNumberOfArmy=0;
-		String selectedCountry="";
-		for (int k = 0; k < listOfCountries.size(); k++) 
-		{
-			ArrayList<String> edges = countryItems.getEdges(listOfCountries.get(k));
-			if(edges.get(3).contentEquals(currentPlayerName))
-			{
-				if(Integer.valueOf(edges.get(4))>maxNumberOfArmy) {
-					maxNumberOfArmy=Integer.valueOf(edges.get(4));
-					selectedCountry=listOfCountries.get(k);
-				}
-			
-			}
-		}
-		return selectedCountry;
-	}
-	
-	/**
-	 * This method is used to know what is the country with the largest number of armies.    
-	 * 
-	 * 
-	 * @param currentPlayerName Name of the player.
-	 * 
-	 */	
 	String getLeastPopulatedCountry(String currentPlayerName) {
 		ArrayList<String> listOfCountries = countryItems.getVertex();
 		int minNumberOfArmy=1000;
@@ -1628,6 +1619,36 @@ public class RGGame extends Observable implements RGStrategy{
 				countryItems.setEdge(listOfCountries.get(k), edges);
 			}
 		}
+	}
+	
+	/**
+	 * This method is used to obtain a list of countries ordered by the number of army placed in each country.    
+	 * 
+	 * 
+	 * @param currentPlayerName Name of the player.
+	 * 
+	 */	
+	ArrayList<String> getListOfCountriesOrderedByPopulation(String currentPlayerName) {
+		ArrayList<String> listOfCountries = game.getCountriesAttackerOneArmy(currentPlayerName);
+		ArrayList<String> listOfSortedCountries= new ArrayList<String>();
+		listOfSortedCountries.add(listOfCountries.get(0));
+		boolean flagAdded=false;
+		for (int i=1; i<listOfCountries.size();i++) {
+			String numberOfArmyFrom=game.getArmies(listOfCountries.get(i));
+			for (int j=0; j<listOfSortedCountries.size();j++) {
+				String numberOfArmyTo=game.getArmies(listOfSortedCountries.get(j));
+				if(Integer.valueOf(numberOfArmyFrom)>Integer.valueOf(numberOfArmyTo)){
+					listOfSortedCountries.add(j, listOfCountries.get(i));
+					flagAdded=true;
+					break;
+				}
+			}
+			if(!flagAdded)
+				listOfSortedCountries.add(listOfCountries.get(i));
+			else
+				flagAdded=false;
+		}
+		return listOfSortedCountries;
 	}
 
 }

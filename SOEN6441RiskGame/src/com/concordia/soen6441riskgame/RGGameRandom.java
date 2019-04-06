@@ -95,52 +95,52 @@ public class RGGameRandom implements RGStrategy{
 		
 		if(game.getPlayerCards(currentPlayerName).size()>=5){
 			ArrayList<String> playerCards=((RGGame) game).getPlayerCards(currentPlayerName);
-			if(Collections.frequency(playerCards, "Infantry")==3) {
+			if(Collections.frequency(playerCards, "0")>=3) {
 				selectedCards.add("Infantry");
 				selectedCards.add("Infantry");
 				selectedCards.add("Infantry");
 			}
-			else if(Collections.frequency(playerCards, "Cavalry")==3) {
+			else if(Collections.frequency(playerCards, "1")>=3) {
 				selectedCards.add("Cavalry");
 				selectedCards.add("Cavalry");
 				selectedCards.add("Cavalry");
 			}
-			else if(Collections.frequency(playerCards, "Artillery")==3) {
+			else if(Collections.frequency(playerCards, "2")>=3) {
 				selectedCards.add("Artillery");
 				selectedCards.add("Artillery");
 				selectedCards.add("Artillery");
 			}
-			else if(playerCards.contains("Infantry") && playerCards.contains("Cavalry") && playerCards.contains("Artillery")) {
+			else if(playerCards.contains("0") && playerCards.contains("1") && playerCards.contains("2")) {
 				selectedCards.add("Infantry");
 				selectedCards.add("Cavalry");
 				selectedCards.add("Artillery");
 			}
-			else if(playerCards.contains("Infantry") && playerCards.contains("Cavalry") && playerCards.contains("Wild")) {
+			else if(playerCards.contains("0") && playerCards.contains("1") && playerCards.contains("3")) {
 				selectedCards.add("Infantry");
 				selectedCards.add("Cavalry");
 				selectedCards.add("Wild");
 			}
-			else if(playerCards.contains("Infantry") && playerCards.contains("Artillery") && playerCards.contains("Wild")) {
+			else if(playerCards.contains("0") && playerCards.contains("2") && playerCards.contains("3")) {
 				selectedCards.add("Infantry");
 				selectedCards.add("Artillery");
 				selectedCards.add("Wild");
 			}
-			else if(playerCards.contains("Cavalry") && playerCards.contains("Artillery") && playerCards.contains("Wild")) {
+			else if(playerCards.contains("1") && playerCards.contains("2") && playerCards.contains("3")) {
 				selectedCards.add("Cavalry");
 				selectedCards.add("Artillery");
 				selectedCards.add("Wild");
 			}
-			else if(Collections.frequency(playerCards, "Wild")==2 && playerCards.contains("Infantry")) {
+			else if(Collections.frequency(playerCards, "3")==2 && playerCards.contains("0")) {
 				selectedCards.add("Infantry");
 				selectedCards.add("Wild");
 				selectedCards.add("Wild");
 			}
-			else if(Collections.frequency(playerCards, "Wild")==2 && playerCards.contains("Cavalry")) {
+			else if(Collections.frequency(playerCards, "3")==2 && playerCards.contains("1")) {
 				selectedCards.add("Cavalry");
 				selectedCards.add("Wild");
 				selectedCards.add("Wild");
 			}
-			else if(Collections.frequency(playerCards, "Wild")==2 && playerCards.contains("Artillery")) {
+			else if(Collections.frequency(playerCards, "3")==2 && playerCards.contains("2")) {
 				selectedCards.add("Artillery");
 				selectedCards.add("Wild");
 				selectedCards.add("Wild");
@@ -186,13 +186,11 @@ public class RGGameRandom implements RGStrategy{
 		ArrayList<String> countriesAttacker = new ArrayList<String>();
 		countriesAttacker=((RGGame) game).getCountriesAttacker(currentPlayerName);
 		int randomNumber = new Random().nextInt(countriesAttacker.size());
-		randomNumber++;
 		selectedCountryAttacker=countriesAttacker.get(randomNumber);
 		
 		ArrayList<String> countriesDefender = new ArrayList<String>();
 		countriesDefender=game.getCountriesDefender(selectedCountryAttacker,currentPlayerName);
 		randomNumber = new Random().nextInt(countriesDefender.size());
-		randomNumber++;
 		selectedCountryDefender=countriesAttacker.get(randomNumber);
 		
 		randomNumber = new Random().nextInt(10);
@@ -248,13 +246,13 @@ public class RGGameRandom implements RGStrategy{
 		RGGame game=RGGame.getGame();
 		RGPlayer players=RGPlayer.getPlayers();
 		String currentPlayerName = players.getPlayerTurn();
-		countryFrom=game.getMostPopulatedCountry(currentPlayerName);
+		ArrayList<String> listOfCountriesOrderedByPopulation=game.getListOfCountriesOrderedByPopulation(currentPlayerName);
+		countryFrom=listOfCountriesOrderedByPopulation.get(0);
 		if(Integer.valueOf(game.getArmies(countryFrom))>=2) {
 			armiesToMove=Integer.valueOf(game.getArmies(countryFrom))/2;
 		}
 		ArrayList<String> listOfPossibleCountries = game.getCurrentPlayerAdjacentCountries(currentPlayerName, countryFrom);
 		int randomNumber = new Random().nextInt(listOfPossibleCountries.size());
-		randomNumber++;
 		countryTo=listOfPossibleCountries.get(randomNumber);
 		
 		if (armiesToMove!=0){

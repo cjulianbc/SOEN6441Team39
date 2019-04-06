@@ -90,56 +90,57 @@ public class RGGameAggressive implements RGStrategy{
 		RGPlayer players=RGPlayer.getPlayers();
 		String totalArmiesAvailable;
 		List<String> selectedCards=new ArrayList<String>();
-		selectedCountry=game.getMostPopulatedCountry(currentPlayerName);
+		ArrayList<String> listOfCountriesOrderedByPopulation=game.getListOfCountriesOrderedByPopulation(currentPlayerName);
+		selectedCountry=listOfCountriesOrderedByPopulation.get(0);
 		
 		if(game.getPlayerCards(currentPlayerName).size()>=5){
 			ArrayList<String> playerCards=((RGGame) game).getPlayerCards(currentPlayerName);
-			if(Collections.frequency(playerCards, "Infantry")==3) {
+			if(Collections.frequency(playerCards, "0")>=3) {
 				selectedCards.add("Infantry");
 				selectedCards.add("Infantry");
 				selectedCards.add("Infantry");
 			}
-			else if(Collections.frequency(playerCards, "Cavalry")==3) {
+			else if(Collections.frequency(playerCards, "1")>=3) {
 				selectedCards.add("Cavalry");
 				selectedCards.add("Cavalry");
 				selectedCards.add("Cavalry");
 			}
-			else if(Collections.frequency(playerCards, "Artillery")==3) {
+			else if(Collections.frequency(playerCards, "2")>=3) {
 				selectedCards.add("Artillery");
 				selectedCards.add("Artillery");
 				selectedCards.add("Artillery");
 			}
-			else if(playerCards.contains("Infantry") && playerCards.contains("Cavalry") && playerCards.contains("Artillery")) {
+			else if(playerCards.contains("0") && playerCards.contains("1") && playerCards.contains("2")) {
 				selectedCards.add("Infantry");
 				selectedCards.add("Cavalry");
 				selectedCards.add("Artillery");
 			}
-			else if(playerCards.contains("Infantry") && playerCards.contains("Cavalry") && playerCards.contains("Wild")) {
+			else if(playerCards.contains("0") && playerCards.contains("1") && playerCards.contains("3")) {
 				selectedCards.add("Infantry");
 				selectedCards.add("Cavalry");
 				selectedCards.add("Wild");
 			}
-			else if(playerCards.contains("Infantry") && playerCards.contains("Artillery") && playerCards.contains("Wild")) {
+			else if(playerCards.contains("0") && playerCards.contains("2") && playerCards.contains("3")) {
 				selectedCards.add("Infantry");
 				selectedCards.add("Artillery");
 				selectedCards.add("Wild");
 			}
-			else if(playerCards.contains("Cavalry") && playerCards.contains("Artillery") && playerCards.contains("Wild")) {
+			else if(playerCards.contains("1") && playerCards.contains("2") && playerCards.contains("3")) {
 				selectedCards.add("Cavalry");
 				selectedCards.add("Artillery");
 				selectedCards.add("Wild");
 			}
-			else if(Collections.frequency(playerCards, "Wild")==2 && playerCards.contains("Infantry")) {
+			else if(Collections.frequency(playerCards, "3")==2 && playerCards.contains("0")) {
 				selectedCards.add("Infantry");
 				selectedCards.add("Wild");
 				selectedCards.add("Wild");
 			}
-			else if(Collections.frequency(playerCards, "Wild")==2 && playerCards.contains("Cavalry")) {
+			else if(Collections.frequency(playerCards, "3")==2 && playerCards.contains("1")) {
 				selectedCards.add("Cavalry");
 				selectedCards.add("Wild");
 				selectedCards.add("Wild");
 			}
-			else if(Collections.frequency(playerCards, "Wild")==2 && playerCards.contains("Artillery")) {
+			else if(Collections.frequency(playerCards, "3")==2 && playerCards.contains("2")) {
 				selectedCards.add("Artillery");
 				selectedCards.add("Wild");
 				selectedCards.add("Wild");
@@ -180,14 +181,14 @@ public class RGGameAggressive implements RGStrategy{
 	 */
 	public void attackPhaseModeDecision(String selectedCountryAttacker,String selectedCountryDefender,String selectedDiceAttacker,String selectedDiceDefender,String currentPlayerName)
 	{
-		RGGame game=RGGame.getGame();
-		selectedCountryAttacker=game.getMostPopulatedCountry(currentPlayerName);
+		RGGame game=RGGame.getGame();	
+		ArrayList<String> listOfCountriesOrderedByPopulation=game.getListOfCountriesOrderedByPopulation(currentPlayerName);
+		selectedCountryAttacker=listOfCountriesOrderedByPopulation.get(0);
 		ArrayList<String> listOfCountriesDefender = game.getCountriesDefender(selectedCountryAttacker,currentPlayerName);
 		
 		while(Integer.valueOf(game.getArmies(selectedCountryAttacker))>1 && listOfCountriesDefender.size()!=0)
 		{
 			selectedCountryDefender=listOfCountriesDefender.get(0);
-			listOfCountriesDefender = game.getCountriesDefender(selectedCountryAttacker,currentPlayerName);
 			game.setAllOutModeForAttackPhase(true);
 			//while All Out Mode is on and there is enough army available to attack
 			while (game.getAllOutModeForAttackPhase()==true && Integer.valueOf(game.getArmies(selectedCountryAttacker))>1)
@@ -220,10 +221,12 @@ public class RGGameAggressive implements RGStrategy{
 
 				//Storing performed actions 
 				players.setActionsPerformed(actionPerformed, currentPlayerName, "attack");
-			}	
+			}
+			listOfCountriesDefender = game.getCountriesDefender(selectedCountryAttacker,currentPlayerName);
 		}
 		game.setAllOutModeForAttackPhase(false);
-		game.setAttackStatus("");
+		if(game.getAttackStatus().contentEquals("move"))
+			game.setAttackStatus("");
 	}
 
 	/**
@@ -240,7 +243,8 @@ public class RGGameAggressive implements RGStrategy{
 		RGGame game=RGGame.getGame();
 		RGPlayer players=RGPlayer.getPlayers();
 		String currentPlayerName = players.getPlayerTurn();
-		countryTo=game.getMostPopulatedCountry(currentPlayerName);
+		ArrayList<String> listOfCountriesOrderedByPopulation=game.getListOfCountriesOrderedByPopulation(currentPlayerName);
+		countryTo=listOfCountriesOrderedByPopulation.get(0);
 		
 		ArrayList<String> listOfPossibleCountries = game.getCurrentPlayerAdjacentCountries(currentPlayerName, countryTo);
 		for(int i=0;i<listOfPossibleCountries.size();i++) {
