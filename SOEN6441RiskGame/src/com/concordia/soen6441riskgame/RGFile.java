@@ -2,6 +2,7 @@ package com.concordia.soen6441riskgame;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Scanner;
@@ -22,7 +23,7 @@ import javax.swing.JOptionPane;
  *
  */
 
-public class RGFile {
+public class RGFile implements Serializable {
 	
 	/**
 	 * Created to load the file where where the initial values of the game are stored.
@@ -54,6 +55,18 @@ public class RGFile {
 	}
 	
 	/**
+	 * This method is used to set the map file from a saved game.
+	 * 
+	 * 
+	 * @param gameFile File with the Risk map.
+	 * 
+	 */
+	void setGameFile(RGFile gameFile)
+	{
+		this.gameFile=gameFile;
+	}
+	
+	/**
 	 * This method is used to open the file that contains all the information of the Risk game.
 	 * 
 	 * 
@@ -68,18 +81,6 @@ public class RGFile {
 			imageFilePath=fileChooser.getCurrentDirectory().getPath();
 			fileChooser.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
 		}
-	}
-	
-	/**
-	 * This method is used to return the path of the map image file.
-	 * 
-	 * 
-	 * @return Path of the map image file.
-	 * 
-	 */
-	String getImageFilePath()
-	{
-		return imageFilePath;
 	}
 	
 	/**
@@ -387,5 +388,49 @@ public class RGFile {
 		buffer.close();
 		return content;
 	}
+	
+	/**
+	 * This method is used to obtain the file where the Risk map is stored. 
+	 * 
+	 *
+	 * @return File where the Risk map is stored.
+	 * 
+	 */
+	File getFile() {
+        return file;
+    }
+	
+	/**
+	 * This method is used to set the file where the Risk map is stored. 
+	 * 
+	 *
+	 * @param file File where the Risk map is stored.
+	 * 
+	 */
+	void setFile(File file) {
+        this.file=file;
+    }
+	
+	/**
+	 * This method is used to obtain the image file path where the Risk map is stored. 
+	 * 
+	 *
+	 * @return Image file path where the Risk map is stored.
+	 * 
+	 */
+	String getImageFilePath() {
+        return imageFilePath;
+    }
+	
+	/**
+	 * This method is used to set the image file path where the Risk map is stored. 
+	 * 
+	 *
+	 * @param imageFilePath Image file path where the Risk map is stored. 
+	 * 
+	 */
+	void setImageFilePath(String imageFilePath) {
+        this.imageFilePath=imageFilePath;
+    }
 	
 }

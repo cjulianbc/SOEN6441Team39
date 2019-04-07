@@ -1,5 +1,6 @@
 package com.concordia.soen6441riskgame;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -14,7 +15,7 @@ import java.util.List;
  * @since 1.0
  *
  */
-public class RGGameBenevolent implements RGStrategy{
+public class RGGameBenevolent implements RGStrategy, Serializable {
 	
 	/**
 	 * Created to store the current game for players with a benevolent strategy.

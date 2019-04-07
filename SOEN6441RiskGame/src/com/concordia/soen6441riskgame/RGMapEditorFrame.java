@@ -5,9 +5,14 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
@@ -41,23 +46,27 @@ import javax.swing.border.EmptyBorder;
  * @since   1.0
  *
  */
-public class RGMapEditorFrame extends JFrame {
+public class RGMapEditorFrame extends JFrame{
 
+	/**
+	 * Created to store map file.
+	 */
+	private RGFile gameFile=RGFile.getGameFile();
+	
+	/**
+	 * Created to store the current game (only one game is possible).
+	 */
+	private RGGame game=RGGame.getGame();
+	
 	/**
 	 * Panel where the Editor Map is placed.
 	 */
+	
 	private JPanel contentPane;
-	/**
-	 * Created to store the file where a Risk® map is stored.
-	 */
-	private RGFile file=RGFile.getGameFile();
-	/**
-	 * Created to store the information of the current game.
-	 */
-	private RGGame game=RGGame.getGame();
 	/**
 	 * Created to show the window where the user can open or save a file.
 	 */
+	
 	private JFileChooser fileChooser=new JFileChooser();
 
 	/**
@@ -132,31 +141,31 @@ public class RGMapEditorFrame extends JFrame {
 				
 				try {
 					
-				//The application can only save a valid map	
-				if(file.validateMap(textArea.getText(), textArea_1.getText())) {
-				
-					if(fileChooser.showSaveDialog(null)==JFileChooser.APPROVE_OPTION)
-					{	
-						File filename=fileChooser.getSelectedFile();
-						BufferedWriter outFile = new BufferedWriter(new FileWriter(filename));
-						outFile.write("[Map]"); 
-						outFile.newLine();
-						outFile.write("author=ConcordiaSOEN6441Team39");
-						outFile.newLine();
-						outFile.write("image=");
-						textArea_2.write(outFile);
-						outFile.newLine();
-						outFile.newLine();
-						outFile.write("[Continents]"); 
-						outFile.newLine();
-						textArea.write(outFile);
-						outFile.newLine();
-						outFile.write("[Territories]");
-						outFile.newLine();
-						textArea_1.write(outFile);
-						outFile.close();
+					//The application can only save a valid map	
+					if(gameFile.validateMap(textArea.getText(), textArea_1.getText())) {
+
+						if(fileChooser.showSaveDialog(null)==JFileChooser.APPROVE_OPTION)
+						{	
+							File filename=fileChooser.getSelectedFile();
+							BufferedWriter outFile = new BufferedWriter(new FileWriter(filename));
+							outFile.write("[Map]"); 
+							outFile.newLine();
+							outFile.write("author=ConcordiaSOEN6441Team39");
+							outFile.newLine();
+							outFile.write("image=");
+							textArea_2.write(outFile);
+							outFile.newLine();
+							outFile.newLine();
+							outFile.write("[Continents]"); 
+							outFile.newLine();
+							textArea.write(outFile);
+							outFile.newLine();
+							outFile.write("[Territories]");
+							outFile.newLine();
+							textArea_1.write(outFile);
+							outFile.close();
+						}
 					}
-				}
 				} catch (IOException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
@@ -172,7 +181,7 @@ public class RGMapEditorFrame extends JFrame {
 		JButton btnValidate = new JButton("Validate");
 		btnValidate.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				file.validateMap(textArea.getText(),textArea_1.getText());
+				gameFile.validateMap(textArea.getText(),textArea_1.getText());
 			}
 		});
 		btnValidate.setBounds(129, 511, 97, 25);
@@ -195,16 +204,16 @@ public class RGMapEditorFrame extends JFrame {
 		JMenu mnMap = new JMenu("Map Editor");
 		menuBar.add(mnMap);
 		
-		JMenuItem mntmOpen = new JMenuItem("Open");
+		JMenuItem mntmOpen = new JMenuItem("Open Map");
 		mntmOpen.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				file.openFile(); //opening an existing Risk® map
+				gameFile.openFile(); //opening an existing Risk® map
 				try {
-					StringBuilder content=file.getContent("[Continents]");
+					StringBuilder content=gameFile.getContent("[Continents]");
 					textArea.setText(String.valueOf(content));
-					content=file.getContent("[Territories]");
+					content=gameFile.getContent("[Territories]");
 					textArea_1.setText(String.valueOf(content));
-					content=file.getMapImageFileName("[Map]");
+					content=gameFile.getMapImageFileName("[Map]");
 					textArea_2.setText(String.valueOf(content));
 					
 				} catch (FileNotFoundException e1) {
@@ -231,14 +240,14 @@ public class RGMapEditorFrame extends JFrame {
 		});
 		menuBar.add(mnPlayRisk);
 		
-		JMenuItem mntmPlay = new JMenuItem("Play");
+		JMenuItem mntmPlay = new JMenuItem("Play Single Game");
 		mntmPlay.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				file.openFile();
+			public void actionPerformed(ActionEvent e) {;
+				gameFile.openFile();
 				try {
-					StringBuilder content=file.getContent("[Territories]");
+					StringBuilder content=gameFile.getContent("[Territories]");
 					game.createGraph(content);
-					content=file.getContent("[Continents]");
+					content=gameFile.getContent("[Continents]");
 					game.createContinents(content);
 					RGPlayersFrame playersFrame=new RGPlayersFrame(); //creating a new frame where players can be created
 					playersFrame.setVisible(true);	
@@ -248,8 +257,82 @@ public class RGMapEditorFrame extends JFrame {
 				}
 			}
 		});
+		
+		JMenuItem mntmOpenGame = new JMenuItem("Open Game");
+		mntmOpenGame.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				RGGame game=RGGame.getGame();
+				RGPlayer players=RGPlayer.getPlayers();
+				RGFile gameFile=RGFile.getGameFile();
+				LocalDateTime now = LocalDateTime.now();  
+				DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy_MM_dd");
+				try {
+					FileInputStream file = new FileInputStream(new File("Risk"+dtf.format(now)+".ser"));
+					ObjectInputStream input = new ObjectInputStream(file);
+					
+					RGGraph graphFromFile = (RGGraph) input.readObject();
+					RGGraph countryItemsFromFile = (RGGraph) input.readObject();
+					RGGraph continentItemsFromFile = (RGGraph) input.readObject();
+					RGGraph cardItemsFromFile = (RGGraph) input.readObject();
+					RGGame gameFromFile = (RGGame) input.readObject();
+					String phaseFromFile= (String) input.readObject();
+					String attackStatusFromFile= (String) input.readObject();
+					boolean cardGivenFromFile= (boolean) input.readObject();
+					boolean allOutModeForAttackPhaseFromFile= (boolean) input.readObject();
+					RGPlayerStrategy playerStrategyFromFile= (RGPlayerStrategy) input.readObject();
+					boolean savedGameFromFile= (boolean) input.readObject();
+					
+					ArrayList<String> setOfPlayersFromFile = (ArrayList<String>) input.readObject();
+					RGGraph playerItemsFromFile = (RGGraph) input.readObject();
+					ArrayList<String> colorsFromFile = (ArrayList<String>) input.readObject();
+					RGPlayer playersFromFile = (RGPlayer) input.readObject();
+					RGGraph playerBehaviorsFromFile = (RGGraph) input.readObject();
+					
+					File fileFromFile = (File) input.readObject();
+					RGFile gameFileFromFile = (RGFile) input.readObject();
+					String imageFilePathFromFile= (String) input.readObject();
+					
+					input.close();
+					file.close();
+		
+					game.setGraph(graphFromFile);
+					game.setCountryItems(countryItemsFromFile);
+					game.setContinentItems(continentItemsFromFile);
+					game.setCardItems(cardItemsFromFile);
+					game.setGame(gameFromFile);
+					game.setPhase(phaseFromFile);
+					game.setAttackStatus(attackStatusFromFile);
+					game.setCardGiven(cardGivenFromFile);
+					game.setAllOutModeForAttackPhase(allOutModeForAttackPhaseFromFile);
+					game.setPlayerStrategy(playerStrategyFromFile);
+					game.setSavedGame(savedGameFromFile);
+					
+					players.setSetOfPlayers(setOfPlayersFromFile);
+					players.setPlayerItems(playerItemsFromFile);
+					players.setColors(colorsFromFile);
+					players.setPlayer(playersFromFile);
+					players.setPlayerBehaviors(playerBehaviorsFromFile);
+					
+					gameFile.setFile(fileFromFile);
+					gameFile.setGameFile(gameFileFromFile);
+					gameFile.setImageFilePath(imageFilePathFromFile);
+
+					players=RGPlayer.getPlayers();
+					System.out.print(players.getColors());
+					
+					RGGameFrame gameFrame=new RGGameFrame();//creating the game frame where players can play Risk® game
+					gameFrame.setVisible(true);
+				} catch (ClassNotFoundException | IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				} 
+			}
+		});
+		mnPlayRisk.add(mntmOpenGame);
 		mnPlayRisk.add(mntmPlay);
+		
+		JMenuItem mntmPlayTournament = new JMenuItem("Play Tournament");
+		mnPlayRisk.add(mntmPlayTournament);
 	}
-	
 	
 }

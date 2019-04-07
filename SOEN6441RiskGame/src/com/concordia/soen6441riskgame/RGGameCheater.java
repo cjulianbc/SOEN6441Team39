@@ -1,5 +1,6 @@
 package com.concordia.soen6441riskgame;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -15,7 +16,7 @@ import java.util.Random;
  * @since 1.0
  *
  */
-public class RGGameCheater implements RGStrategy{
+public class RGGameCheater implements RGStrategy, Serializable {
 	
 	/**
 	 * Created to store the current game for players with a cheater strategy.

@@ -1,5 +1,7 @@
 package com.concordia.soen6441riskgame;
 
+import java.io.Serializable;
+
 /**
  * Class to change a player strategy during play time. Every player must have a strategy. Strategies:
  * 
@@ -20,7 +22,7 @@ package com.concordia.soen6441riskgame;
  * @since 1.0
  *
  */
-public class RGPlayerStrategy {
+public class RGPlayerStrategy implements Serializable{
 	 
 	/**
 	 * Created to store the strategy.

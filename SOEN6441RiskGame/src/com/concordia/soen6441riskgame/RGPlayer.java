@@ -1,5 +1,6 @@
 package com.concordia.soen6441riskgame;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Observable;
 
@@ -12,7 +13,7 @@ import java.util.Observable;
  * @since 1.0
  *
  */
-public class RGPlayer extends Observable {
+public class RGPlayer extends Observable implements Serializable {
 	
 	/**
 	 * Created to store the names of the players.
@@ -55,7 +56,7 @@ public class RGPlayer extends Observable {
 	}
 	
 	/**
-	 * This method is used to assure only one instance (only one set of players) is created
+	 * This method is used to assure only one instance (only one set of players) is created.
 	 * 
 	 * 
 	 * @return Set of players.
@@ -66,6 +67,18 @@ public class RGPlayer extends Observable {
 		if (players==null)
 			players=new RGPlayer();
 		return players;
+	}
+	
+	/**
+	 * This method is used to set the players from a saved game.
+	 * 
+	 * 
+	 * @param players Set of saved players..
+	 * 
+	 */
+	void setPlayer(RGPlayer players)
+	{
+		this.players=players;
 	}
 	
 	/**
@@ -267,7 +280,7 @@ public class RGPlayer extends Observable {
 		for(int k=0;k<vertex.size();k++)//for every player
 		{
 			edgeList = playerItems.getEdges(vertex.get(k));
-			if(edgeList.get(0)=="1")//is the player with the current turn?
+			if(edgeList.get(0).contentEquals("1"))//is the player with the current turn?
 			{
 				currentPlayerTurn=vertex.get(k);
 			}
@@ -317,7 +330,7 @@ public class RGPlayer extends Observable {
 		for(int k=0;k<vertex.size();k++)
 		{
 			ArrayList<String> edges = playerItems.getEdges(vertex.get(k));
-			if(edges.get(0)=="1")
+			if(edges.get(0).contentEquals("1"))
 			{
 				edges.set(0, "0");
 				playerItems.setEdge(vertex.get(k), edges);
@@ -573,4 +586,93 @@ public class RGPlayer extends Observable {
 		ArrayList <String> strategy=playerBehaviors.getEdges(currentPlayerName);
 		return strategy.get(0);
 	}
+	
+	/**
+	 * This method is used to obtain the palette of colors for players.  
+	 * 
+	 * 
+	 * @return Palette of colors for players.
+	 * 
+	 */	
+	ArrayList<String> getColors(){
+		return this.colors;
+	}
+	
+	/**
+	 * This method is used to set the palette of colors for players from a saved game.
+	 * 
+	 * 
+	 * @param colors Palette of colors for players.
+	 * 
+	 */	
+	void setColors(ArrayList<String> colors){
+		this.colors=colors;
+	}
+	
+	/**
+	 * This method is used to obtain playerItems' data structure. 
+	 * 
+	 *
+	 * @return playerItems' data structure.
+	 * 
+	 */
+	RGGraph getPlayerItems() {
+        return playerItems;
+    }
+	
+	/**
+	 * This method is used to set playerItems' data structure from a saved game. 
+	 * 
+	 *
+	 * @param playerItems playerItems' data structure.
+	 * 
+	 */
+	void setPlayerItems(RGGraph playerItems) {
+        this.playerItems=playerItems;
+    }
+	
+	/**
+	 * This method is used to obtain playerBehaviors' data structure. 
+	 * 
+	 *
+	 * @return playerBehaviors' data structure.
+	 * 
+	 */
+	RGGraph getPlayerBehaviors() {
+        return playerBehaviors;
+    }
+	
+	/**
+	 * This method is used to set playerBehaviors' data structure from a saved game. 
+	 * 
+	 *
+	 * @param playerBehaviors playerBehaviors' data structure.
+	 * 
+	 */
+	void setPlayerBehaviors(RGGraph playerBehaviors) {
+        this.playerBehaviors=playerBehaviors;
+    }
+	
+	/**
+	 * This method is used to obtain the list with the names of the players. 
+	 * 
+	 *
+	 * @return List with the names of the players.
+	 * 
+	 */
+	ArrayList<String> getSetOfPlayers() {
+        return setOfPlayers;
+    }
+	
+	/**
+	 * This method is used to set the list with the names of the players. 
+	 * 
+	 *
+	 * @param setOfPlayers List with the names of the players.
+	 * 
+	 */
+	void setSetOfPlayers(ArrayList<String> setOfPlayers) {
+        this.setOfPlayers=setOfPlayers;
+    }
+	
 }

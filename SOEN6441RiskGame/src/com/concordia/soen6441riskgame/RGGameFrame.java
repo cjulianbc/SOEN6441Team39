@@ -2,16 +2,19 @@ package com.concordia.soen6441riskgame;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
-import javax.swing.JScrollPane;
 import javax.swing.border.EmptyBorder;
-import javax.swing.border.LineBorder;
-import javax.swing.JLabel;
-import java.awt.event.MouseMotionAdapter;
-import java.awt.event.MouseEvent;
-import javax.swing.JTextArea;
-
-import java.awt.Color;
-import java.awt.event.MouseAdapter;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectOutputStream;
+import java.io.Serializable;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import javax.swing.JMenuBar;
+import javax.swing.JMenu;
+import javax.swing.JMenuItem;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 
 /**
  * Class that creates a frame with three panels: 
@@ -26,7 +29,7 @@ import java.awt.event.MouseAdapter;
  * @since   1.0
  *
  */
-public class RGGameFrame extends JFrame {
+public class RGGameFrame extends JFrame implements Serializable {
 
 	/**
 	 * This constructor creates the main frame (window) and the three panels (left, right-north, and right-south).
@@ -42,6 +45,59 @@ public class RGGameFrame extends JFrame {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setExtendedState(getExtendedState() | JFrame.MAXIMIZED_BOTH);
 		setBounds(0, 0, 1280, 720);
+		
+		JMenuBar menuBar = new JMenuBar();
+		setJMenuBar(menuBar);
+		
+		JMenu mnSave = new JMenu("Save");
+		menuBar.add(mnSave);
+		
+		JMenuItem mntmSaveGame = new JMenuItem("Save Game");
+		mntmSaveGame.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				RGGame game=RGGame.getGame();
+				RGPlayer players=RGPlayer.getPlayers();
+				RGFile gameFile=RGFile.getGameFile();
+				LocalDateTime now = LocalDateTime.now();  
+				DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy_MM_dd");  
+				try {
+					FileOutputStream file = new FileOutputStream(new File("Risk"+dtf.format(now)+".ser"));
+					ObjectOutputStream output = new ObjectOutputStream(file);
+					game.setSavedGame(true);
+					System.out.print(game.getSavedGame());
+					
+					output.writeObject(game.getGraph());
+					output.writeObject(game.getCountryItems());
+					output.writeObject(game.getContinentItems());
+					output.writeObject(game.getCardItems());
+					output.writeObject(game);
+					output.writeObject(game.getPhase());
+					output.writeObject(game.getAttackStatus());
+					output.writeObject(game.getCardGiven());
+					output.writeObject(game.getAllOutModeForAttackPhase());
+					output.writeObject(game.getPlayerStrategy());
+					output.writeObject(game.getSavedGame());
+					
+					output.writeObject(players.getSetOfPlayers());
+					output.writeObject(players.getPlayerItems());
+					output.writeObject(players.getColors());
+					output.writeObject(players);
+					output.writeObject(players.getPlayerBehaviors());
+			
+					output.writeObject(gameFile.getFile());
+					output.writeObject(gameFile);
+					output.writeObject(gameFile.getImageFilePath());
+					
+					output.close();
+					file.close();
+				} catch (IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				} finally {
+				}
+			}
+		});
+		mnSave.add(mntmSaveGame);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
@@ -69,14 +125,22 @@ public class RGGameFrame extends JFrame {
 		dominationViewPanel.setVisible(true);
 		dominationViewPanel.add(dominationView);
 		
-		//creating the observers
-		RGGame game=RGGame.getGame();
-		game.addObserver(mapView);
-		game.addObserver(phaseView);
-		game.addObserver(dominationView);
-		
 		//allocating armies to every player in players' data structure
-		game.setPhase("Setup");
-		game.initializeGame();
+		RGGame game=RGGame.getGame();
+		boolean savedGame=game.getSavedGame();
+		if (!savedGame) {
+			//creating the observers
+			game.addObserver(mapView);
+			game.addObserver(phaseView);
+			game.addObserver(dominationView);
+			game.setPhase("Setup");
+			game.initializeGame();
+		}
+		else {
+			game.addObserver(mapView);
+			game.addObserver(phaseView);
+			game.addObserver(dominationView);
+			game.savedGameNotifyObservers();
+		}
 	}
 }

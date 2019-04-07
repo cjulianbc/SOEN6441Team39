@@ -1,5 +1,6 @@
 package com.concordia.soen6441riskgame;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.LinkedList;
@@ -18,7 +19,7 @@ import java.util.Scanner;
  * @since 1.0
  *
  */
-public class RGGame extends Observable implements RGStrategy{
+public class RGGame extends Observable implements RGStrategy, Serializable {
 
 	/**
 	 * Created to store the Graph's data structure.
@@ -74,6 +75,11 @@ public class RGGame extends Observable implements RGStrategy{
 	private RGPlayerStrategy playerStrategy=new RGPlayerStrategy();
 	
 	/**
+	 * Created to know if a game is loaded from a file
+	 */
+	private boolean savedGame=false;
+	
+	/**
 	 * This method is used to assure only that one instance of the game (only one game) is created.
 	 * 
 	 * 
@@ -86,6 +92,20 @@ public class RGGame extends Observable implements RGStrategy{
 			game=new RGGame();
 		return game;
 	}
+	
+	
+	/**
+	 * This method is used to set a saved game.
+	 * 
+	 * 
+	 * @param game Game from file.
+	 * 
+	 */
+	void setGame(RGGame game)
+	{
+		this.game=game;
+	}
+	
 	
 	/**
 	 * This method is used to set the current phase of the game.
@@ -100,7 +120,7 @@ public class RGGame extends Observable implements RGStrategy{
 	}
 	
 	/**
-	 * This method returns the current phase of the game for a specific moment.
+	 * This method returns the current phase of the game.
 	 * 
 	 * 
 	 * @return Current phase of the game for a specific moment.
@@ -889,7 +909,7 @@ public class RGGame extends Observable implements RGStrategy{
 				actionPerformed.append("\n");
 				
 				//No more army to attack. Setting all out mode off
-				game.allOutMode=false;
+				allOutMode=false;
 				
 				//Storing performed actions 
 				players.setActionsPerformed(actionPerformed, currentPlayerName, "attack");
@@ -972,7 +992,7 @@ public class RGGame extends Observable implements RGStrategy{
 			String loserPlayerName=game.getOwner(selectedCountryDefender);
 			
 			//territory captured. Setting all out mode off
-			game.allOutMode=false;
+			allOutMode=false;
 
 			//setting owner and moving armies (Risk rule: "Move at least as many armies as the number of dice winner rolled in the last battle")
 			ArrayList<String> edges = countryItems.getEdges(selectedCountryDefender);
@@ -1100,7 +1120,7 @@ public class RGGame extends Observable implements RGStrategy{
 	 */
 	String getAttackStatus()
 	{
-		return game.attackStatus;
+		return attackStatus;
 	}
 	
 	/**
@@ -1115,7 +1135,7 @@ public class RGGame extends Observable implements RGStrategy{
 	 */
 	void setAttackStatus(String status)
 	{
-		game.attackStatus=status;
+		attackStatus=status;
 	}
 	
 	/**
@@ -1187,7 +1207,7 @@ public class RGGame extends Observable implements RGStrategy{
 	 */
 	void setAllOutModeForAttackPhase(boolean mode)
 	{
-		game.allOutMode=mode;
+		allOutMode=mode;
 	}
 	
 	/**
@@ -1199,7 +1219,7 @@ public class RGGame extends Observable implements RGStrategy{
 	 */
 	boolean getAllOutModeForAttackPhase()
 	{
-		return game.allOutMode;
+		return allOutMode;
 	}
 	
 	/**
@@ -1411,7 +1431,18 @@ public class RGGame extends Observable implements RGStrategy{
 	 * 
 	 */
 	RGGraph getCountryItems() {
-        return this.countryItems;
+        return countryItems;
+    }
+	
+	/**
+	 * This method is used to set countryItems' from a saved game. 
+	 * 
+	 *
+	 * @param countryItems countryItems' data structure.
+	 * 
+	 */
+	void setCountryItems(RGGraph countryItems) {
+        this.countryItems=countryItems;
     }
 	
 	/**
@@ -1574,7 +1605,7 @@ public class RGGame extends Observable implements RGStrategy{
 	 * 
 	 */	
 	boolean getCardGiven() {
-		return this.cardGiven;
+		return cardGiven;
 	}
 	
 	/**
@@ -1652,5 +1683,125 @@ public class RGGame extends Observable implements RGStrategy{
 		}
 		return listOfSortedCountries;
 	}
+	
+	/**
+	 * This method is used to know if a game is being loaded from a file.
+	 * 
+	 * 
+	 * @param status True=A game is being loaded from a file.
+	 * 
+	 */
+	void setSavedGame (boolean status) {
+		savedGame=status;
+	}
+	
+	/**
+	 * This method is used to know if a game is being loaded from a file.
+	 * 
+	 * 
+	 * @return True=A game is being loaded from a file.
+	 * 
+	 */
+	boolean getSavedGame () {
+		return savedGame;
+	}
+	
+	/**
+	 * This method is used to notify the observers when a game is being loaded.
+	 * 
+	 * 
+	 */
+	void savedGameNotifyObservers () {
+		setChanged();
+		notifyObservers(this);
+	}
+	
+	/**
+	 * This method is used to obtain graph's data structure where the map with its adjacencies is stored. 
+	 * 
+	 *
+	 * @return graph's data structure.
+	 * 
+	 */
+	RGGraph getGraph() {
+        return graph;
+    }
+	
+	/**
+	 * This method is used to set graph's data structure from a saved game. 
+	 * 
+	 *
+	 * @param graph graph's data structure.
+	 * 
+	 */
+	void setGraph(RGGraph graph) {
+        this.graph=graph;
+    }
+	
+	/**
+	 * This method is used to obtain continentItems' data structure where the information of the continents is stored. 
+	 * 
+	 *
+	 * @return continentItems data structure.
+	 * 
+	 */
+	RGGraph getContinentItems() {
+        return continentItems;
+    }
+	
+	/**
+	 * This method is used to set continentItems' from a saved game. 
+	 * 
+	 *
+	 * @param continentItems continentItems' data structure.
+	 * 
+	 */
+	void setContinentItems(RGGraph continentItems) {
+        this.continentItems=continentItems;
+    }
+	
+	/**
+	 * This method is used to obtain cardItems' data structure. 
+	 * 
+	 *
+	 * @return cardItems' data structure.
+	 * 
+	 */
+	RGGraph getCardItems() {
+        return cardItems;
+    }
+	
+	/**
+	 * This method is used to set cardItems' from a saved game. 
+	 * 
+	 *
+	 * @param cardItems cardItems' data structure.
+	 * 
+	 */
+	void setCardItems(RGGraph cardItems) {
+        this.cardItems=cardItems;
+    }
+	
+	/**
+	 * This method is used to obtain the strategy of a player. 
+	 * 
+	 *
+	 * @return Strategy of a player.
+	 * 
+	 */
+	RGPlayerStrategy getPlayerStrategy() {
+        return playerStrategy;
+    }
+	
+	/**
+	 * This method is used to set the strategy of a player. 
+	 * 
+	 *
+	 * @param playerStrategy Strategy of a player.
+	 * 
+	 */
+	void setPlayerStrategy(RGPlayerStrategy playerStrategy) {
+        this.playerStrategy=playerStrategy;
+    }
 
 }

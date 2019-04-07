@@ -1,5 +1,6 @@
 package com.concordia.soen6441riskgame;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -15,7 +16,7 @@ import java.util.Map;
  * @since   1.0
  *
  */
-	public class RGGraph {
+	public class RGGraph implements Serializable {
 		
 	/**
 	 * Created to store any HashMap data structure. 
@@ -118,5 +119,27 @@ import java.util.Map;
 	ArrayList<String> getVertex(){
 		return new ArrayList<String>(adjVertices.keySet());
 	}
+	
+	/**
+	 * This method is used to obtain the different hashMap data structures. 
+	 * 
+	 *
+	 * @return hashMap data structure. 
+	 * 
+	 */
+	Map<String,ArrayList<String>> getAdjVertices() {
+        return adjVertices;
+    }
+	
+	/**
+	 * This method is used to set the different hashMap data structures. 
+	 * 
+	 *
+	 * @param adjVertices HashMap data structure. 
+	 * 
+	 */
+	void setAdjVertices(Map<String,ArrayList<String>> adjVertices) {
+        this.adjVertices=adjVertices;
+    }
 
 }
