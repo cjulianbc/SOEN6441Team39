@@ -5,7 +5,7 @@ import org.junit.runners.Suite;
 import org.junit.runners.Suite.SuiteClasses;
 
 @RunWith(Suite.class)
-@SuiteClasses({ RGFileTest.class, RGGameTest.class, RGPlayerTest.class })
+@SuiteClasses({ RGFileTest.class, RGGameTest.class, RGPlayerTest.class, RGGraphTest.class })
 public class AllTests {
 
 }
