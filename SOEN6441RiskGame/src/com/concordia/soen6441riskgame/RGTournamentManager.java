@@ -14,6 +14,7 @@ import java.util.List;
  *
  */
 public class RGTournamentManager {
+	
 	private List<String> maps;
 	private List<String> players;
 	private int numberOfGames;
@@ -21,6 +22,7 @@ public class RGTournamentManager {
 	private RGFile file = RGFile.getGameFile();
 	private RGGame game = RGGame.getGame();
 	RGPlayer playersObject=RGPlayer.getPlayers();
+	ArrayList<String> results=new ArrayList<String>();
 
 	/**
 	 * This constructor is used to set the maps, players, games and turns.
@@ -127,5 +129,9 @@ public class RGTournamentManager {
 		  count++;
 	  }
 	  return "draw";
+	}
+	
+	int getResultsSize() {
+		return results.size();
 	}
 }
