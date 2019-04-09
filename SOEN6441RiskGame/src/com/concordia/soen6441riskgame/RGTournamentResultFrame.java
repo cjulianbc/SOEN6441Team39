@@ -76,7 +76,7 @@ public class RGTournamentResultFrame extends JFrame {
 	 */
 	public RGTournamentResultFrame(ArrayList<String> results, List<String> maps, int games) {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(300, 50, 576, 595);
+		setBounds(300, 50, 675, 300);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
@@ -98,19 +98,12 @@ public class RGTournamentResultFrame extends JFrame {
 			}
 			z+=games;
 		}
-		table.setBounds(46, 127, 427, 165);
+		table.setBounds(30, 50, 600, 110);
 		contentPane.add(table);
 		
-		JLabel lblTournamentResults = new JLabel("Tournament Results");
-		lblTournamentResults.setFont(new Font("Tahoma", Font.PLAIN, 16));
-		lblTournamentResults.setBounds(169, 83, 162, 31);
-		contentPane.add(lblTournamentResults);
-		
-		
-		
-		
-		
-		
+		JLabel lbltournamentMode = new JLabel("TOURNAMENT MODE RESULTS");
+		lbltournamentMode.setBounds(10, 11, 250, 29);
+		contentPane.add(lbltournamentMode);
 		
 	}
 }

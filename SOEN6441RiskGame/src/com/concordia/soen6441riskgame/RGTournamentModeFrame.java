@@ -100,22 +100,21 @@ public class RGTournamentModeFrame extends JFrame {
 	 */
 	public RGTournamentModeFrame() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(300, 50, 576, 595);
+		setBounds(300, 50, 420, 620);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		
-		
+		JLabel lbltournamentMode = new JLabel("TOURNAMENT MODE");
+		lbltournamentMode.setBounds(10, 11, 150, 29);
+		contentPane.add(lbltournamentMode);
 		
 		JLabel lblMapEditor = new JLabel("Available maps");
-		lblMapEditor.setBounds(10, 23, 86, 29);
+		lblMapEditor.setBounds(30, 53, 120, 29);
 		contentPane.add(lblMapEditor);
 		
-		
-		
 		ArrayList<String> availableMaps=new ArrayList<String>();
-		
 		availableMaps=this.readDirectory();
 		DefaultListModel modelAvailableMaps = new DefaultListModel();
 		for(int i=0; i<availableMaps.size(); i++ ) {
@@ -125,16 +124,16 @@ public class RGTournamentModeFrame extends JFrame {
 		JList listAvailableMaps = new JList(modelAvailableMaps);
 		
 		JScrollPane scrollPane = new JScrollPane(listAvailableMaps);
-		scrollPane.setBounds(10, 53, 115, 129);
+		scrollPane.setBounds(30, 83, 115, 129);
 		contentPane.add(scrollPane);
 		
 		JLabel lblSelectedMaps = new JLabel("Selected maps");
-		lblSelectedMaps.setBounds(240, 23, 86, 29);
+		lblSelectedMaps.setBounds(260, 53, 86, 29);
 		contentPane.add(lblSelectedMaps);
 		
 		DefaultListModel modelSelectedMaps = new DefaultListModel();
 		JList listSelectedMaps = new JList(modelSelectedMaps);
-		listSelectedMaps.setBounds(240, 53, 115, 129);
+		listSelectedMaps.setBounds(260, 83, 115, 129);
 		contentPane.add(listSelectedMaps);
 		
 		JButton btnMoveMaps = new JButton("Move");
@@ -148,13 +147,13 @@ public class RGTournamentModeFrame extends JFrame {
 				
 			}
 		});
-		btnMoveMaps.setBounds(147, 115, 79, 25);
+		btnMoveMaps.setBounds(167, 145, 79, 25);
 		contentPane.add(btnMoveMaps);
 		
 		
 		DefaultListModel modelAvailablePlayers = new DefaultListModel();
 		JList listAvailablePlayers = new JList(modelAvailablePlayers);
-		listAvailablePlayers.setBounds(10, 246, 115, 129);
+		listAvailablePlayers.setBounds(30, 276, 115, 129);
 		contentPane.add(listAvailablePlayers);
 		modelAvailablePlayers.addElement("aggressive");
 		modelAvailablePlayers.addElement("benevolent");
@@ -163,12 +162,12 @@ public class RGTournamentModeFrame extends JFrame {
 		
 		
 		JLabel lblAvailablePalyers = new JLabel("Available Players");
-		lblAvailablePalyers.setBounds(9, 216, 110, 29);
+		lblAvailablePalyers.setBounds(30, 246, 110, 29);
 		contentPane.add(lblAvailablePalyers);
 		
 		DefaultListModel modelSelectedPlayers = new DefaultListModel();
 		JList listSelectedPlayers = new JList(modelSelectedPlayers);
-		listSelectedPlayers.setBounds(240, 246, 115, 129);
+		listSelectedPlayers.setBounds(260, 276, 115, 129);
 		contentPane.add(listSelectedPlayers);
 		
 		JButton btnMovePlayers = new JButton("Move");
@@ -181,17 +180,17 @@ public class RGTournamentModeFrame extends JFrame {
 				}
 			}
 		});
-		btnMovePlayers.setBounds(147, 308, 79, 25);
+		btnMovePlayers.setBounds(167, 338, 79, 25);
 		contentPane.add(btnMovePlayers);
 		
 		
 		
 		JLabel lblSelectedPlayers = new JLabel("Selected Players");
-		lblSelectedPlayers.setBounds(240, 216, 115, 29);
+		lblSelectedPlayers.setBounds(260, 246, 115, 29);
 		contentPane.add(lblSelectedPlayers);
 		
 		JComboBox comboBoxGames = new JComboBox();
-		comboBoxGames.setBounds(10, 427, 68, 22);
+		comboBoxGames.setBounds(30, 457, 68, 22);
 		contentPane.add(comboBoxGames);
 		comboBoxGames.addItem("1");
 		comboBoxGames.addItem("2");
@@ -200,20 +199,20 @@ public class RGTournamentModeFrame extends JFrame {
 		comboBoxGames.addItem("5");
 		
 		JLabel lblChooseNoOf = new JLabel("Choose no. of games");
-		lblChooseNoOf.setBounds(10, 398, 134, 16);
+		lblChooseNoOf.setBounds(30, 428, 134, 16);
 		contentPane.add(lblChooseNoOf);
 		
 		JLabel lblChooseMaxNo = new JLabel("Choose max no. of turns");
-		lblChooseMaxNo.setBounds(197, 398, 158, 16);
+		lblChooseMaxNo.setBounds(237, 428, 158, 16);
 		contentPane.add(lblChooseMaxNo);
 		
 		textFieldTurns = new JTextField();
-		textFieldTurns.setBounds(197, 427, 116, 22);
+		textFieldTurns.setBounds(237, 457, 116, 22);
 		contentPane.add(textFieldTurns);
 		textFieldTurns.setColumns(10);
 		
 		JButton btnStartTournament = new JButton("Start Tournament");
-		btnStartTournament.setBounds(10, 489, 134, 23);
+		btnStartTournament.setBounds(30, 519, 134, 23);
 		
 		btnStartTournament.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
