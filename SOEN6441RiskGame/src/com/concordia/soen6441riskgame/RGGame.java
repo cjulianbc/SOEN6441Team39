@@ -1828,37 +1828,6 @@ public class RGGame extends Observable implements RGStrategy, Serializable {
 	}
 	
 	
-	/**
-	 * This method is used to validate the number of turns.    
-	 * 
-	 * @return true if turns are between 10 and 50, else false.
-	 */
-	boolean validateTurns(int turns) {
-		if(turns>=10 && turns<=50)
-			return true;
-		return false;
-	}
 	
-	/**
-	 * This method is used to validate the Maps.    
-	 * 
-	 * @return true if number of Maps are between 1 and 5, else false.
-	 */
-	boolean validateNumberOfMaps(int mapsNumber) {
-		if(mapsNumber>=1 && mapsNumber<=5)
-			return true;
-		return false;
-	}
-	
-	/**
-	 * This method is used to validate the number of players.    
-	 * 
-	 * @return true if players are between 2 and 4, else false.
-	 */
-	boolean validateNumberOfPlayers(int players) {
-		if(players>=2 && players<=4)
-			return true;
-		return false;
-	}
 
 }

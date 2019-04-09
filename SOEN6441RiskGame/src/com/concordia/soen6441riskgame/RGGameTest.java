@@ -265,23 +265,7 @@ public class RGGameTest {
 		assertEquals(game.percentageMapControlledByPlayer("C"), 40);
     }
 	
-	@Test
-	public void testValidateNumberOfMaps() {
-		
-		assertTrue(game.validateNumberOfMaps(4));
-	}
 	
-	@Test
-	public void testValidateNumberOfPlayers(int players) {
-		assertTrue(game.validateNumberOfPlayers(4));
-			
-	}
-	
-	@Test
-	public void testValidateNumberOfTurns(int players) {
-		assertTrue(game.validateTurns(40));
-			
-	}
 	
 	
 	

@@ -49,7 +49,7 @@ public class RGTournamentModeFrame extends JFrame {
 	 */
 	private JPanel contentPane;
 	/**
-	 * Created to store the file where a Risk® map is stored.
+	 * Created to store the file where a Riskï¿½ map is stored.
 	 */
 	private RGFile file=RGFile.getGameFile();
 	/**
@@ -228,11 +228,11 @@ public class RGTournamentModeFrame extends JFrame {
 				int numberOfGames=Integer.parseInt((String)comboBoxGames.getSelectedItem());
 				int numberOfTurns=Integer.parseInt((String)textFieldTurns.getText());
 				
-				
-				if(game.validateTurns(numberOfTurns)) {
-					if(game.validateNumberOfMaps(maps.size())) {
-						if(game.validateNumberOfPlayers(players.size())) {
-							RGTournamentManager rgtournamnetmanager=new RGTournamentManager(maps, players, numberOfGames, numberOfTurns);
+				RGTournamentManager rgtournamnetmanager=new RGTournamentManager(maps, players, numberOfGames, numberOfTurns);
+				if(rgtournamnetmanager.validateTurns()) {
+					if(rgtournamnetmanager.validateNumberOfMaps()) {
+						if(rgtournamnetmanager.validateNumberOfPlayers()) {
+							
 							rgtournamnetmanager.startTournament();
 						}
 						else {

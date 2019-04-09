@@ -134,4 +134,37 @@ public class RGTournamentManager {
 	int getResultsSize() {
 		return results.size();
 	}
+	
+	/**
+	 * This method is used to validate the number of turns.    
+	 * 
+	 * @return true if turns are between 10 and 50, else false.
+	 */
+	boolean validateTurns() {
+		if(numberOfTurns>=10 && numberOfTurns<=50)
+			return true;
+		return false;
+	}
+	
+	/**
+	 * This method is used to validate the Maps.    
+	 * 
+	 * @return true if number of Maps are between 1 and 5, else false.
+	 */
+	boolean validateNumberOfMaps() {
+		if(maps.size()>=1 && maps.size()<=5)
+			return true;
+		return false;
+	}
+	
+	/**
+	 * This method is used to validate the number of players.    
+	 * 
+	 * @return true if players are between 2 and 4, else false.
+	 */
+	boolean validateNumberOfPlayers() {
+		if(players.size()>=2 && players.size()<=4)
+			return true;
+		return false;
+	}
 }

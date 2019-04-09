@@ -28,4 +28,21 @@ public class RGTournamentTest {
 		tournament.startTournament();
 		assertEquals(6,tournament.getResultsSize());
 	}
+	@Test
+	public void testValidateNumberOfMaps() {
+		
+		assertTrue(tournament.validateNumberOfMaps());
+	}
+	
+	@Test
+	public void testValidateNumberOfPlayers() {
+		assertTrue(tournament.validateNumberOfPlayers());
+			
+	}
+	
+	@Test
+	public void testValidateNumberOfTurns() {
+		assertTrue(tournament.validateTurns());
+			
+	}
 }
