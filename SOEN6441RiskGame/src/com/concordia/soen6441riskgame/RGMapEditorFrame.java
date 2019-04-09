@@ -333,6 +333,13 @@ public class RGMapEditorFrame extends JFrame{
 		
 		JMenuItem mntmPlayTournament = new JMenuItem("Play Tournament");
 		mnPlayRisk.add(mntmPlayTournament);
+		mntmPlayTournament.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+				RGTournamentModeFrame tournament = new RGTournamentModeFrame();
+				tournament.setVisible(true);
+			}
+		});
 	}
 	
 }
