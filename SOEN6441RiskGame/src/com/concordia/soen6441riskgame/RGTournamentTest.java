@@ -24,7 +24,7 @@ public class RGTournamentTest {
 	}
 	
 	@Test
-	public void testTournamnet() {
+	public void testTournament() {
 		tournament.startTournament();
 		assertEquals(6,tournament.getResultsSize());
 	}
