@@ -25,7 +25,9 @@ public class RGFileTest {
 	public void setUp() throws Exception {
 		file = new RGFile();
 	}
-
+/**
+ * method to validate map
+ */
 	@Test
 	public void testMapValidate() {
 		continents = "Asia=2" + "\n" + "North America=7";
@@ -37,6 +39,9 @@ public class RGFileTest {
 				+ "Canada,11,11,North America,USA,India";
 		assertTrue(file.validateMap(continents, countries));
 	}
+	/**
+	 * method to validate continent
+	 */
 
 	@Test
 	public void testMapInvalidContinentFormat() {
@@ -49,6 +54,9 @@ public class RGFileTest {
 				+ "Canada,11,11,North America,USA,India";
 		assertFalse(file.validateMap(continents, countries));
 	}
+	/**
+	 * method for valid continent count
+	 */
 
 	@Test
 	public void testMapInvalidContinentCount() {
@@ -73,6 +81,9 @@ public class RGFileTest {
 				+ "Canada,11,11,South America,USA,India";
 		assertFalse(file.validateMap(continents, countries));
 	}
+	/**
+	 * method for valid coordinates
+	 */
 
 	@Test
 	public void testMapInvalidSameCoordinates() {
@@ -97,6 +108,9 @@ public class RGFileTest {
 				+ "Canada,India,USA,North America,USA,India";
 		assertFalse(file.validateMap(continents, countries));
 	}
+	/**
+	 * method to test adjacency country
+	 */
 
 	@Test
 	public void testMapInvalidAdjacenectCountry() {
@@ -121,7 +135,9 @@ public class RGFileTest {
 				+ "Canada,69,69,North America,USA";
 		assertFalse(file.validateMap(continents, countries));
 	}
-
+/**
+ * method to test disconnected graph
+ */
 	@Test
 	public void testMapInvalidDisconnectedGraph() {
 		continents = "Asia=2" + "\n" + "North America=8";

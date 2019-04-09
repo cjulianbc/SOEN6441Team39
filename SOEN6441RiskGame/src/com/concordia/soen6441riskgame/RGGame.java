@@ -1,6 +1,14 @@
 package com.concordia.soen6441riskgame;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.io.Serializable;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.LinkedList;
@@ -1827,7 +1835,114 @@ public class RGGame extends Observable implements RGStrategy, Serializable {
 		return countryItems.getVertex().size();
 	}
 	
+	boolean loadGame() {
+		RGGame game=RGGame.getGame();
+		RGPlayer players=RGPlayer.getPlayers();
+		RGFile gameFile=RGFile.getGameFile();
+		LocalDateTime now = LocalDateTime.now();  
+		DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy_MM_dd");
+		try {
+			FileInputStream file = new FileInputStream(new File("Risk"+dtf.format(now)+".ser"));
+			ObjectInputStream input = new ObjectInputStream(file);
+			
+			RGGraph graphFromFile = (RGGraph) input.readObject();
+			RGGraph countryItemsFromFile = (RGGraph) input.readObject();
+			RGGraph continentItemsFromFile = (RGGraph) input.readObject();
+			RGGraph cardItemsFromFile = (RGGraph) input.readObject();
+			RGGame gameFromFile = (RGGame) input.readObject();
+			String phaseFromFile= (String) input.readObject();
+			String attackStatusFromFile= (String) input.readObject();
+			boolean cardGivenFromFile= (boolean) input.readObject();
+			boolean allOutModeForAttackPhaseFromFile= (boolean) input.readObject();
+			RGPlayerStrategy playerStrategyFromFile= (RGPlayerStrategy) input.readObject();
+			boolean savedGameFromFile= (boolean) input.readObject();
+			
+			ArrayList<String> setOfPlayersFromFile = (ArrayList<String>) input.readObject();
+			RGGraph playerItemsFromFile = (RGGraph) input.readObject();
+			ArrayList<String> colorsFromFile = (ArrayList<String>) input.readObject();
+			RGPlayer playersFromFile = (RGPlayer) input.readObject();
+			RGGraph playerBehaviorsFromFile = (RGGraph) input.readObject();
+			
+			File fileFromFile = (File) input.readObject();
+			RGFile gameFileFromFile = (RGFile) input.readObject();
+			String imageFilePathFromFile= (String) input.readObject();
+			
+			input.close();
+			file.close();
+
+			game.setGraph(graphFromFile);
+			game.setCountryItems(countryItemsFromFile);
+			game.setContinentItems(continentItemsFromFile);
+			game.setCardItems(cardItemsFromFile);
+			game.setGame(gameFromFile);
+			game.setPhase(phaseFromFile);
+			game.setAttackStatus(attackStatusFromFile);
+			game.setCardGiven(cardGivenFromFile);
+			game.setAllOutModeForAttackPhase(allOutModeForAttackPhaseFromFile);
+			game.setPlayerStrategy(playerStrategyFromFile);
+			game.setSavedGame(savedGameFromFile);
+			
+			players.setSetOfPlayers(setOfPlayersFromFile);
+			players.setPlayerItems(playerItemsFromFile);
+			players.setColors(colorsFromFile);
+			players.setPlayer(playersFromFile);
+			players.setPlayerBehaviors(playerBehaviorsFromFile);
+			
+			gameFile.setFile(fileFromFile);
+			gameFile.setGameFile(gameFileFromFile);
+			gameFile.setImageFilePath(imageFilePathFromFile);
+			return true;
+		}
+		catch (ClassNotFoundException | IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+			return false;
+		} 
+		
+	}
 	
+	void saveGame() {
+		RGGame game=RGGame.getGame();
+		RGPlayer players=RGPlayer.getPlayers();
+		RGFile gameFile=RGFile.getGameFile();
+		LocalDateTime now = LocalDateTime.now();  
+		DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy_MM_dd");  
+		try {
+			FileOutputStream file = new FileOutputStream(new File("Risk"+dtf.format(now)+".ser"));
+			ObjectOutputStream output = new ObjectOutputStream(file);
+			game.setSavedGame(true);
+			System.out.print(game.getSavedGame());
+			
+			output.writeObject(game.getGraph());
+			output.writeObject(game.getCountryItems());
+			output.writeObject(game.getContinentItems());
+			output.writeObject(game.getCardItems());
+			output.writeObject(game);
+			output.writeObject(game.getPhase());
+			output.writeObject(game.getAttackStatus());
+			output.writeObject(game.getCardGiven());
+			output.writeObject(game.getAllOutModeForAttackPhase());
+			output.writeObject(game.getPlayerStrategy());
+			output.writeObject(game.getSavedGame());
+			
+			output.writeObject(players.getSetOfPlayers());
+			output.writeObject(players.getPlayerItems());
+			output.writeObject(players.getColors());
+			output.writeObject(players);
+			output.writeObject(players.getPlayerBehaviors());
+	
+			output.writeObject(gameFile.getFile());
+			output.writeObject(gameFile);
+			output.writeObject(gameFile.getImageFilePath());
+			
+			output.close();
+			file.close();
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		} finally {
+		}
+	}
 	
 
 }

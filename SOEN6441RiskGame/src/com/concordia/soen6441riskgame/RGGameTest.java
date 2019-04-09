@@ -263,12 +263,14 @@ public class RGGameTest {
 	@Test
     public void testPercentageMapControlledByPlayer() {
 		assertEquals(game.percentageMapControlledByPlayer("C"), 40);
-    }
+    }	
 	
-	
-	
-	
-	
-
+	@Test
+	public void saveMap() {
+		game.saveGame();
+		game.setSavedGame(true);
+		assertTrue(game.loadGame());
+		
+	}
 }
 

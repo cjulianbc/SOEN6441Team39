@@ -56,45 +56,7 @@ public class RGGameFrame extends JFrame implements Serializable {
 		mntmSaveGame.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				RGGame game=RGGame.getGame();
-				RGPlayer players=RGPlayer.getPlayers();
-				RGFile gameFile=RGFile.getGameFile();
-				LocalDateTime now = LocalDateTime.now();  
-				DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy_MM_dd");  
-				try {
-					FileOutputStream file = new FileOutputStream(new File("Risk"+dtf.format(now)+".ser"));
-					ObjectOutputStream output = new ObjectOutputStream(file);
-					game.setSavedGame(true);
-					System.out.print(game.getSavedGame());
-					
-					output.writeObject(game.getGraph());
-					output.writeObject(game.getCountryItems());
-					output.writeObject(game.getContinentItems());
-					output.writeObject(game.getCardItems());
-					output.writeObject(game);
-					output.writeObject(game.getPhase());
-					output.writeObject(game.getAttackStatus());
-					output.writeObject(game.getCardGiven());
-					output.writeObject(game.getAllOutModeForAttackPhase());
-					output.writeObject(game.getPlayerStrategy());
-					output.writeObject(game.getSavedGame());
-					
-					output.writeObject(players.getSetOfPlayers());
-					output.writeObject(players.getPlayerItems());
-					output.writeObject(players.getColors());
-					output.writeObject(players);
-					output.writeObject(players.getPlayerBehaviors());
-			
-					output.writeObject(gameFile.getFile());
-					output.writeObject(gameFile);
-					output.writeObject(gameFile.getImageFilePath());
-					
-					output.close();
-					file.close();
-				} catch (IOException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				} finally {
-				}
+				game.saveGame();
 			}
 		});
 		mnSave.add(mntmSaveGame);

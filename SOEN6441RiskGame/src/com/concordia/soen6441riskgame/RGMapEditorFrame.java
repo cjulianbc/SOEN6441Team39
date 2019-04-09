@@ -90,7 +90,7 @@ public class RGMapEditorFrame extends JFrame{
 	}
 
 	/**
-	 * This constructor set the frame and add all the objects a player needs to create, edit, validate, and save a Risk® map.
+	 * This constructor set the frame and add all the objects a player needs to create, edit, validate, and save a Riskï¿½ map.
      *   
      *   
 	 */
@@ -207,7 +207,7 @@ public class RGMapEditorFrame extends JFrame{
 		JMenuItem mntmOpen = new JMenuItem("Open Map");
 		mntmOpen.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				gameFile.openFile(); //opening an existing Risk® map
+				gameFile.openFile(); //opening an existing Riskï¿½ map
 				try {
 					StringBuilder content=gameFile.getContent("[Continents]");
 					textArea.setText(String.valueOf(content));
@@ -261,72 +261,17 @@ public class RGMapEditorFrame extends JFrame{
 		JMenuItem mntmOpenGame = new JMenuItem("Open Game");
 		mntmOpenGame.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				RGPlayer players;
 				RGGame game=RGGame.getGame();
-				RGPlayer players=RGPlayer.getPlayers();
-				RGFile gameFile=RGFile.getGameFile();
-				LocalDateTime now = LocalDateTime.now();  
-				DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy_MM_dd");
-				try {
-					FileInputStream file = new FileInputStream(new File("Risk"+dtf.format(now)+".ser"));
-					ObjectInputStream input = new ObjectInputStream(file);
-					
-					RGGraph graphFromFile = (RGGraph) input.readObject();
-					RGGraph countryItemsFromFile = (RGGraph) input.readObject();
-					RGGraph continentItemsFromFile = (RGGraph) input.readObject();
-					RGGraph cardItemsFromFile = (RGGraph) input.readObject();
-					RGGame gameFromFile = (RGGame) input.readObject();
-					String phaseFromFile= (String) input.readObject();
-					String attackStatusFromFile= (String) input.readObject();
-					boolean cardGivenFromFile= (boolean) input.readObject();
-					boolean allOutModeForAttackPhaseFromFile= (boolean) input.readObject();
-					RGPlayerStrategy playerStrategyFromFile= (RGPlayerStrategy) input.readObject();
-					boolean savedGameFromFile= (boolean) input.readObject();
-					
-					ArrayList<String> setOfPlayersFromFile = (ArrayList<String>) input.readObject();
-					RGGraph playerItemsFromFile = (RGGraph) input.readObject();
-					ArrayList<String> colorsFromFile = (ArrayList<String>) input.readObject();
-					RGPlayer playersFromFile = (RGPlayer) input.readObject();
-					RGGraph playerBehaviorsFromFile = (RGGraph) input.readObject();
-					
-					File fileFromFile = (File) input.readObject();
-					RGFile gameFileFromFile = (RGFile) input.readObject();
-					String imageFilePathFromFile= (String) input.readObject();
-					
-					input.close();
-					file.close();
-		
-					game.setGraph(graphFromFile);
-					game.setCountryItems(countryItemsFromFile);
-					game.setContinentItems(continentItemsFromFile);
-					game.setCardItems(cardItemsFromFile);
-					game.setGame(gameFromFile);
-					game.setPhase(phaseFromFile);
-					game.setAttackStatus(attackStatusFromFile);
-					game.setCardGiven(cardGivenFromFile);
-					game.setAllOutModeForAttackPhase(allOutModeForAttackPhaseFromFile);
-					game.setPlayerStrategy(playerStrategyFromFile);
-					game.setSavedGame(savedGameFromFile);
-					
-					players.setSetOfPlayers(setOfPlayersFromFile);
-					players.setPlayerItems(playerItemsFromFile);
-					players.setColors(colorsFromFile);
-					players.setPlayer(playersFromFile);
-					players.setPlayerBehaviors(playerBehaviorsFromFile);
-					
-					gameFile.setFile(fileFromFile);
-					gameFile.setGameFile(gameFileFromFile);
-					gameFile.setImageFilePath(imageFilePathFromFile);
+				game.loadGame();
 
 					players=RGPlayer.getPlayers();
 					System.out.print(players.getColors());
 					
-					RGGameFrame gameFrame=new RGGameFrame();//creating the game frame where players can play Risk® game
+					RGGameFrame gameFrame=new RGGameFrame();//creating the game frame where players can play Riskï¿½ game
 					gameFrame.setVisible(true);
-				} catch (ClassNotFoundException | IOException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
 				} 
-			}
+			
 		});
 		mnPlayRisk.add(mntmOpenGame);
 		mnPlayRisk.add(mntmPlay);

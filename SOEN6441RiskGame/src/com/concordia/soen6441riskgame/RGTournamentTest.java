@@ -10,6 +10,10 @@ import org.junit.Test;
 
 public class RGTournamentTest {
 	RGTournamentManager tournament;
+	/**
+	 * setting up tournament mode for testing
+	 * @throws Exception
+	 */
 	
 	@Before
 	public void setUp() throws Exception {
@@ -22,23 +26,34 @@ public class RGTournamentTest {
 		maps.add("Aden.map");
 		tournament=new RGTournamentManager(maps, players, 3, 11);
 	}
-	
+	/**
+	 * testing tournament by startTournament
+	 */
 	@Test
 	public void testTournament() {
 		tournament.startTournament();
 		assertEquals(6,tournament.getResultsSize());
 	}
+	/**
+	 * test maps for tournament
+	 */
 	@Test
 	public void testValidateNumberOfMaps() {
 		
 		assertTrue(tournament.validateNumberOfMaps());
 	}
+	/**
+	 * test players in tournament
+	 */
 	
 	@Test
 	public void testValidateNumberOfPlayers() {
 		assertTrue(tournament.validateNumberOfPlayers());
 			
 	}
+	/**
+	 * test number of turns in tournament
+	 */
 	
 	@Test
 	public void testValidateNumberOfTurns() {
