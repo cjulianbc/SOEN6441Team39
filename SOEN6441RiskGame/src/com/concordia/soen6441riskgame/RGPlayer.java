@@ -675,4 +675,16 @@ public class RGPlayer extends Observable implements Serializable {
         this.setOfPlayers=setOfPlayers;
     }
 	
+	/**
+	 * This method is used to refresh the playerBehaviours,playerItems,setOfPlayers for each game.  
+	 * 
+	 * 
+	 * 
+	 */	
+	void reloadPlayers() {
+		this.playerBehaviors=new RGGraph();
+		this.playerItems=new RGGraph();
+		this.setOfPlayers=new ArrayList<String>();
+	}
+	
 }
