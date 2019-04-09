@@ -84,6 +84,16 @@ public class RGFile implements Serializable {
 	}
 	
 	/**
+	 * This method is used to open the directory that contains all the maps.
+	 * 
+	 * 
+	 */
+	void openTournamentFile(String fileLocation) {
+		file=new File(fileLocation);
+		imageFilePath="C://Map";
+	}
+	
+	/**
 	 * This method is used to extract the content of a tag from the game file.
 	 * Possible tags are [Continents] and [Territories].
 	 * 
