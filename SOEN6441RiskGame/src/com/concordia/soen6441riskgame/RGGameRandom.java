@@ -183,54 +183,64 @@ public class RGGameRandom implements RGStrategy, Serializable {
 	public void attackPhaseModeDecision(String selectedCountryAttacker,String selectedCountryDefender,String selectedDiceAttacker,String selectedDiceDefender,String currentPlayerName)
 	{
 		RGGame game=RGGame.getGame();
-		
+		int randomNumber;
+
 		ArrayList<String> countriesAttacker = new ArrayList<String>();
 		countriesAttacker=((RGGame) game).getCountriesAttacker(currentPlayerName);
-		int randomNumber = new Random().nextInt(countriesAttacker.size());
-		selectedCountryAttacker=countriesAttacker.get(randomNumber);
 		
-		ArrayList<String> countriesDefender = new ArrayList<String>();
-		countriesDefender=game.getCountriesDefender(selectedCountryAttacker,currentPlayerName);
-		randomNumber = new Random().nextInt(countriesDefender.size());
-		selectedCountryDefender=countriesDefender.get(randomNumber);
-		
-		randomNumber = new Random().nextInt(10);
-		randomNumber++;
-		//while All Out Mode is on and there is enough army available to attack
-		while (game.getAllOutModeForAttackPhase()==true && Integer.valueOf(game.getArmies(selectedCountryAttacker))>1 && randomNumber>0)
-		{
-			//setting max number of dice
-			String numberOfArmies=game.getArmies(selectedCountryAttacker);
-			if(Integer.valueOf(numberOfArmies)>=4)
-				selectedDiceAttacker="3";
-			else if(Integer.valueOf(numberOfArmies)==3)
-				selectedDiceAttacker="2";
-			else if(Integer.valueOf(numberOfArmies)==2)
-				selectedDiceAttacker="1";
-			numberOfArmies=game.getArmies(selectedCountryDefender);
-			if(Integer.valueOf(numberOfArmies)>=2)
-				selectedDiceDefender="2";
-			else if(Integer.valueOf(numberOfArmies)==1)
-				selectedDiceDefender="1";
-			//let's play	
-			game.attackPhase(selectedCountryAttacker,selectedCountryDefender,selectedDiceAttacker,selectedDiceDefender,currentPlayerName);
-			randomNumber--;
+		if(countriesAttacker.size()==0) {
+			((RGGame) game).attackPhaseNoAttackers(currentPlayerName);
 		}
-		if(Integer.valueOf(game.getArmies(selectedCountryAttacker))==1 && !game.getAttackStatus().contentEquals("move")) 
-		{
-			RGPlayer players=RGPlayer.getPlayers();
-			StringBuilder actionPerformed=new StringBuilder();
-			actionPerformed.append("Not enough army to attack");
-			actionPerformed.append("\n");
+		else {
+			randomNumber = new Random().nextInt(countriesAttacker.size());
+			selectedCountryAttacker=countriesAttacker.get(randomNumber);
 
-			//No more army to attack. Setting all out mode off
+			ArrayList<String> countriesDefender = new ArrayList<String>();
+			countriesDefender=game.getCountriesDefender(selectedCountryAttacker,currentPlayerName);
+			randomNumber = new Random().nextInt(countriesDefender.size());
+			selectedCountryDefender=countriesDefender.get(randomNumber);
+
+
+
+
+			randomNumber = new Random().nextInt(10);
+			randomNumber++;
+			//while All Out Mode is on and there is enough army available to attack
+			while (game.getAllOutModeForAttackPhase()==true && Integer.valueOf(game.getArmies(selectedCountryAttacker))>1 && randomNumber>0)
+			{
+				//setting max number of dice
+				String numberOfArmies=game.getArmies(selectedCountryAttacker);
+				if(Integer.valueOf(numberOfArmies)>=4)
+					selectedDiceAttacker="3";
+				else if(Integer.valueOf(numberOfArmies)==3)
+					selectedDiceAttacker="2";
+				else if(Integer.valueOf(numberOfArmies)==2)
+					selectedDiceAttacker="1";
+				numberOfArmies=game.getArmies(selectedCountryDefender);
+				if(Integer.valueOf(numberOfArmies)>=2)
+					selectedDiceDefender="2";
+				else if(Integer.valueOf(numberOfArmies)==1)
+					selectedDiceDefender="1";
+				//let's play	
+				game.attackPhase(selectedCountryAttacker,selectedCountryDefender,selectedDiceAttacker,selectedDiceDefender,currentPlayerName);
+				randomNumber--;
+			}
+			if(Integer.valueOf(game.getArmies(selectedCountryAttacker))==1 && !game.getAttackStatus().contentEquals("move")) 
+			{
+				RGPlayer players=RGPlayer.getPlayers();
+				StringBuilder actionPerformed=new StringBuilder();
+				actionPerformed.append("Not enough army to attack");
+				actionPerformed.append("\n");
+
+				//No more army to attack. Setting all out mode off
+				game.setAllOutModeForAttackPhase(false);
+
+				//Storing performed actions 
+				players.setActionsPerformed(actionPerformed, currentPlayerName, "attack");
+			}
 			game.setAllOutModeForAttackPhase(false);
-
-			//Storing performed actions 
-			players.setActionsPerformed(actionPerformed, currentPlayerName, "attack");
+			game.setAttackStatus("");
 		}
-		game.setAllOutModeForAttackPhase(false);
-		game.setAttackStatus("");
 	}
 
 	/**

@@ -50,7 +50,7 @@ public class RGTournamentManager {
 		for (String map : maps) {
 			
 				for (int i = 0; i < numberOfGames; i++) {game.reloadMap();
-				String mapLocation = "C://Map//" + map;
+				String mapLocation = "C:\\Users\\cesar\\Documents\\Maps\\" + map;
 				file.openTournamentFile(mapLocation);
 				try {
 					StringBuilder content = file.getContent("[Territories]");

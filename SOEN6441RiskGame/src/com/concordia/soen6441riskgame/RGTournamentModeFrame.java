@@ -68,7 +68,7 @@ public class RGTournamentModeFrame extends JFrame {
 	 */
 	
 	public ArrayList<String> readDirectory() {
-		String path="C:\\Map";
+		String path="C:\\Users\\cesar\\Documents\\Maps\\";
 		ArrayList<String> files=new ArrayList<String>();
 		File folder=new File(path);
 		File[] listOfFiles=folder.listFiles();
