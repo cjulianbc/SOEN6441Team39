@@ -78,7 +78,7 @@ public class RGPlayerTest {
         countryItems.addEdge("Maldives", "1");
         countryItems.addEdge("Philippines", "C");
         countryItems.addEdge("Philippines", "1");
-        player.setPlayers("A,B,C");
+		player.setPlayers("A=human,B=aggressive,C=random");
         game.initializeGame();
     }
 
@@ -114,7 +114,7 @@ public class RGPlayerTest {
 	 */
     @Test
     public void testGetCurrentArmies() {
-    	assertEquals(player.getCurrentArmies("B"), "20");
+		assertEquals(player.getCurrentArmies("B"), "20");
     }
 
 	/**
@@ -124,7 +124,7 @@ public class RGPlayerTest {
     @Test
     public void testSetNumberOfArmiesSetup() {
         player.setNumberOfArmiesSetup(3, "C");
-        assertEquals(player.getCurrentArmies("C"), "23");
+		assertEquals(player.getCurrentArmies("C"), "23");
     }
 
 	/**
@@ -137,7 +137,25 @@ public class RGPlayerTest {
         assertEquals(player.getNumberOfArmiesForReinforcement("B"), "0");
     }
     
-    
+	/**
+	 * testSetNumberOfArmiesForUsedCard() of RGPlayerTest validate if a player gets
+	 * the right amount of army received after Reinforcement phase when exchanging
+	 * the cards by the provided context.
+	 */
+	@Test
+	public void testSetNumberOfArmiesForUsedCard() {
+		player.initializeCardUsedCount();
+		assertEquals(player.setNumberOfArmiesForUsedCard("B", 12), 16);
+	}
+
+	/**
+	 * testGetPlayerStrategy() of RGPlayerTest validate a player's strategy
+	 */
+	@Test
+	public void testGetPlayerStrategy() {
+		assertEquals(player.getPlayerStrategy("A"), "human");
+	}
+
 }
 
 

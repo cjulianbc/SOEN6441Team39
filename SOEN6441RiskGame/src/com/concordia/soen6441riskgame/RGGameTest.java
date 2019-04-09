@@ -83,8 +83,8 @@ public class RGGameTest {
 		countryItems.addEdge("Philippines", "C");
 		countryItems.addEdge("Philippines", "1");
 		
-		RGPlayer player=RGPlayer.getPlayers();
-		 player.setPlayers("a,b,c");
+		RGPlayer player = RGPlayer.getPlayers();
+		player.setPlayers("a=human,b=aggressive,c=random");
 		 game.initializeGame();
 
 	}
@@ -188,7 +188,6 @@ public class RGGameTest {
 	 */
 	@Test
 	public void testGetNumberOfArmiesDueContinents() {
-		// fail("Not yet implemented");
 		int currentPlayerNumberOfCountries = game.getCurrentPlayerNumberOfCountries("C");
 		assertEquals(currentPlayerNumberOfCountries, 4);
 	}
@@ -199,6 +198,7 @@ public class RGGameTest {
 	 */
 	@Test
 	public void testGetCurrentPlayerAdjacentCountries() {
+		// fail("Not yet implemented");
 		ArrayList<String> adjPath = game.getCurrentPlayerAdjacentCountries("A", "India");
 		assertEquals(adjPath.get(0), "Bhuntan");
 	}
@@ -209,7 +209,6 @@ public class RGGameTest {
 	 */
 	@Test
 	public void testGetAttackStatus() {
-		
 		game.setAttackStatus("end");
 		assertEquals(game.getAttackStatus(), "end");
 	}
@@ -230,7 +229,6 @@ public class RGGameTest {
 	 */
 	@Test
 	public void testGetPlayersName() {
-		
 		assertEquals(game.getPlayersName("India"),"A");
 		
 		
@@ -241,7 +239,6 @@ public class RGGameTest {
 	 */
 	@Test
 	public void testvalidateCards() {
-		
 		List<String> selectedCards=Arrays.asList("Artilery","Infantry","Wild");
 		assertTrue(game.validateCards(selectedCards));
 	}
@@ -252,10 +249,11 @@ public class RGGameTest {
 	 */
 	@Test
 	public void testFortificationPhase() {
-		
-		game.fortificationPhase("Bangladesh", "India", 2);
-		 
-		assertEquals(game.getCountryItems().getEdges("Bangladesh").get(4),"3");
+		game.fortificationPhase("Bangladesh", "India", 1);
+		// System.out.print("------------------------i am
+		// here---------------------------- "+
+		// game.getCountryItems().getEdges("Bangladesh").get(4) + " ---------");
+		assertEquals(game.getCountryItems().getEdges("Bangladesh").get(4), "0");
 	}
 	
 	/**
@@ -264,7 +262,7 @@ public class RGGameTest {
 	 */
 	@Test
     public void testPercentageMapControlledByPlayer() {
-        assertEquals(game.percentageMapControlledByPlayer("C"), 40);
+		assertEquals(game.percentageMapControlledByPlayer("C"), 40);
     }
 
 }
