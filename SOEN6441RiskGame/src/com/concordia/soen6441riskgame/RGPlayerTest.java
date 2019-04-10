@@ -108,24 +108,9 @@ public class RGPlayerTest {
         assertEquals(player.getPlayerTurn(), "A");
     }
 
-	/**
-	 * testGetCurrentArmies() of RGPlayerTest validate if a player has the right
-	 * amount of army as it suppose to have by the provided context.
-	 */
-    @Test
-    public void testGetCurrentArmies() {
-		assertEquals(player.getCurrentArmies("B"), "20");
-    }
 
-	/**
-	 * testSetNumberOfArmiesSetup() of RGPlayerTest validate if the right amount of
-	 * army is changed as it suppose to be by the provided context.
-	 */
-    @Test
-    public void testSetNumberOfArmiesSetup() {
-        player.setNumberOfArmiesSetup(3, "C");
-		assertEquals(player.getCurrentArmies("C"), "23");
-    }
+
+
 
 	/**
 	 * testGetNumberOfArmiesForReinforcement() of RGPlayerTest validate if a player

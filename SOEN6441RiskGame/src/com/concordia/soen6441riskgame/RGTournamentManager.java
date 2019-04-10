@@ -46,7 +46,7 @@ public class RGTournamentManager {
 	 * 
 	 */
 	public void startTournament() {
-		ArrayList<String> results=new ArrayList<String>();
+
 		for (String map : maps) {
 			
 				for (int i = 0; i < numberOfGames; i++) {game.reloadMap();

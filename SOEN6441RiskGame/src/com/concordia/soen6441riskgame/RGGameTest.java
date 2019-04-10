@@ -84,7 +84,7 @@ public class RGGameTest {
 		countryItems.addEdge("Philippines", "1");
 		
 		RGPlayer player = RGPlayer.getPlayers();
-		player.setPlayers("a=human,b=aggressive,c=random");
+		player.setPlayers("A=human,B=aggressive,C=random");
 		 game.initializeGame();
 
 	}
@@ -273,6 +273,29 @@ public class RGGameTest {
 		game.setSavedGame(true);
 		assertTrue(game.loadGame());
 		
+	}
+
+	@Test
+	public void testAttackPhase() {
+		game.setAllOutModeForAttackPhase(true);
+		game.attackPhaseModeDecision("India", "Nepal", "", "", "A");
+		assertEquals("A", game.getOwner("Nepal"));
+
+	}
+
+	@Test
+	public void testValidMoveAfterConquering() {
+		game.setAllOutModeForAttackPhase(true);
+		game.attackPhaseModeDecision("India", "Nepal", "", "", "A");
+		assertEquals("3", game.getArmies("Nepal"));
+
+	}
+
+	@Test
+	public void testEndOFGame() {
+		game.setAttackStatus("end");
+		assertEquals(game.getAttackStatus(), "end");
+
 	}
 }
 
