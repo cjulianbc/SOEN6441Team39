@@ -1,6 +1,7 @@
 package com.concordia.soen6441riskgame;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -70,6 +71,9 @@ public class RGFileTest {
 		assertFalse(file.validateMap(continents, countries));
 	}
 
+	/**
+	 * method for validating the continent Name
+	 */
 	@Test
 	public void testMapInvalidContinentName() {
 		continents = "Asia=2" + "\n" + "North America=8";
@@ -81,8 +85,9 @@ public class RGFileTest {
 				+ "Canada,11,11,South America,USA,India";
 		assertFalse(file.validateMap(continents, countries));
 	}
+	
 	/**
-	 * method for valid coordinates
+	 * method for valid coordinates, such as if 2 country gets the same coordinates
 	 */
 
 	@Test
@@ -97,6 +102,10 @@ public class RGFileTest {
 		assertFalse(file.validateMap(continents, countries));
 	}
 
+	/**
+	 * method for valid coordinates format. Such as {CountryName, XCoordinate,
+	 * YCoordinate, Continent, AdjacentCountresInCommaSepareted}
+	 */
 	@Test
 	public void testMapInvalidCoordinateFormat() {
 		continents = "Asia=2" + "\n" + "North America=8";
@@ -124,6 +133,9 @@ public class RGFileTest {
 		assertFalse(file.validateMap(continents, countries));
 	}
 
+	/**
+	 * method to test Invalid Uni Directional Connection
+	 */
 	@Test
 	public void testMapInvalidUniDirectionalConnection() {
 		continents = "Asia=2" + "\n" + "North America=8";
